@@ -1,5 +1,5 @@
-# React Webpack Template
-React template with Webpack and Babel 
+# Umrah
+The vision of the application is to be the largest platform for Umrah Bookings world wide. 
 
 ### Version: 1.0.0
 
