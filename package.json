@@ -1,8 +1,8 @@
 {
-  "name": "react-webpack-template",
+  "name": "umrah",
   "version": "1.0.0",
-  "description": "React template with Webpack and Babel",
-  "main": "app/index.js",
+  "description": "The vision of the application is to be the largest platform for Umrah Bookings world wide.",
+  "main": "app",
   "scripts": {
     "start": "webpack-dev-server --hot --config webpack/webpack.dev.js",
     "start:production": "webpack-dev-server --hot --config webpack/webpack.prod.js",
@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kalika123900-company/react-webpack-template.git"
+    "url": "git+https://github.com/kalika123900-company/umrah.git"
   },
   "keywords": [],
   "author": "Vikrant Singh",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kalika123900-company/react-webpack-template/issues"
+    "url": "https://github.com/kalika123900-company/umrah/issues"
   },
-  "homepage": "https://github.com/kalika123900-company/react-webpack-template#readme",
+  "homepage": "https://github.com/kalika123900-company/umrah#readme",
   "dependencies": {
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
