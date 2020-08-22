@@ -7,3 +7,9 @@ export const Landing = loadable(() =>
   import('./Landing'), {
   fallback: <Loading />,
 });
+
+// Page Agency Register
+export const AgencyRegister = loadable(() =>
+  import('./Page/AgencyRegister'), {
+  fallback: <Loading />,
+});
