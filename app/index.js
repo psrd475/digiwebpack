@@ -8,7 +8,10 @@ import App from './containers/App';
 
 const MOUNT_NODE = document.getElementById('app');
 const reducer = createReducer();
-const store = createStore(reducer);
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 ReactDOM.render(
   <Provider store={store}>
