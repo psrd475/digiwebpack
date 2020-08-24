@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { agencyReg } from 'Actions/AgencyRegAction';
+import { } from 'Actions/AgencyRegAction';
+import { lib } from 'crypto-js';
 
 class AgencyRegister4 extends Component {
   constructor(props) {
@@ -40,20 +41,29 @@ class AgencyRegister4 extends Component {
     }
   }
   render() {
-    let agencyData = this.props.agencyData
-    console.log("agency4", agencyData.toJS());
-
-    let embassyData = this.props.agencyData.get('embassy');
-    console.log("agency4", embassyData.toJS());
-
-    let addOwnerData = this.props.agencyData.get('addowner');
-    const ownerData = addOwnerData.map((v, k, i) => {
+    const { agencyData, contactData, LicenseData } = this.props;
+    console.log(agencyData.toJS())
+    console.log(contactData.toJS())
+    console.log(LicenseData.toJS())
+    const addOwnerData = agencyData.get('OwnerList');
+    const ownerData = addOwnerData.map((item, index) => {
       return (
-        <tr key={k}>
-          <td>{v.ownersname}</td>
-          <td>{v.idnumber}</td>
-          <td>{v.mobilenumber}</td>
+        <tr key={index}>
+          <td>{item.ownersname}</td>
+          <td>{item.idnumber}</td>
+          <td>{item.mobilenumber}</td>
         </tr>)
+    })
+    const Brance = contactData.get('Branch')
+    const renderBrance = Brance.map((item, index) => {
+      <tr key={index}>
+        <td>{item.branchName}</td>
+        <td>{item.city}</td>
+        <td>{item.street}</td>
+        <td>{item.buildingNo}</td>
+        <td>{item.longitude}, {item.latitude}</td>
+        <td>{item.cellNo} </td>
+      </tr>
     })
     return (
       <Fragment>
@@ -122,8 +132,8 @@ class AgencyRegister4 extends Component {
                               type="text"
                               readOnly
                               className="form-control-plaintext"
-                              // defaultValue="وكالة مملكة تونس للأسفار و السياحة"
-                              value={agencyData.get('travelagencyname')}
+
+                              value={agencyData.get('Name')}
                             />
                           </div>
                         </div>
@@ -134,8 +144,8 @@ class AgencyRegister4 extends Component {
                               type="text"
                               readOnly
                               className="form-control-plaintext"
-                              // defaultValue=" تونس "
-                              value={agencyData.get('country')}
+
+                              value={agencyData.get('Country')}
                             />
                           </div>
                         </div>
@@ -150,8 +160,8 @@ class AgencyRegister4 extends Component {
                               type="text"
                               readOnly
                               className="form-control-plaintext"
-                              // defaultValue="شركة للسياحة والسفر"
-                              value={agencyData.get('agencyclassification')}
+
+                              value={agencyData.get('Classification')}
                             />
                           </div>
                         </div>
@@ -164,8 +174,7 @@ class AgencyRegister4 extends Component {
                               type="text"
                               readOnly
                               className="form-control-plaintext"
-                              // defaultValue="info@mycompany.com"
-                              value={agencyData.get('website')}
+                              value={agencyData.get('Website')}
                             />
                           </div>
                         </div>
@@ -180,8 +189,7 @@ class AgencyRegister4 extends Component {
                               type="text"
                               readOnly
                               className="form-control-plaintext"
-                              defaultValue={43534876543}
-                              value={agencyData.get('commercialregistrationno')}
+                              value={agencyData.get('RegisterNo')}
                             />
                           </div>
                         </div>
@@ -194,7 +202,7 @@ class AgencyRegister4 extends Component {
                               className="underline p-1 d-inline-block"
                               href="#downloadfile"
                             >
-                              {/* {agencyData.get('commercialregistryfile')} */}
+                              {agencyData.get('RegistryFile')}
                               شركة ام القرى للحج والعمرة.pdf
                             </a>
                           </div>
@@ -209,8 +217,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              // defaultValue="11/5/2020"
-                              value={agencyData.get('creatingdatecommercialregistry')}
+                              readOnly
+                              value={agencyData.get('CreateDate')}
                             />
                           </div>
                         </div>
@@ -222,8 +230,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              // defaultValue="11/5/2020"
-                              value={agencyData.get('expirydatecommercialregistration')}
+                              value={agencyData.get('ExpiryDate')}
+                              readOnly
                             />
                           </div>
                         </div>
@@ -237,10 +245,7 @@ class AgencyRegister4 extends Component {
                             <textarea
                               className="form-control-plaintext"
                               rows={4}
-                              // defaultValue={
-                              //   "تمكنا نتيجة لخبرتنا السابقة في مجال السفر و السياحة أن نكتسب قاعدة للحرفاء متنامية يوما بعد يوم مما عزز عدد الزبائن و خاصة ثقتهم على مدى السنوات الماضية .  لآرائهم و بدلك تواصل مملكة تونس للأسفار و السياحة التطوير و التوسيع في عروضها ومنتجاتها."
-                              // }
-                              value={agencyData.get('about')}
+                              value={agencyData.get('About')}
                             />
                           </div>
                         </div>
@@ -291,8 +296,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              // defaultValue={125654}
-                              value={embassyData.get('embassyLicenceno')}
+                              readOnly
+                              value={LicenseData.get('LicenceNo')}
                             />
                           </div>
                         </div>
@@ -305,8 +310,8 @@ class AgencyRegister4 extends Component {
                               className="underline p-1 d-inline-block"
                               href="#downloadfile"
                             >
-                              {/* {embassyData.get('embassyLicenceFile')} */}
-                              file-name.pdf
+                              {/* {LicenseData.get('LicenceFile')} */}
+
                             </a>
                           </div>
                         </div>
@@ -320,8 +325,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              // defaultValue="11/5/2020"
-                              value={embassyData.get('embassyLicenceCreateDate')}
+                              readOnly
+                              value={LicenseData.get('LicenceCreateDate')}
                             />
                           </div>
                         </div>
@@ -333,8 +338,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              // defaultValue="11/5/2020"
-                              value={embassyData.get('embassyLicenceExpiryDate')}
+                              readOnly
+                              value={LicenseData.get('LicenceExpiryDate')}
                             />
                           </div>
                         </div>
@@ -356,7 +361,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              defaultValue={125654}
+                              readOnly
+                              value={LicenseData.get('FMembershipNo')}
                             />
                           </div>
                         </div>
@@ -369,9 +375,10 @@ class AgencyRegister4 extends Component {
                             <a
                               className="underline p-1 d-inline-block"
                               href="#downloadfile"
-                            >
 
-                              file-name.pdf
+                            >
+                              {/* {LicenseData.get('FFile')} */}
+
                             </a>
                           </div>
                         </div>
@@ -386,7 +393,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              defaultValue="11/5/2020"
+                              readOnly
+                              value={LicenseData.get('FCreateDate')}
                             />
                           </div>
                         </div>
@@ -399,7 +407,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              defaultValue="11/5/2020"
+                              readOnly
+                              value={LicenseData.get('FExpiryDate')}
                             />
                           </div>
                         </div>
@@ -425,7 +434,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              defaultValue={125654}
+                              readOnly
+                              value={LicenseData.get('TMembershipNo')}
                             />
                           </div>
                         </div>
@@ -439,8 +449,8 @@ class AgencyRegister4 extends Component {
                               className="underline p-1 d-inline-block"
                               href="#downloadfile"
                             >
+                              {/* {LicenseData.get('TFile')} */}
 
-                              file-name.pdf
                             </a>
                           </div>
                         </div>
@@ -455,7 +465,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              defaultValue="11/5/2020"
+                              readOnly
+                              value={LicenseData.get('TCreateDate')}
                             />
                           </div>
                         </div>
@@ -468,7 +479,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="text"
                               className="form-control-plaintext"
-                              defaultValue="11/5/2020"
+                              readOnly
+                              value={LicenseData.get('TExpiryDate')}
                             />
                           </div>
                         </div>
@@ -491,7 +503,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="number"
                               className="form-control-plaintext"
-                              defaultValue={45346545}
+                              readOnly
+                              value={contactData.get('TelNo')}
                             />
                           </div>
                         </div>
@@ -504,7 +517,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="number"
                               className="form-control-plaintext"
-                              defaultValue={23423425}
+                              readOnly
+                              value={contactData.get('MobileNo')}
                             />
                           </div>
                         </div>
@@ -519,7 +533,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="number"
                               className="form-control-plaintext"
-                              defaultValue={234234234}
+                              readOnly
+                              value={contactData.get('FaxNo')}
                             />
                           </div>
                         </div>
@@ -532,7 +547,8 @@ class AgencyRegister4 extends Component {
                             <input
                               type="email"
                               className="form-control-plaintext"
-                              defaultValue="info@mycompany.com"
+                              readOnly
+                              value={contactData.get('Email')}
                             />
                           </div>
                         </div>
@@ -556,38 +572,7 @@ class AgencyRegister4 extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>فرع الشهداء</td>
-                          <td>صفاقس</td>
-                          <td>طريق العين</td>
-                          <td>143 الجديدة</td>
-                          <td> 21،434535 21،4345352</td>
-                          <td>05856465456</td>
-                        </tr>
-                        <tr>
-                          <td>فرع الشهداء</td>
-                          <td>صفاقس</td>
-                          <td>طريق العين</td>
-                          <td>143 الجديدة</td>
-                          <td> 21،434535 21،4345352</td>
-                          <td>05856465456</td>
-                        </tr>
-                        <tr>
-                          <td>فرع الشهداء</td>
-                          <td>صفاقس</td>
-                          <td>طريق العين</td>
-                          <td>143 الجديدة</td>
-                          <td> 21،434535 21،4345352</td>
-                          <td>05856465456</td>
-                        </tr>
-                        <tr>
-                          <td>فرع الشهداء</td>
-                          <td>صفاقس</td>
-                          <td>طريق العين</td>
-                          <td>143 الجديدة</td>
-                          <td> 21،434535 21،4345352</td>
-                          <td>05856465456</td>
-                        </tr>
+                        {renderBrance}
                       </tbody>
                     </table>
                   </div>
@@ -624,18 +609,17 @@ class AgencyRegister4 extends Component {
                     الغاء التسجيل
                   </a>
                   <div>
-                    <Link
+                    <Link to="#"
                       className="btn btn-outline-primary ml-3"
                       onClick={this.props.goPrevious}
                     >
                       السابق
                     </Link>
-                    <Link
-                      // onClick={this.props.}
+                    <button
                       className="btn btn-primary ml-3"
                     >
                       تأكيد
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -647,18 +631,17 @@ class AgencyRegister4 extends Component {
   }
 }
 
-const redux = 'agencyreg';
-
+const redux = 'AgencyRegistration';
 const mapStateToProps = state => ({
-  agencyData: state.getIn([redux, 'agencyData'])
+  agencyData: state.getIn([redux, 'agencyData']),
+  LicenseData: state.getIn([redux, 'LicenseData']),
+  contactData: state.getIn([redux, 'contactData'])
 });
 
-const mapDispatchToProps = dispatch => ({
-  agencyReg: bindActionCreators(agencyReg, dispatch)
-});
+
 const AgencyRegister4Mapped = connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(AgencyRegister4);
 export default AgencyRegister4Mapped;
 

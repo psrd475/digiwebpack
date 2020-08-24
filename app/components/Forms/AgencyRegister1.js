@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
 import countrydetails from '../../api/countrydetails';
-import { agencyReg } from 'Actions/AgencyRegAction';
+import { storeStep1Data } from 'Actions/AgencyRegAction';
 import { setNotif } from 'Actions/NotifActions';
 
 class AgencyRegister1 extends Component {
@@ -71,11 +70,11 @@ class AgencyRegister1 extends Component {
   handleOwnerSubmit = (e) => {
     const { ownersname, idnumber, mobilenumber } = this.state
 
-    const addowner = this.props.agencyData.get('addowner').push({ ownersname, idnumber, mobilenumber });
+    const addowner = this.props.agencyData.get('OwnerList').push({ ownersname, idnumber, mobilenumber });
     let tem = this.props.agencyData;
-    tem = tem.set('addowner', addowner);
+    tem = tem.set('OwnerList', addowner);
 
-    this.props.agencyReg({ agencyData: tem });
+    this.props.addInfo({ agencyData: tem });
 
     this.setState({ ownersname: '', idnumber: '', mobilenumber: '' })
   }
@@ -88,16 +87,13 @@ class AgencyRegister1 extends Component {
     const { name, value } = e.target;
 
     let agencyDat = agencyData.set(name, value);
-    this.props.agencyReg({ agencyData: agencyDat });
+    this.props.addInfo({ agencyData: agencyDat });
     // }
   }
-  // handlefiles = (e) => {
-  //   let agencyData = this.props.agencyData
-  //   const { name, value } = e.target;
-
-  //   let agencyDat = agencyData.set(name, value);
-  //   this.props.agencyReg({ agencyData: agencyDat });
-  // }
+  handlelogo = (e) => {
+    let agencyDataTemp = this.props.agencyData.set('AgencyLogo', e.target.files[0])
+    this.props.addInfo({ agencyData: agencyDataTemp });
+  }
   handlefiles = (e) => {
     if (e.target.files && e.target.files[0] && e.target.files[0].type.includes('pdf')) {
       const reader = new FileReader();
@@ -109,31 +105,26 @@ class AgencyRegister1 extends Component {
       };
 
       reader.readAsDataURL(e.target.files[0]);
-      let tutta = this.props.agencyData.get('tutta')
-      let agencyData = this.props.agencyData
-
-      let agencyDataT = tutta.set(e.target.name, e.target.files[0])
-      let agencyDat = agencyData.set('tutta', agencyDataT);
-      this.props.agencyReg({ agencyData: agencyDat });
+      let agencyDataTemp = this.props.agencyData.set('RegistryFile', e.target.files[0])
+      this.props.addInfo({ agencyData: agencyDataTemp });
     }
   }
   render() {
+
     let agency = this.props.agencyData;
     console.log("agency", agency.toJS());
-
-    let agencyData = this.props.agencyData.get('addowner');
     const countryname = countrydetails.map((item, index) => {
       return (
         <option key={index} value={item.name}>{item.name}</option>
       )
     })
-
-    const ownerData = agencyData.map((v, k, i) => {
+    const agencyData = this.props.agencyData.get('OwnerList');
+    const ownerData = agencyData.map((item, key) => {
       return (
-        <tr key={k}>
-          <td>{v.ownersname}</td>
-          <td>{v.idnumber}</td>
-          <td>{v.mobilenumber}</td>
+        <tr key={key}>
+          <td>{item.ownersname}</td>
+          <td>{item.idnumber}</td>
+          <td>{item.mobilenumber}</td>
           <td>
             <a
               href="#"
@@ -222,7 +213,7 @@ class AgencyRegister1 extends Component {
                             <input
                               type="text"
                               className="form-control"
-                              name="travelagencyname"
+                              name="Name"
                               onChange={this.handleChange}
                             />
                           </div>
@@ -232,7 +223,7 @@ class AgencyRegister1 extends Component {
                             <label className="d-block col-form-label"> الدولة</label>
                             <select
                               id="country"
-                              name="country"
+                              name="Country"
                               className="form-control"
                               onChange={this.handleChange}
                             >
@@ -248,7 +239,7 @@ class AgencyRegister1 extends Component {
                             <label className="d-block col-form-label">
                               تصنيف الوكالة
                             </label>
-                            <select className="form-control" name="agencyclassification" onChange={this.handleChange}>
+                            <select className="form-control" name="Classification" onChange={this.handleChange}>
                               <option value=" "> Choose the Agency Classification  </option>
                               <option value="Travel and tourism company">شركة للسياحة والسفر</option>
                               <option value="Transportation and delivery company">شركة نقل وتوصيل</option>
@@ -265,7 +256,7 @@ class AgencyRegister1 extends Component {
                               type="text"
                               className="form-control"
                               placeholder="www.example.com"
-                              name="website"
+                              name="Website"
                               onChange={this.handleChange}
                             />
                           </div>
@@ -280,7 +271,7 @@ class AgencyRegister1 extends Component {
                             <input
                               type="text"
                               className="form-control"
-                              name="commercialregistrationno"
+                              name="RegisterNo"
                               onChange={this.handleChange}
                             />
                           </div>
@@ -291,7 +282,7 @@ class AgencyRegister1 extends Component {
                               إرفاق ملف السجل التجاري
                             </label>
                             <span className="form-control form-upload">
-                              <input type="file" name="commercialregistryfile" onChange={this.handlefiles} />
+                              <input type="file" name="RegistryFile" onChange={this.handlefiles} />
                             </span>
                             <span className="text-muted small"> صيغة PDF </span>
                           </div>
@@ -303,7 +294,7 @@ class AgencyRegister1 extends Component {
                             <label className="d-block col-form-label  ">
                               تاريخ انشاء السجل التجاري
                             </label>
-                            <input type="date" className="form-control" name="creatingdatecommercialregistry"
+                            <input type="date" className="form-control" name="CreateDate"
                               onChange={this.handleChange} />
                           </div>
                         </div>
@@ -312,7 +303,7 @@ class AgencyRegister1 extends Component {
                             <label className="d-block col-form-label  ">
                               تاريخ انتهاء السجل التجاري
                             </label>
-                            <input type="date" className="form-control" name="expirydatecommercialregistration" onChange={this.handleChange} />
+                            <input type="date" className="form-control" name="ExpiryDate" onChange={this.handleChange} />
                           </div>
                         </div>
                       </div>
@@ -326,7 +317,7 @@ class AgencyRegister1 extends Component {
                               className="form-control"
                               rows={4}
                               defaultValue=""
-                              name="about"
+                              name="About"
                               onChange={this.handleChange}
                             />
                           </div>
@@ -346,7 +337,7 @@ class AgencyRegister1 extends Component {
                           <span className="d-block">شعار الوكالة</span>
                         </div>
                         <div className="file-input-mask">
-                          <input type="file" id="upload-photo" name="uploadphoto" onChange={this.handlefiles} />
+                          <input type="file" id="upload-photo" name="AgencyLogo" onChange={this.handlelogo} />
                         </div>
                       </label>
                       <span className="text-muted small"> صيغة jpg,png,svg </span>
@@ -542,14 +533,18 @@ class AgencyRegister1 extends Component {
   }
 }
 
-const redux = 'agencyreg';
+AgencyRegister1.PropTypes = {
+  addInfo: PropTypes.func.isRequired,
+  setNotif: PropTypes.func.isRequired
+}
+const redux = 'AgencyRegistration';
 
 const mapStateToProps = state => ({
   agencyData: state.getIn([redux, 'agencyData'])
 });
 
 const mapDispatchToProps = dispatch => ({
-  agencyReg: bindActionCreators(agencyReg, dispatch),
+  addInfo: bindActionCreators(storeStep1Data, dispatch),
   setNotif: bindActionCreators(setNotif, dispatch)
 });
 const AgencyRegister1Mapped = connect(
