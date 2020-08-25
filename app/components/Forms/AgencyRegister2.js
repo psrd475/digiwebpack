@@ -64,6 +64,12 @@ class AgencyRegister2 extends Component {
     }
   }
   render() {
+    let LicenseData = this.props.LicenseData;
+    console.log("LicenseData", LicenseData.toJS());
+
+    const agencyFFile = LicenseData.get('FFile').name;
+    const agencyLicenceFile = LicenseData.get('LicenceFile').name;
+    const agencyTFile = LicenseData.get('TFile').name;
     let ea = this.props.LicenseData.get('embassy_Available');
     let fa = this.props.LicenseData.get('FTAV_Available');
     let ta = this.props.LicenseData.get('TUTTA_Available');
@@ -153,6 +159,7 @@ class AgencyRegister2 extends Component {
                                   className="custom-control-input"
                                   required
                                   name="embassy_Available"
+                                  checked="0"
                                   value="0"
                                   onChange={this.handleChange}
                                 />
@@ -175,6 +182,7 @@ class AgencyRegister2 extends Component {
                               name="LicenceNo"
                               onChange={this.handleDataChange}
                               readOnly={!ea}
+                              value={LicenseData.get('LicenceNo')}
                             />
                           </div>
                         </div>
@@ -184,11 +192,17 @@ class AgencyRegister2 extends Component {
                               ملف الترخيص
                             </label>
                             <span className="form-control form-upload">
-                              <input type="file"
-                                name="LicenceFile"
-                                onChange={this.handleFiles}
-                                disabled={!ea}
-                              />
+
+                              {
+                                agencyLicenceFile ?
+                                  <label>{agencyLicenceFile}</label>
+                                  : <input type="file"
+                                    name="LicenceFile"
+                                    onChange={this.handleFiles}
+                                    disabled={!ea}
+                                  />
+                              }
+
                             </span>
                             <span className="text-muted small"> صيغة PDF </span>
                           </div>
@@ -205,6 +219,7 @@ class AgencyRegister2 extends Component {
                               name="LicenceCreateDate"
                               onChange={this.handleDataChange}
                               readOnly={!ea}
+                              value={LicenseData.get('LicenceCreateDate')}
                             />
                           </div>
                         </div>
@@ -219,6 +234,7 @@ class AgencyRegister2 extends Component {
                               name="LicenceExpiryDate"
                               onChange={this.handleDataChange}
                               readOnly={!ea}
+                              value={LicenseData.get('LicenceExpiryDate')}
                             />
                           </div>
                         </div>
@@ -285,6 +301,7 @@ class AgencyRegister2 extends Component {
                               name="FMembershipNo"
                               onChange={this.handleDataChange}
                               readOnly={!fa}
+                              value={LicenseData.get('FMembershipNo')}
                             />
                           </div>
                         </div>
@@ -294,12 +311,18 @@ class AgencyRegister2 extends Component {
                               ملف العضوية
                             </label>
                             <span className="form-control form-upload">
-                              <input
-                                type="file"
-                                name="FFile"
-                                onChange={this.handleFiles}
-                                disabled={!fa}
-                              />
+                              {
+                                agencyFFile ?
+                                  <label >{agencyFFile}</label>
+                                  :
+                                  <input
+                                    type="file"
+                                    name="FFile"
+                                    onChange={this.handleFiles}
+                                    disabled={!fa}
+
+                                  />
+                              }
                             </span>
                             <span className="text-muted small"> صيغة PDF </span>
                           </div>
@@ -317,6 +340,7 @@ class AgencyRegister2 extends Component {
                               name="FCreateDate"
                               onChange={this.handleDataChange}
                               readOnly={!fa}
+                              value={LicenseData.get('FCreateDate')}
                             />
                           </div>
                         </div>
@@ -331,6 +355,7 @@ class AgencyRegister2 extends Component {
                               name="FExpiryDate"
                               onChange={this.handleDataChange}
                               readOnly={!fa}
+                              value={LicenseData.get('FExpiryDate')}
                             />
                           </div>
                         </div>
@@ -400,6 +425,7 @@ class AgencyRegister2 extends Component {
                               name="TMembershipNo"
                               onChange={this.handleDataChange}
                               readOnly={!ta}
+                              value={LicenseData.get('TMembershipNo')}
                             />
                           </div>
                         </div>
@@ -409,12 +435,16 @@ class AgencyRegister2 extends Component {
                               ملف العضوية
                             </label>
                             <span className="form-control form-upload">
-                              <input
-                                type="file"
-                                name="TFile"
-                                onChange={this.handleFiles}
-                                disabled={!ta}
-                              />
+
+                              {agencyTFile ?
+                                <label>{agencyTFile}</label>
+                                : <input
+                                  type="file"
+                                  name="TFile"
+                                  onChange={this.handleFiles}
+                                  disabled={!ta}
+                                />
+                              }
                             </span>
                             <span className="text-muted small"> صيغة PDF </span>
                           </div>
@@ -432,6 +462,7 @@ class AgencyRegister2 extends Component {
                               name="TCreateDate"
                               onChange={this.handleDataChange}
                               readOnly={!ta}
+                              value={LicenseData.get('TCreateDate')}
                             />
                           </div>
                         </div>
@@ -445,6 +476,7 @@ class AgencyRegister2 extends Component {
                               name="TExpiryDate"
                               onChange={this.handleDataChange}
                               readOnly={!ta}
+                              value={LicenseData.get('TExpiryDate')}
                             />
                           </div>
                         </div>
@@ -480,7 +512,7 @@ class AgencyRegister2 extends Component {
   }
 }
 
-AgencyRegister2.PropTypes = {
+AgencyRegister2.propTypes = {
   addInfo: PropTypes.func.isRequired,
 }
 const redux = 'AgencyRegistration';
