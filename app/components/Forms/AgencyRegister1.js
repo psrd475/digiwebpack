@@ -405,10 +405,10 @@ class AgencyRegister1 extends Component {
                 <div className="btn-group mt-5">
                   <a href="login.html" className="btn btn-default px-0">
                     الغاء التسجيل
-          </a>
+                  </a>
                   <div>
                     <Link
-                      // to=""
+                      to="#"
                       onClick={this.props.goNext}
                       className="btn btn-primary ml-3"
                     >

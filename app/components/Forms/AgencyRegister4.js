@@ -625,12 +625,14 @@ class AgencyRegister4 extends Component {
                   </a>
                   <div>
                     <Link
+                      to="#"
                       className="btn btn-outline-primary ml-3"
                       onClick={this.props.goPrevious}
                     >
                       السابق
                     </Link>
                     <Link
+                      to="#"
                       // onClick={this.props.}
                       className="btn btn-primary ml-3"
                     >

@@ -11,28 +11,6 @@ class LandingHeader extends Component {
     $('.dropdown-menu .form-group').click(function (e) {
       e.stopPropagation();
     });
-
-    // var lan = document.querySelector('.toggle-lang');
-    // if (typeof (lan) != 'undefined' && lan != null) {
-    //   lan.onchange = function () {
-    //     var tag = document.querySelector('html');
-    //     var tagdir = tag.dir;
-    //     tagdir == 'ltr' ? tag.setAttribute('dir', 'rtl') : tag.setAttribute('dir', 'ltr');
-    //   }
-    // }
-    // // Toggle mobile menu
-    // var nav = document.querySelector('.navbar-toggle');
-    // if (typeof (nav) != 'undefined' && nav != null) {
-    //   nav.onclick = function () {
-    //     var tabbody = document.querySelector('body');
-    //     if (tabbody.classList.contains('nav-open')) {
-    //       tabbody.classList.remove('nav-open');
-    //     } else {
-    //       tabbody.classList.add('nav-open');
-    //     }
-    //     // consol.log('working');
-    //   }
-    // }
   }
   render() {
     return (

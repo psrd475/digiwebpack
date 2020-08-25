@@ -10,7 +10,6 @@ class App extends React.Component {
       <Fragment>
         <LandingHeader />
         <Switch>
-
           <Route exact path="/" component={Landing} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/agency-register" component={AgencyRegister} />

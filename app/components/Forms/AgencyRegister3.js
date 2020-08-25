@@ -298,6 +298,7 @@ class AgencyRegister3 extends Component {
           </a>
                   <div>
                     <Link
+                      to="#"
                       // href="Agency_Registeration_2.html"
                       onClick={this.props.goPrevious}
                       className="btn btn-outline-primary ml-3"
@@ -305,6 +306,7 @@ class AgencyRegister3 extends Component {
                       السابق
                     </Link>
                     <Link
+                      to="#"
                       // href="Agency_Registeration_4.html"
                       onClick={this.props.goNext}
                       className="btn btn-primary ml-3"
