@@ -6,17 +6,9 @@ import { LandingHeader, UmrahSearch, Features, ProgramBlock, Newsletter, Footer 
 import { setNotif } from 'Actions/NotifActions';
 
 class Landing extends React.Component {
-  componentDidMount() {
-    this.props.setNotif({
-      message: 'Enjoy react with webpack created by @svikrant406',
-      variant: 'success'
-    });
-  }
-
   render() {
     return (
       <div className="wrapper">
-
         <UmrahSearch />
         <Features />
         <section className="program-block mb-3 mb-lg-5">

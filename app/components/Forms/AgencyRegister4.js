@@ -720,7 +720,8 @@ class AgencyRegister4 extends Component {
                     الغاء التسجيل
                   </a>
                   <div>
-                    <Link to="#"
+                    <Link
+                      to="#"
                       className="btn btn-outline-primary ml-3"
                       onClick={this.props.goPrevious}
                     >
