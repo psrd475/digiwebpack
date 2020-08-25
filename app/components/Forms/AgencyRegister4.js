@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 // import { } from 'Actions/AgencyRegAction';
 import { lib } from 'crypto-js';
+import { postData } from 'Helpers/request';
 
 class AgencyRegister4 extends Component {
   constructor(props) {
@@ -76,12 +77,22 @@ class AgencyRegister4 extends Component {
       TUTTA_membership_file: LicenseData.get('TFile'),
       TUTTA_membership_date: LicenseData.get('TCreateDate'),
       TUTTA_membership_expiry_date: LicenseData.get('TExpiryDate'),
-      // OwnerList: agencyData.get('OwnerList'),
-      // Branch: contactData.get('Branch'),
+      agency_owners: agencyData.get('OwnerList').toJS(),
+      agency_braches: contactData.get('Branch').toJS(),
     }
     console.log("data", data)
-
-  }
+    postData(`${API_URL}/agency/registration`, data)
+      .then((res) => {
+        if (res.status === 1) {
+          window.location.reload();
+        } else {
+          console.log(error);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
   render() {
     const { agencyData, contactData, LicenseData } = this.props;
     console.log(agencyData.toJS())

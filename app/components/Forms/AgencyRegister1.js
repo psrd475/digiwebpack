@@ -114,8 +114,8 @@ class AgencyRegister1 extends Component {
       reader.onload = function (e) {
         $('#preview')
           .attr('src', e.target.result)
-          .width(120)
-          .height(120);
+          .width(100)
+          .height(100);
       };
 
       reader.readAsDataURL(e.target.files[0]);

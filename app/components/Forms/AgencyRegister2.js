@@ -142,11 +142,12 @@ class AgencyRegister2 extends Component {
                                   id="yes1"
                                   type="radio"
                                   className="custom-control-input"
-                                  defaultChecked
+                                  //defaultChecked
                                   required
                                   name="embassy_Available"
                                   value="1"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('embassy_Available') == true ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="yes1">
                                   نعم
@@ -159,9 +160,9 @@ class AgencyRegister2 extends Component {
                                   className="custom-control-input"
                                   required
                                   name="embassy_Available"
-                                  checked="0"
                                   value="0"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('embassy_Available') == false ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="no1">
                                   لا
@@ -260,11 +261,11 @@ class AgencyRegister2 extends Component {
                                   // name="aa2"
                                   type="radio"
                                   className="custom-control-input"
-                                  defaultChecked
                                   required
                                   name="FTAV_Available"
                                   value="1"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('FTAV_Available') == true ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="yes2">
                                   نعم
@@ -280,6 +281,7 @@ class AgencyRegister2 extends Component {
                                   name="FTAV_Available"
                                   value="0"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('FTAV_Available') == false ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="no2">
                                   لا
@@ -389,6 +391,7 @@ class AgencyRegister2 extends Component {
                                   name="TUTTA_Available"
                                   value="1"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('TUTTA_Available') == true ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="yes3">
                                   نعم
@@ -404,6 +407,7 @@ class AgencyRegister2 extends Component {
                                   name="TUTTA_Available"
                                   value="0"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('TUTTA_Available') == false ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="no3">
                                   لا
