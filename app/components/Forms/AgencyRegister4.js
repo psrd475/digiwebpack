@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { } from 'Actions/AgencyRegAction';
+// import { } from 'Actions/AgencyRegAction';
 import { lib } from 'crypto-js';
+import { postData } from 'Helpers/request';
 
 class AgencyRegister4 extends Component {
   constructor(props) {
@@ -40,11 +41,67 @@ class AgencyRegister4 extends Component {
       }
     }
   }
+
+
+  handleSubmit = (e) => {
+    console.log("click")
+    e.preventDefault();
+    const { agencyData, contactData, LicenseData } = this.props;
+    const data = {
+      agency_name: agencyData.get('Name'),
+      email: contactData.get('Email'),
+      agency_logo: agencyData.get('AgencyLogo'),
+      phone_number: contactData.get('MobileNo'),
+      telephone_number: contactData.get('TelNo'),
+      fax_number: contactData.get('FaxNo'),
+      category: agencyData.get('Classification'),
+      country: agencyData.get('Country'),
+      website: agencyData.get('Website'),
+      agency_description: agencyData.get('About'),
+      commercial_registration_no: agencyData.get('RegisterNo'),
+      commercial_registration_file: agencyData.get('RegistryFile'),
+      commercial_registration_date: agencyData.get('CreateDate'),
+      commercial_registration_expiry_date: agencyData.get('ExpiryDate'),
+      embassy_licensed: LicenseData.get('embassy_Available'),
+      embassy_license_no: LicenseData.get('LicenceNo'),
+      embassy_license_file: LicenseData.get('LicenceFile'),
+      embassy_license_date: LicenseData.get('LicenceCreateDate'),
+      embassy_license_expiry_date: LicenseData.get('LicenceExpiryDate'),
+      FTAV_registration: LicenseData.get('FTAV_Available'),
+      FTAV_membership_no: LicenseData.get('FMembershipNo'),
+      FTAV_membership_file: LicenseData.get('FFile'),
+      FTAV_membership_date: LicenseData.get('FCreateDate'),
+      FTAV_membership_expiry_date: LicenseData.get('FExpiryDate'),
+      TUTTA_registration: LicenseData.get('TUTTA_Available'),
+      TUTTA_membership_no: LicenseData.get('TMembershipNo'),
+      TUTTA_membership_file: LicenseData.get('TFile'),
+      TUTTA_membership_date: LicenseData.get('TCreateDate'),
+      TUTTA_membership_expiry_date: LicenseData.get('TExpiryDate'),
+      agency_owners: agencyData.get('OwnerList').toJS(),
+      agency_braches: contactData.get('Branch').toJS(),
+    }
+    console.log("data", data)
+    postData(`${API_URL}/agency/registration`, data)
+      .then((res) => {
+        if (res.status === 1) {
+          window.location.reload();
+        } else {
+          console.log(error);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
   render() {
     const { agencyData, contactData, LicenseData } = this.props;
     console.log(agencyData.toJS())
     console.log(contactData.toJS())
     console.log(LicenseData.toJS())
+    const regFile = agencyData.get('RegistryFile').name;
+    const agencyLicenceFile = LicenseData.get('LicenceFile').name;
+    const agencyFFile = LicenseData.get('FFile').name;
+    const agencyTFile = LicenseData.get('TFile').name;
     const addOwnerData = agencyData.get('OwnerList');
     const ownerData = addOwnerData.map((item, index) => {
       return (
@@ -56,14 +113,15 @@ class AgencyRegister4 extends Component {
     })
     const Brance = contactData.get('Branch')
     const renderBrance = Brance.map((item, index) => {
-      <tr key={index}>
-        <td>{item.branchName}</td>
-        <td>{item.city}</td>
-        <td>{item.street}</td>
-        <td>{item.buildingNo}</td>
-        <td>{item.longitude}, {item.latitude}</td>
-        <td>{item.cellNo} </td>
-      </tr>
+      return (
+        <tr key={index}>
+          <td>{item.branchName}</td>
+          <td>{item.city}</td>
+          <td>{item.street}</td>
+          <td>{item.buildingNo}</td>
+          <td>{item.longitude}, {item.latitude}</td>
+          <td>{item.cellNo} </td>
+        </tr>)
     })
     return (
       <Fragment>
@@ -198,13 +256,18 @@ class AgencyRegister4 extends Component {
                             <label className="d-block col-form-label">
                               ارفاق ملف السجل التجاري
                             </label>
-                            <a
+                            {/* <a
                               className="underline p-1 d-inline-block"
                               href="#downloadfile"
                             >
-                              {agencyData.get('RegistryFile')}
+                              {/* {agencyData.get('RegistryFile')} *
                               شركة ام القرى للحج والعمرة.pdf
-                            </a>
+                            </a> */}
+                            {regFile ?
+                              <label>{regFile}</label>
+                              :
+                              ''
+                            }
                           </div>
                         </div>
                       </div>
@@ -306,13 +369,18 @@ class AgencyRegister4 extends Component {
                             <label className="d-block col-form-label">
                               ملف الترخيص
                             </label>
-                            <a
+                            {/* <a
                               className="underline p-1 d-inline-block"
                               href="#downloadfile"
-                            >
-                              {/* {LicenseData.get('LicenceFile')} */}
-
-                            </a>
+                            > */}
+                            {
+                              agencyLicenceFile ?
+                                <label className="underline p-1 d-inline-block" >{agencyLicenceFile}</label>
+                                :
+                                ''
+                            }
+                            {/* {LicenseData.get('LicenceFile')} */}
+                            {/* </a> */}
                           </div>
                         </div>
                       </div>
@@ -372,14 +440,20 @@ class AgencyRegister4 extends Component {
 
                               ملف العضوية
                             </label>
-                            <a
+                            {/* <a
                               className="underline p-1 d-inline-block"
                               href="#downloadfile"
 
-                            >
-                              {/* {LicenseData.get('FFile')} */}
+                            > */}
+                            {/* {LicenseData.get('FFile')} */}
+                            {/* </a> */}
+                            {
+                              agencyFFile ?
+                                <label className="underline p-1 d-inline-block">{agencyFFile}</label>
+                                :
+                                ' '
+                            }
 
-                            </a>
                           </div>
                         </div>
                       </div>
@@ -445,13 +519,18 @@ class AgencyRegister4 extends Component {
 
                               ملف العضوية
                             </label>
-                            <a
+                            {/* <a
                               className="underline p-1 d-inline-block"
                               href="#downloadfile"
                             >
-                              {/* {LicenseData.get('TFile')} */}
-
-                            </a>
+                              {/* {LicenseData.get('TFile')} *
+                            </a> */}
+                            {
+                              agencyTFile ?
+                                <label className="underline p-1 d-inline-block">{agencyTFile}</label>
+                                :
+                                ''
+                            }
                           </div>
                         </div>
                       </div>
@@ -459,7 +538,6 @@ class AgencyRegister4 extends Component {
                         <div className="col-md-6">
                           <div className="form-group ">
                             <label className="d-block col-form-label  ">
-
                               تاريخ انشاء العضوية
                     </label>
                             <input
@@ -497,7 +575,6 @@ class AgencyRegister4 extends Component {
                         <div className="col-md-6">
                           <div className="form-group ">
                             <label className="d-block col-form-label">
-
                               رقم الهاتف
                             </label>
                             <input
@@ -616,7 +693,9 @@ class AgencyRegister4 extends Component {
                       السابق
                     </Link>
                     <button
+                      type="submit"
                       className="btn btn-primary ml-3"
+                      onClick={this.handleSubmit}
                     >
                       تأكيد
                     </button>
@@ -626,7 +705,7 @@ class AgencyRegister4 extends Component {
             </div>
           </div>
         </div>
-      </Fragment>
+      </Fragment >
     )
   }
 }

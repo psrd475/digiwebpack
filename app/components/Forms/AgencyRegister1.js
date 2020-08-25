@@ -34,10 +34,10 @@ class AgencyRegister1 extends Component {
     });
     $(document).ready(function () {
       // for demo only  
-      $('.demo-trigger-1').one("click", function () {
-        $('.demo-1').hide();
-        $('.demo').show();
-      });
+      // $('.demo-trigger-1').one("click", function () {
+      //   $('.demo-1').hide();
+      //   $('.demo').show();
+      // });
     });
     // var lan = document.querySelector('.toggle-lang');
     // if (typeof (lan) != 'undefined' && lan != null) {
@@ -91,8 +91,22 @@ class AgencyRegister1 extends Component {
     // }
   }
   handlelogo = (e) => {
-    let agencyDataTemp = this.props.agencyData.set('AgencyLogo', e.target.files[0])
-    this.props.addInfo({ agencyData: agencyDataTemp });
+    if (e.target.files && e.target.files[0] && e.target.files[0].type.includes('image')) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        $('#preview')
+          .attr('src', e.target.result)
+          .width(120)
+          .height(120);
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
+      // let agencyDataTemp = this.props.agencyData.set('RegistryFile', e.target.files[0])
+      // this.props.addInfo({ agencyData: agencyDataTemp });
+
+      let agencyDataTemp = this.props.agencyData.set('AgencyLogo', e.target.files[0])
+      this.props.addInfo({ agencyData: agencyDataTemp });
+    }
   }
   handlefiles = (e) => {
     if (e.target.files && e.target.files[0] && e.target.files[0].type.includes('pdf')) {
@@ -100,8 +114,8 @@ class AgencyRegister1 extends Component {
       reader.onload = function (e) {
         $('#preview')
           .attr('src', e.target.result)
-          .width(120)
-          .height(120);
+          .width(100)
+          .height(100);
       };
 
       reader.readAsDataURL(e.target.files[0]);
@@ -113,11 +127,18 @@ class AgencyRegister1 extends Component {
 
     let agency = this.props.agencyData;
     console.log("agency", agency.toJS());
+    const regFile = agency.get('RegistryFile').name;
+
+    const agencyLogo = agency.get('AgencyLogo').name;
+
+    const ownerList = agency.get('OwnerList').size;
+
     const countryname = countrydetails.map((item, index) => {
       return (
         <option key={index} value={item.name}>{item.name}</option>
       )
     })
+
     const agencyData = this.props.agencyData.get('OwnerList');
     const ownerData = agencyData.map((item, key) => {
       return (
@@ -188,7 +209,7 @@ class AgencyRegister1 extends Component {
                         <span className="wizard-tabs-number">3</span>
                         <span className="wizard-tabs-title">
                           بيانات التواصل والفروع
-                </span>
+                        </span>
                       </div>
                     </li>
                     <li className="nav-item ">
@@ -215,6 +236,7 @@ class AgencyRegister1 extends Component {
                               className="form-control"
                               name="Name"
                               onChange={this.handleChange}
+                              value={this.props.agencyData.get('Name')}
                             />
                           </div>
                         </div>
@@ -226,6 +248,7 @@ class AgencyRegister1 extends Component {
                               name="Country"
                               className="form-control"
                               onChange={this.handleChange}
+                              value={this.props.agencyData.get('Country')}
                             >
                               <option value=" "> Choose the Country  </option>
                               {countryname}
@@ -239,7 +262,7 @@ class AgencyRegister1 extends Component {
                             <label className="d-block col-form-label">
                               تصنيف الوكالة
                             </label>
-                            <select className="form-control" name="Classification" onChange={this.handleChange}>
+                            <select className="form-control" name="Classification" onChange={this.handleChange} value={this.props.agencyData.get('Classification')}>
                               <option value=" "> Choose the Agency Classification  </option>
                               <option value="Travel and tourism company">شركة للسياحة والسفر</option>
                               <option value="Transportation and delivery company">شركة نقل وتوصيل</option>
@@ -258,6 +281,7 @@ class AgencyRegister1 extends Component {
                               placeholder="www.example.com"
                               name="Website"
                               onChange={this.handleChange}
+                              value={this.props.agencyData.get('Website')}
                             />
                           </div>
                         </div>
@@ -273,6 +297,7 @@ class AgencyRegister1 extends Component {
                               className="form-control"
                               name="RegisterNo"
                               onChange={this.handleChange}
+                              value={this.props.agencyData.get('RegisterNo')}
                             />
                           </div>
                         </div>
@@ -282,7 +307,13 @@ class AgencyRegister1 extends Component {
                               إرفاق ملف السجل التجاري
                             </label>
                             <span className="form-control form-upload">
-                              <input type="file" name="RegistryFile" onChange={this.handlefiles} />
+                              {
+                                regFile ?
+                                  <label >{regFile}</label>
+                                  :
+                                  <input type="file" name="RegistryFile" onChange={this.handlefiles}
+                                  />
+                              }
                             </span>
                             <span className="text-muted small"> صيغة PDF </span>
                           </div>
@@ -295,7 +326,9 @@ class AgencyRegister1 extends Component {
                               تاريخ انشاء السجل التجاري
                             </label>
                             <input type="date" className="form-control" name="CreateDate"
-                              onChange={this.handleChange} />
+                              onChange={this.handleChange}
+                              value={agency.get('CreateDate')}
+                            />
                           </div>
                         </div>
                         <div className="col-md-6">
@@ -303,7 +336,9 @@ class AgencyRegister1 extends Component {
                             <label className="d-block col-form-label  ">
                               تاريخ انتهاء السجل التجاري
                             </label>
-                            <input type="date" className="form-control" name="ExpiryDate" onChange={this.handleChange} />
+                            <input type="date" className="form-control" name="ExpiryDate" onChange={this.handleChange}
+                              value={agency.get('ExpiryDate')}
+                            />
                           </div>
                         </div>
                       </div>
@@ -316,9 +351,10 @@ class AgencyRegister1 extends Component {
                             <textarea
                               className="form-control"
                               rows={4}
-                              defaultValue=""
+                              // defaultValue=""
                               name="About"
                               onChange={this.handleChange}
+                              value={agency.get('About')}
                             />
                           </div>
                         </div>
@@ -336,8 +372,17 @@ class AgencyRegister1 extends Component {
                           <span className="d-block">رفع صورة </span>
                           <span className="d-block">شعار الوكالة</span>
                         </div>
+
                         <div className="file-input-mask">
-                          <input type="file" id="upload-photo" name="AgencyLogo" onChange={this.handlelogo} />
+                          {
+                            agencyLogo ?
+                              <img id="preview" src={agencyLogo} alt="" style={{ cursor: 'pointer', minWidth: 120, minHeight: 120 }} />
+                              :
+                              <input type="file" id="upload-photo" name="AgencyLogo" onChange={this.handlelogo} />
+                          }
+                          {/* <input type="file" id="upload-photo" name="AgencyLogo" onChange={this.handlelogo} /> */}
+
+                          {/* //style={{ cursor: 'pointer', minWidth: 200, minHeight: 200 }} */}
                         </div>
                       </label>
                       <span className="text-muted small"> صيغة jpg,png,svg </span>
@@ -346,7 +391,8 @@ class AgencyRegister1 extends Component {
                 </section>
                 <hr className="my-5" />
                 <section>
-                  <div className="d-flex justify-content-between align-items-center my-4">
+                  <div className="d-flex justify-content-between align-items-center my-4" >
+
                     <h3 className="text-primary m-0">
                       بيانات مالك / ملاك وكالة السفر
                     </h3>
@@ -360,7 +406,7 @@ class AgencyRegister1 extends Component {
                       اضافة مالك
                     </a>
                   </div>
-                  <div className="demo-1 align-items-center bg-light border  display-4 flex-column justify-content-center mb-5 p-5 round text-center text-muted">
+                  <div className="demo-1 align-items-center bg-light border  display-4 flex-column justify-content-center mb-5 p-5 round text-center text-muted" style={{ display: ownerList !== 0 && 'none' }}>
                     <i className="fal fa-fw fa-4x text-muted fa-users mb-4" />
                     <p className="text-muted m-0">
                       لا يوجد ملاك حاليا ...
@@ -371,10 +417,10 @@ class AgencyRegister1 extends Component {
                         data-target="#addbranch"
                       >
                         اضافة مالك جديد ؟
-              </a>
+                      </a>
                     </p>
                   </div>
-                  <div className="demo" style={{ display: "none" }}>
+                  <div className="demo" style={{ display: ownerList == 0 && 'none' }}>
                     <div className="table-responsive">
                       <table className="table table-striped">
                         <thead>
@@ -396,7 +442,7 @@ class AgencyRegister1 extends Component {
                 <div className="btn-group mt-5">
                   <a href="login.html" className="btn btn-default px-0">
                     الغاء التسجيل
-          </a>
+                  </a>
                   <div>
                     <Link
                       // to=""
@@ -443,7 +489,7 @@ class AgencyRegister1 extends Component {
                     <div className="col-md-6">
                       <div className="form-group ">
                         <label className="d-block col-form-label"> اسم المالك </label>
-                        <input type="text" className="form-control" name="ownersname" onChange={this.handleOwner} />
+                        <input type="text" className="form-control" name="ownersname" onChange={this.handleOwner} value={agencyData.get('ownersname')} />
                       </div>
                     </div>
                   </div>
@@ -533,7 +579,7 @@ class AgencyRegister1 extends Component {
   }
 }
 
-AgencyRegister1.PropTypes = {
+AgencyRegister1.propTypes = {
   addInfo: PropTypes.func.isRequired,
   setNotif: PropTypes.func.isRequired
 }

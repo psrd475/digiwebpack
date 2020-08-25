@@ -24,10 +24,10 @@ class AgencyRegister3 extends Component {
     });
     $(document).ready(function () {
       // for demo only  
-      $('.demo-trigger-1').one("click", function () {
-        $('.demo-1').hide();
-        $('.demo').show();
-      });
+      // $('.demo-trigger-1').one("click", function () {
+      //   $('.demo-1').hide();
+      //   $('.demo').show();
+      // });
     });
     // switch language for demo
     var lan = document.querySelector('.toggle-lang');
@@ -73,8 +73,11 @@ class AgencyRegister3 extends Component {
     this.props.addInfo({ contactData: temp });
   }
   render() {
+    let contactData = this.props.contactData;
+    console.log("contactData", contactData.toJS());
+
+    const branchList = contactData.get('Branch').size;
     const { branchName, city, street, buildingNo, longitude, latitude, cellNo } = this.state
-    console.log("contactData", this.props.contactData.toJS());
     const Branch = this.props.contactData.get('Branch');
     const branchData = Branch.map((item, index) => {
       return (
@@ -177,7 +180,9 @@ class AgencyRegister3 extends Component {
                               type="number"
                               className="form-control form-mobile"
                               name="TelNo"
-                              onChange={this.handleChange} />
+                              onChange={this.handleChange}
+                              value={contactData.get('TelNo')}
+                            />
                           </div>
                         </div>
                         <div className="col-md-6">
@@ -189,7 +194,9 @@ class AgencyRegister3 extends Component {
                               type="number"
                               className="form-control"
                               name="MobileNo"
-                              onChange={this.handleChange} />
+                              onChange={this.handleChange}
+                              value={contactData.get('MobileNo')}
+                            />
                           </div>
                         </div>
                       </div>
@@ -203,7 +210,9 @@ class AgencyRegister3 extends Component {
                               type="number"
                               className="form-control"
                               name="FaxNo"
-                              onChange={this.handleChange} />
+                              onChange={this.handleChange}
+                              value={contactData.get('FaxNo')}
+                            />
                           </div>
                         </div>
                         <div className="col-md-6">
@@ -215,7 +224,9 @@ class AgencyRegister3 extends Component {
                               type="email"
                               className="form-control"
                               name="Email"
-                              onChange={this.handleChange} />
+                              onChange={this.handleChange}
+                              value={contactData.get('Email')}
+                            />
                           </div>
                         </div>
                       </div>
@@ -235,7 +246,7 @@ class AgencyRegister3 extends Component {
                       اضافة فرع
                     </a>
                   </div>
-                  <div className="demo-1 align-items-center bg-light border  display-4 flex-column justify-content-center mb-5 p-5 round text-center text-muted">
+                  <div className="demo-1 align-items-center bg-light border  display-4 flex-column justify-content-center mb-5 p-5 round text-center text-muted" style={{ display: branchList !== 0 && 'none' }}>
                     <i className="fal fa-fw fa-3x text-muted fa-building mb-4" />
                     <p className="text-muted m-0">
                       ليس لديك فروع حاليا ...
@@ -250,7 +261,7 @@ class AgencyRegister3 extends Component {
                       </a>
                     </p>
                   </div>
-                  <div className="demo" style={{ display: "none" }}>
+                  <div className="demo" style={{ display: branchList == 0 && 'none' }}>
                     <div className="table-responsive">
                       <table className="table table-striped">
                         <thead>
@@ -488,7 +499,7 @@ class AgencyRegister3 extends Component {
   }
 }
 
-AgencyRegister3.PropTypes = {
+AgencyRegister3.propTypes = {
   addInfo: PropTypes.func.isRequired,
 }
 const redux = 'AgencyRegistration';
