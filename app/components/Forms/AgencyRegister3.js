@@ -8,13 +8,13 @@ class AgencyRegister3 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      branchName: '',
+      branch_name: '',
       city: '',
       street: '',
       buildingNo: '',
-      longitude: '',
+      longtitude: '',
       latitude: '',
-      cellNo: '',
+      phone_number: '',
     }
   }
   componentDidMount() {
@@ -65,8 +65,8 @@ class AgencyRegister3 extends Component {
     this.props.addInfo({ contactData: temp });
   }
   handleBranchSubmit = (e) => {
-    const { branchName, city, street, buildingNo, longitude, latitude, cellNo } = this.state
-    let addbranch = this.props.contactData.get('Branch').push({ branchName, city, street, buildingNo, longitude, latitude, cellNo });
+    const { branch_name, city, street, buildingNo, longtitude, latitude, phone_number } = this.state
+    let addbranch = this.props.contactData.get('Branch').push({ branch_name, city, street, buildingNo, longtitude, latitude, phone_number });
     console.log(addbranch.toJS());
     let temp = this.props.contactData.set('Branch', addbranch);
     console.log(temp.toJS())
@@ -77,17 +77,17 @@ class AgencyRegister3 extends Component {
     console.log("contactData", contactData.toJS());
 
     const branchList = contactData.get('Branch').size;
-    const { branchName, city, street, buildingNo, longitude, latitude, cellNo } = this.state
+    const { branch_name, city, street, buildingNo, longtitude, latitude, phone_number } = this.state
     const Branch = this.props.contactData.get('Branch');
     const branchData = Branch.map((item, index) => {
       return (
         <tr key={index}>
-          <td>{item.branchName}</td>
+          <td>{item.branch_name}</td>
           <td>{item.city}</td>
           <td>{item.street}</td>
           <td>{item.buildingNo}</td>
-          <td>{item.longitude}, {item.latitude} </td>
-          <td>{item.cellNo} </td>
+          <td>{item.longtitude}, {item.latitude} </td>
+          <td>{item.phone_number} </td>
           <td>
             <a
               href="#"
@@ -352,7 +352,7 @@ class AgencyRegister3 extends Component {
                         <input
                           type="text"
                           className="form-control"
-                          name="branchName"
+                          name="branch_name"
                           onChange={this.handleBranch} />
                       </div>
                     </div>
@@ -401,8 +401,8 @@ class AgencyRegister3 extends Component {
                           <input
                             type="text"
                             className="form-control"
-                            placeholder="longitude"
-                            name="longitude"
+                            placeholder="longtitude"
+                            name="longtitude"
                             onChange={this.handleBranch}
                           />
                           <input
@@ -421,7 +421,7 @@ class AgencyRegister3 extends Component {
                         <input
                           type="text"
                           className="form-control"
-                          name="cellNo"
+                          name="phone_number"
                           onChange={this.handleBranch} />
                       </div>
                     </div>

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 // import { } from 'Actions/AgencyRegAction';
 import { lib } from 'crypto-js';
-import { postData } from 'Helpers/request';
+import { postFormData } from 'Helpers/request';
 
 class AgencyRegister4 extends Component {
   constructor(props) {
@@ -47,44 +47,78 @@ class AgencyRegister4 extends Component {
     console.log("click")
     e.preventDefault();
     const { agencyData, contactData, LicenseData } = this.props;
-    const data = {
-      agency_name: agencyData.get('Name'),
-      email: contactData.get('Email'),
-      agency_logo: agencyData.get('AgencyLogo'),
-      phone_number: contactData.get('MobileNo'),
-      telephone_number: contactData.get('TelNo'),
-      fax_number: contactData.get('FaxNo'),
-      category: agencyData.get('Classification'),
-      country: agencyData.get('Country'),
-      website: agencyData.get('Website'),
-      agency_description: agencyData.get('About'),
-      commercial_registration_no: agencyData.get('RegisterNo'),
-      commercial_registration_file: agencyData.get('RegistryFile'),
-      commercial_registration_date: agencyData.get('CreateDate'),
-      commercial_registration_expiry_date: agencyData.get('ExpiryDate'),
-      embassy_licensed: LicenseData.get('embassy_Available'),
-      embassy_license_no: LicenseData.get('LicenceNo'),
-      embassy_license_file: LicenseData.get('LicenceFile'),
-      embassy_license_date: LicenseData.get('LicenceCreateDate'),
-      embassy_license_expiry_date: LicenseData.get('LicenceExpiryDate'),
-      FTAV_registration: LicenseData.get('FTAV_Available'),
-      FTAV_membership_no: LicenseData.get('FMembershipNo'),
-      FTAV_membership_file: LicenseData.get('FFile'),
-      FTAV_membership_date: LicenseData.get('FCreateDate'),
-      FTAV_membership_expiry_date: LicenseData.get('FExpiryDate'),
-      TUTTA_registration: LicenseData.get('TUTTA_Available'),
-      TUTTA_membership_no: LicenseData.get('TMembershipNo'),
-      TUTTA_membership_file: LicenseData.get('TFile'),
-      TUTTA_membership_date: LicenseData.get('TCreateDate'),
-      TUTTA_membership_expiry_date: LicenseData.get('TExpiryDate'),
-      agency_owners: agencyData.get('OwnerList').toJS(),
-      agency_braches: contactData.get('Branch').toJS(),
+    var data = new FormData();
+    const OwnerList = agencyData.get('OwnerList').toJS();
+    const Branch = contactData.get('Branch').toJS();
+    console.log(OwnerList)
+    console.log(Branch)
+    data.append("agency_name", agencyData.get('Name'))
+    data.append("email", contactData.get('Email'))
+    data.append("agency_logo", agencyData.get('AgencyLogo'))
+    data.append("phone_number", contactData.get('MobileNo'))
+    data.append("telephone_number", contactData.get('TelNo'))
+    data.append("fax_number", contactData.get('FaxNo'))
+    data.append("category", agencyData.get('Classification'))
+    data.append("country", agencyData.get('Country'))
+    data.append("website", agencyData.get('Website'))
+    data.append("agency_description", agencyData.get('About'))
+    data.append("commercial_registration_no", agencyData.get('RegisterNo'))
+    data.append("commercial_registration_file", agencyData.get('RegistryFile'))
+    data.append("commercial_registration_date", agencyData.get('CreateDate'))
+    data.append("commercial_registration_expiry_date", agencyData.get('ExpiryDate'))
+    data.append("embassy_licensed", LicenseData.get('embassy_Available'))
+    data.append("FTAV_registration", LicenseData.get('FTAV_Available'))
+    data.append("TUTTA_registration", LicenseData.get('TUTTA_Available'))
+    data.append("agency_owners", JSON.stringify(OwnerList))
+    data.append("agency_braches", JSON.stringify(Branch))
+
+    if (LicenseData.get('embassy_Available')) {
+      data.append("embassy_license_no", LicenseData.get('LicenceNo'))
+      data.append("embassy_license_file", LicenseData.get('LicenceFile'))
+      data.append("embassy_license_date", LicenseData.get('LicenceCreateDate'))
+      data.append("embassy_license_expiry_date", LicenseData.get('LicenceExpiryDate'))
     }
-    console.log("data", data)
-    postData(`${API_URL}/agency/registration`, data)
+    else {
+      data.append("embassy_license_no", null)
+      data.append("embassy_license_file", null)
+      data.append("embassy_license_date", null)
+      data.append("embassy_license_expiry_date", null)
+    }
+
+    if (LicenseData.get('FTAV_Available')) {
+      data.append("FTAV_membership_no", LicenseData.get('FMembershipNo'))
+      data.append("FTAV_membership_file", LicenseData.get('FFile'))
+      data.append("FTAV_membership_date", LicenseData.get('FCreateDate'))
+      data.append("FTAV_membership_expiry_date", LicenseData.get('FExpiryDate'))
+    }
+
+    else {
+      data.append("FTAV_membership_no", null)
+      data.append("FTAV_membership_file", null)
+      data.append("FTAV_membership_date", null)
+      data.append("FTAV_membership_expiry_date", null)
+    }
+    if (LicenseData.get('TUTTA_Available')) {
+      data.append("TUTTA_membership_no", LicenseData.get('TMembershipNo'))
+      data.append("TUTTA_membership_file", LicenseData.get('TFile'))
+      data.append("TUTTA_membership_date", LicenseData.get('TCreateDate'))
+      data.append("TUTTA_membership_expiry_date", LicenseData.get('TExpiryDate'))
+    }
+    else {
+      data.append("TUTTA_membership_no", null)
+      data.append("TUTTA_membership_file", null)
+      data.append("TUTTA_membership_date", null)
+      data.append("TUTTA_membership_expiry_date", null)
+
+    }
+
+    for (var value of data.values()) {
+      console.log(value);
+    }
+    postFormData(`${API_URL}/agency/registration`, data)
       .then((res) => {
         if (res.status === 1) {
-          window.location.reload();
+          // window.location.reload();
         } else {
           console.log(error);
         }

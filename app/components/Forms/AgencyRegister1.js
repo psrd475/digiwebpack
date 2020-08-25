@@ -11,9 +11,9 @@ class AgencyRegister1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ownersname: '',
-      idnumber: '',
-      mobilenumber: '',
+      owner_name: '',
+      owner_id: '',
+      phone_number: '',
     }
   }
 
@@ -68,15 +68,15 @@ class AgencyRegister1 extends Component {
     })
   }
   handleOwnerSubmit = (e) => {
-    const { ownersname, idnumber, mobilenumber } = this.state
+    const { owner_name, owner_id, phone_number } = this.state
 
-    const addowner = this.props.agencyData.get('OwnerList').push({ ownersname, idnumber, mobilenumber });
+    const addowner = this.props.agencyData.get('OwnerList').push({ owner_name, owner_id, phone_number });
     let tem = this.props.agencyData;
     tem = tem.set('OwnerList', addowner);
 
     this.props.addInfo({ agencyData: tem });
 
-    this.setState({ ownersname: '', idnumber: '', mobilenumber: '' })
+    this.setState({ owner_name: '', owner_id: '', phone_number: '' })
   }
   handleChange = (e) => {
     // if (!/^[a-zA-Z]+$/.test(travelagencyname)) {
@@ -143,9 +143,9 @@ class AgencyRegister1 extends Component {
     const ownerData = agencyData.map((item, key) => {
       return (
         <tr key={key}>
-          <td>{item.ownersname}</td>
-          <td>{item.idnumber}</td>
-          <td>{item.mobilenumber}</td>
+          <td>{item.owner_name}</td>
+          <td>{item.owner_id}</td>
+          <td>{item.phone_number}</td>
           <td>
             <a
               href="#"
@@ -489,7 +489,7 @@ class AgencyRegister1 extends Component {
                     <div className="col-md-6">
                       <div className="form-group ">
                         <label className="d-block col-form-label"> اسم المالك </label>
-                        <input type="text" className="form-control" name="ownersname" onChange={this.handleOwner} value={agencyData.get('ownersname')} />
+                        <input type="text" className="form-control" name="owner_name" onChange={this.handleOwner} value={agencyData.get('owner_name')} />
                       </div>
                     </div>
                   </div>
@@ -497,13 +497,13 @@ class AgencyRegister1 extends Component {
                     <div className="col-md-6">
                       <div className="form-group ">
                         <label className="d-block col-form-label"> رقم الهوية </label>
-                        <input type="text" className="form-control" name="idnumber" onChange={this.handleOwner} />
+                        <input type="text" className="form-control" name="owner_id" onChange={this.handleOwner} />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="form-group ">
                         <label className="d-block col-form-label"> رقم الجوال </label>
-                        <input type="text" className="form-control" name="mobilenumber" onChange={this.handleOwner} />
+                        <input type="text" className="form-control" name="phone_number" onChange={this.handleOwner} />
                       </div>
                     </div>
                   </div>
@@ -552,7 +552,7 @@ class AgencyRegister1 extends Component {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <p className="bg-light font-weight-bold p-3"> {this.state.ownersname} </p>
+                  <p className="bg-light font-weight-bold p-3"> {this.state.owner_name} </p>
                 </div>
                 <div className="modal-footer">
                   <button

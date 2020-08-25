@@ -17,3 +17,11 @@ export async function getData(url) {
 
   return response.json();
 }
+export async function postFormData(url, data) {
+
+  const response = await fetch(url, {
+    method: 'POST',
+    body: data,
+  });
+  return await response.json();
+}
