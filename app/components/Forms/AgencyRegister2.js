@@ -2,9 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-import { agencyReg } from 'Actions/AgencyRegAction';
-
+import PropTypes from 'prop-types';
+import { storeStep2Data } from 'Actions/AgencyRegAction';
 class AgencyRegister2 extends Component {
   constructor(props) {
     super(props);
@@ -47,111 +46,33 @@ class AgencyRegister2 extends Component {
     }
   }
   handleChange = (e) => {
-    let agencyData = this.props.agencyData
     const { name, value } = e.target;
     const v = parseInt(value);
-
-    let agencyDat = agencyData.set(name, v == 0 ? false : true);
-    this.props.agencyReg({ agencyData: agencyDat });
+    let temp = this.props.LicenseData.set(name, v == 0 ? false : true);
+    this.props.addInfo({ LicenseData: temp });
   }
-  handleChangeE = (e) => {
-    let embassy = this.props.agencyData.get('embassy')
-    console.log("embassy", embassy);
-    let agencyData = this.props.agencyData
-    console.log("agencyData", agencyData);
+  handleDataChange = (e) => {
+    let LicenseData = this.props.LicenseData
     const { name, value } = e.target;
-
-    let agencyDataembassy = embassy.set(name, value)
-    let agencyDat = agencyData.set('embassy', agencyDataembassy);
-    this.props.agencyReg({ agencyData: agencyDat });
-  }
-  handleChangeFTAV = (e) => {
-    let ftav = this.props.agencyData.get('ftav')
-    console.log("ftav", ftav);
-    let agencyData = this.props.agencyData
-    console.log("agencyData", agencyData);
-    const { name, value } = e.target;
-
-    let agencyDataFTAV = ftav.set(name, value)
-    let agencyDat = agencyData.set('ftav', agencyDataFTAV);
-    this.props.agencyReg({ agencyData: agencyDat });
-  }
-  handleChangeT = (e) => {
-    let tutta = this.props.agencyData.get('tutta')
-    console.log("tutta", tutta);
-    let agencyData = this.props.agencyData
-    console.log("agencyData", agencyData);
-    const { name, value } = e.target;
-
-    let agencyDataT = tutta.set(name, value)
-    let agencyDat = agencyData.set('tutta', agencyDataT);
-    this.props.agencyReg({ agencyData: agencyDat });
+    let temp = LicenseData.set(name, value)
+    this.props.addInfo({ LicenseData: temp });
   }
   handleFiles = (e) => {
     if (e.target.files && e.target.files[0] && e.target.files[0].type.includes('pdf')) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        $('#preview')
-          .attr('src', e.target.result)
-          .width(120)
-          .height(120);
-      };
-
-      reader.readAsDataURL(e.target.files[0]);
-      let embassy = this.props.agencyData.get('embassy')
-      let agencyData = this.props.agencyData
-
-      let agencyDataembassy = embassy.set(e.target.name, e.target.files[0])
-      let agencyDat = agencyData.set('embassy', agencyDataembassy);
-      this.props.agencyReg({ agencyData: agencyDat });
-    }
-  }
-  handleFilesF = (e) => {
-    if (e.target.files && e.target.files[0] && e.target.files[0].type.includes('pdf')) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        $('#preview')
-          .attr('src', e.target.result)
-          .width(120)
-          .height(120);
-      };
-
-      reader.readAsDataURL(e.target.files[0]);
-      let ftav = this.props.agencyData.get('ftav')
-      let agencyData = this.props.agencyData
-
-      let agencyDataFTAV = ftav.set(e.target.name, e.target.files[0])
-      let agencyDat = agencyData.set('ftav', agencyDataFTAV);
-      this.props.agencyReg({ agencyData: agencyDat });
-    }
-  }
-  handleFilesT = (e) => {
-    if (e.target.files && e.target.files[0] && e.target.files[0].type.includes('pdf')) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        $('#preview')
-          .attr('src', e.target.result)
-          .width(120)
-          .height(120);
-      };
-
-      reader.readAsDataURL(e.target.files[0]);
-      let tutta = this.props.agencyData.get('tutta')
-      let agencyData = this.props.agencyData
-
-      let agencyDataT = tutta.set(e.target.name, e.target.files[0])
-      let agencyDat = agencyData.set('tutta', agencyDataT);
-      this.props.agencyReg({ agencyData: agencyDat });
+      let temp = this.props.LicenseData.set(e.target.name, e.target.files[0])
+      this.props.addInfo({ LicenseData: temp });
     }
   }
   render() {
-    let agency = this.props.agencyData;
-    console.log("agency", agency.toJS());
-    let ea = this.props.agencyData.get('embassyAvailable');
-    let fa = this.props.agencyData.get('ftavAvailable');
-    let ta = this.props.agencyData.get('tuttaAvailable');
-    // let eaj = ea.toJS();
-    console.log("ta", ta);
+    let LicenseData = this.props.LicenseData;
+    console.log("LicenseData", LicenseData.toJS());
+
+    const agencyFFile = LicenseData.get('FFile').name;
+    const agencyLicenceFile = LicenseData.get('LicenceFile').name;
+    const agencyTFile = LicenseData.get('TFile').name;
+    let ea = this.props.LicenseData.get('embassy_Available');
+    let fa = this.props.LicenseData.get('FTAV_Available');
+    let ta = this.props.LicenseData.get('TUTTA_Available');
     return (
       <Fragment>
         <div className="page-layout">
@@ -221,11 +142,12 @@ class AgencyRegister2 extends Component {
                                   id="yes1"
                                   type="radio"
                                   className="custom-control-input"
-                                  defaultChecked
+                                  //defaultChecked
                                   required
-                                  name="embassyAvailable"
+                                  name="embassy_Available"
                                   value="1"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('embassy_Available') == true ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="yes1">
                                   نعم
@@ -237,9 +159,10 @@ class AgencyRegister2 extends Component {
                                   type="radio"
                                   className="custom-control-input"
                                   required
-                                  name="embassyAvailable"
+                                  name="embassy_Available"
                                   value="0"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('embassy_Available') == false ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="no1">
                                   لا
@@ -257,9 +180,10 @@ class AgencyRegister2 extends Component {
                             </label>
                             <input type="text"
                               className="form-control"
-                              name="embassyLicenceno"
-                              onChange={this.handleChangeE}
+                              name="LicenceNo"
+                              onChange={this.handleDataChange}
                               readOnly={!ea}
+                              value={LicenseData.get('LicenceNo')}
                             />
                           </div>
                         </div>
@@ -269,11 +193,17 @@ class AgencyRegister2 extends Component {
                               ملف الترخيص
                             </label>
                             <span className="form-control form-upload">
-                              <input type="file"
-                                name="embassyLicenceFile"
-                                onChange={this.handleFiles}
-                                disabled={!ea}
-                              />
+
+                              {
+                                agencyLicenceFile ?
+                                  <label>{agencyLicenceFile}</label>
+                                  : <input type="file"
+                                    name="LicenceFile"
+                                    onChange={this.handleFiles}
+                                    disabled={!ea}
+                                  />
+                              }
+
                             </span>
                             <span className="text-muted small"> صيغة PDF </span>
                           </div>
@@ -287,9 +217,10 @@ class AgencyRegister2 extends Component {
                     </label>
                             <input type="date"
                               className="form-control"
-                              name="embassyLicenceCreateDate"
-                              onChange={this.handleChangeE}
+                              name="LicenceCreateDate"
+                              onChange={this.handleDataChange}
                               readOnly={!ea}
+                              value={LicenseData.get('LicenceCreateDate')}
                             />
                           </div>
                         </div>
@@ -301,9 +232,10 @@ class AgencyRegister2 extends Component {
                             <input
                               type="date"
                               className="form-control"
-                              name="embassyLicenceExpiryDate"
-                              onChange={this.handleChangeE}
+                              name="LicenceExpiryDate"
+                              onChange={this.handleDataChange}
                               readOnly={!ea}
+                              value={LicenseData.get('LicenceExpiryDate')}
                             />
                           </div>
                         </div>
@@ -329,11 +261,11 @@ class AgencyRegister2 extends Component {
                                   // name="aa2"
                                   type="radio"
                                   className="custom-control-input"
-                                  defaultChecked
                                   required
-                                  name="ftavAvailable"
+                                  name="FTAV_Available"
                                   value="1"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('FTAV_Available') == true ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="yes2">
                                   نعم
@@ -346,9 +278,10 @@ class AgencyRegister2 extends Component {
                                   type="radio"
                                   className="custom-control-input"
                                   required
-                                  name="ftavAvailable"
+                                  name="FTAV_Available"
                                   value="0"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('FTAV_Available') == false ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="no2">
                                   لا
@@ -367,9 +300,10 @@ class AgencyRegister2 extends Component {
                             <input
                               type="text"
                               className="form-control"
-                              name="ftavMembershipNo"
-                              onChange={this.handleChangeFTAV}
+                              name="FMembershipNo"
+                              onChange={this.handleDataChange}
                               readOnly={!fa}
+                              value={LicenseData.get('FMembershipNo')}
                             />
                           </div>
                         </div>
@@ -379,12 +313,18 @@ class AgencyRegister2 extends Component {
                               ملف العضوية
                             </label>
                             <span className="form-control form-upload">
-                              <input
-                                type="file"
-                                name="ftavFile"
-                                onChange={this.handleFilesF}
-                                disabled={!fa}
-                              />
+                              {
+                                agencyFFile ?
+                                  <label >{agencyFFile}</label>
+                                  :
+                                  <input
+                                    type="file"
+                                    name="FFile"
+                                    onChange={this.handleFiles}
+                                    disabled={!fa}
+
+                                  />
+                              }
                             </span>
                             <span className="text-muted small"> صيغة PDF </span>
                           </div>
@@ -399,9 +339,10 @@ class AgencyRegister2 extends Component {
                             <input
                               type="date"
                               className="form-control "
-                              name="ftavMembershipCreationDate"
-                              onChange={this.handleChangeFTAV}
+                              name="FCreateDate"
+                              onChange={this.handleDataChange}
                               readOnly={!fa}
+                              value={LicenseData.get('FCreateDate')}
                             />
                           </div>
                         </div>
@@ -413,9 +354,10 @@ class AgencyRegister2 extends Component {
                             <input
                               type="date"
                               className="form-control "
-                              name="ftavMembershipExpiryDate"
-                              onChange={this.handleChangeFTAV}
+                              name="FExpiryDate"
+                              onChange={this.handleDataChange}
                               readOnly={!fa}
+                              value={LicenseData.get('FExpiryDate')}
                             />
                           </div>
                         </div>
@@ -446,9 +388,10 @@ class AgencyRegister2 extends Component {
                                   className="custom-control-input"
                                   defaultChecked
                                   required
-                                  name="tuttaAvailable"
+                                  name="TUTTA_Available"
                                   value="1"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('TUTTA_Available') == true ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="yes3">
                                   نعم
@@ -461,9 +404,10 @@ class AgencyRegister2 extends Component {
                                   type="radio"
                                   className="custom-control-input"
                                   required
-                                  name="tuttaAvailable"
+                                  name="TUTTA_Available"
                                   value="0"
                                   onChange={this.handleChange}
+                                  defaultChecked={LicenseData.get('TUTTA_Available') == false ? "checked" : ''}
                                 />
                                 <label className="custom-control-label" htmlFor="no3">
                                   لا
@@ -482,9 +426,10 @@ class AgencyRegister2 extends Component {
                             <input
                               type="text"
                               className="form-control"
-                              name="tuttaMembreshipNo"
-                              onChange={this.handleChangeT}
+                              name="TMembershipNo"
+                              onChange={this.handleDataChange}
                               readOnly={!ta}
+                              value={LicenseData.get('TMembershipNo')}
                             />
                           </div>
                         </div>
@@ -494,12 +439,16 @@ class AgencyRegister2 extends Component {
                               ملف العضوية
                             </label>
                             <span className="form-control form-upload">
-                              <input
-                                type="file"
-                                name="tuttaMembreshipFile"
-                                onChange={this.handleFilesT}
-                                disabled={!ta}
-                              />
+
+                              {agencyTFile ?
+                                <label>{agencyTFile}</label>
+                                : <input
+                                  type="file"
+                                  name="TFile"
+                                  onChange={this.handleFiles}
+                                  disabled={!ta}
+                                />
+                              }
                             </span>
                             <span className="text-muted small"> صيغة PDF </span>
                           </div>
@@ -514,9 +463,10 @@ class AgencyRegister2 extends Component {
                             <input
                               type="date"
                               className="form-control"
-                              name="tuttaMembreshipCreationDate"
-                              onChange={this.handleChangeT}
+                              name="TCreateDate"
+                              onChange={this.handleDataChange}
                               readOnly={!ta}
+                              value={LicenseData.get('TCreateDate')}
                             />
                           </div>
                         </div>
@@ -527,9 +477,10 @@ class AgencyRegister2 extends Component {
                             </label>
                             <input type="date"
                               className="form-control "
-                              name="tuttaMembreshipExpiryDate"
-                              onChange={this.handleChangeT}
+                              name="TExpiryDate"
+                              onChange={this.handleDataChange}
                               readOnly={!ta}
+                              value={LicenseData.get('TExpiryDate')}
                             />
                           </div>
                         </div>
@@ -567,14 +518,17 @@ class AgencyRegister2 extends Component {
   }
 }
 
-const redux = 'agencyreg';
+AgencyRegister2.propTypes = {
+  addInfo: PropTypes.func.isRequired,
+}
+const redux = 'AgencyRegistration';
 
 const mapStateToProps = state => ({
-  agencyData: state.getIn([redux, 'agencyData'])
+  LicenseData: state.getIn([redux, 'LicenseData'])
 });
 
 const mapDispatchToProps = dispatch => ({
-  agencyReg: bindActionCreators(agencyReg, dispatch)
+  addInfo: bindActionCreators(storeStep2Data, dispatch),
 });
 const AgencyRegister2Mapped = connect(
   mapStateToProps,
