@@ -1,10 +1,18 @@
 import React, { Component, Fragment } from 'react';
 // import AOS from 'aos';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+// import { setAuth } from 'Actions/AuthAction';
 
 class LandingHeader extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+  }
+
+  handleLogout = () => {
+    localStorage.removeItem('user');
+    window.location.href = '/'
   }
   componentDidMount() {
     AOS.init();
@@ -13,6 +21,9 @@ class LandingHeader extends Component {
     });
   }
   render() {
+    const isLoggedIn = localStorage.hasOwnProperty('user');
+
+    console.log("isLoggedIn", user);
     return (
       <Fragment>
         < header className="header" >
@@ -43,14 +54,14 @@ class LandingHeader extends Component {
                   </li>
                 </ul>
                 <ul className="d-flex side-nav p-0 m-0">
+
                   <li>
                     <Link
                       to="/agency-register"
                       className="btn btn-outline-dark btn-sm mr-3"
                     >
-
                       اعرض برنامجك معنا
-                </Link>
+                    </Link>
                   </li>
                   <li className="dropdown">
                     <a
@@ -118,13 +129,23 @@ class LandingHeader extends Component {
                   </a>
                     </div>
                   </li>
+
                   <li>
-                    <Link
-                      to="/login"
-                      // href="login.html"
-                      className="btn btn-outline-dark btn-sm ">
-                      تسجيل دخول
+                    {isLoggedIn ?
+                      <Link
+                        // href="login.html"
+                        onClick={this.handleLogout}
+                        className="btn btn-outline-dark btn-sm ">
+                        Log Out
                     </Link>
+                      :
+                      <Link
+                        to="/login"
+                        // href="login.html"
+                        className="btn btn-outline-dark btn-sm ">
+                        تسجيل دخول
+                    </Link>
+                    }
                   </li>
                 </ul>
               </div>
@@ -135,5 +156,16 @@ class LandingHeader extends Component {
     )
   }
 }
+const redux = 'auth';
 
-export default LandingHeader;
+const mapStateToProps = state => ({
+  isLoggedIn: state.getIn([redux, 'isLoggedIn'])
+});
+
+
+const LandingHeaderMapped = connect(
+  mapStateToProps,
+  null
+)(LandingHeader);
+export default LandingHeaderMapped;
+// export default LandingHeader;

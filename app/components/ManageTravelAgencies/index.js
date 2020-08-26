@@ -36,7 +36,6 @@ class ManageTravelAgencies extends Component {
           <td className="text-center">
             <a
               //href="view_travel_agency.html"
-
               className="view-action"
               title="View item"
             >
@@ -59,7 +58,7 @@ class ManageTravelAgencies extends Component {
                 </li>
                 <li className="breadcrumb-item active" aria-current="page">
 
-                  ادارة وكالات الاسفار{" "}
+                  ادارة وكالات الاسفار
                 </li>
               </ol>
             </nav>
@@ -382,7 +381,8 @@ class ManageTravelAgencies extends Component {
                 </div>
               </div>
               <div className="mt-2 text-right">
-                <a href="javascript:;" className="btn btn-block-mobile btn-primary">
+                <a className="btn btn-block-mobile btn-primary">
+                  {/* <a href="javascript:;" className="btn btn-block-mobile btn-primary">*/}
                   بحـــث
         </a>
               </div>
@@ -405,106 +405,7 @@ class ManageTravelAgencies extends Component {
                   </thead>
                   <tbody>
                     {requests}
-                    {/* <tr>
-                      <td scope="row">مؤسسة المواسم الرائدة للسياحة </td>
-                      <td>2020/09/08</td>
-                      <td>المغرب</td>
-                      <td>شركة للسياحة والسفر</td>
-                      <td>3</td>
-                      <td>
-                        <span className="badge badge-danger">مرفوض</span>
-                      </td>
-                      <td className="text-center">
-                        <a
-                          href="view_travel_agency.html"
-                          className="view-action"
-                          title="View item"
-                        >
-                          <i className="fal fa-eye fa-fw fa-1x" />
-                          <span className="d-none">View item</span>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td scope="row">مؤسسة المواسم الرائدة للسياحة </td>
-                      <td>2020/09/08</td>
-                      <td>مصر</td>
-                      <td>شركة للسياحة والسفر</td>
-                      <td>3</td>
-                      <td>
-                        <span className="badge badge-success">تم تحديثه</span>
-                      </td>
-                      <td className="text-center">
-                        <a
-                          href="view_travel_agency.html"
-                          className="view-action"
-                          title="View item"
-                        >
-                          <i className="fal fa-eye fa-fw fa-1x" />
-                          <span className="d-none">View item</span>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td scope="row">مؤسسة المواسم الرائدة للسياحة </td>
-                      <td>2020/09/08</td>
-                      <td>تونس</td>
-                      <td>شركة للسياحة والسفر</td>
-                      <td>3</td>
-                      <td>
-                        <span className="badge badge-success">مقبول</span>
-                      </td>
-                      <td className="text-center">
-                        <a
-                          href="view_travel_agency.html"
-                          className="view-action"
-                          title="View item"
-                        >
-                          <i className="fal fa-eye fa-fw fa-1x" />
-                          <span className="d-none">View item</span>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td scope="row">مؤسسة المواسم الرائدة للسياحة </td>
-                      <td>2020/09/08</td>
-                      <td>تونس</td>
-                      <td>شركة للسياحة والسفر</td>
-                      <td>3</td>
-                      <td>
-                        <span className="badge badge-warning"> منتظر التحديث</span>
-                      </td>
-                      <td className="text-center">
-                        <a
-                          href="view_travel_agency.html"
-                          className="view-action"
-                          title="View item"
-                        >
-                          <i className="fal fa-eye fa-fw fa-1x" />
-                          <span className="d-none">View item</span>
-                        </a>
-                      </td>
-                    </tr>
-                    <tr> 
-                    <td scope="row">مؤسسة المواسم الرائدة للسياحة </td>
-                    <td>2020/09/08</td>
-                    <td>المغرب</td>
-                    <td>شركة للسياحة والسفر</td>
-                    <td>3</td>
-                    <td>
-                      <span className="badge badge-light">تم إلغاؤه </span>
-                    </td>
-                    <td className="text-center">
-                      <a
-                        href="view_travel_agency.html"
-                        className="view-action"
-                        title="View item"
-                      >
-                        <i className="fal fa-eye fa-fw fa-1x" />
-                        <span className="d-none">View item</span>
-                      </a>
-                    </td>
-                    </tr>*/}
+
                   </tbody>
                 </table>
               </div>
