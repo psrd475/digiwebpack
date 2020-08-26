@@ -4,7 +4,7 @@
    Available under the MIT (http://keith-wood.name/licence.html) license. 
    Please attribute the author if you use it. */
 
-(function ($) { // Hide scope, no $ conflict
+(function($) { // Hide scope, no $ conflict
 
 	var pluginName = 'calendarsPicker';
 
@@ -21,11 +21,11 @@
 		@example $(selector).calendarsPicker()
  $(selector).calendarsPicker({minDate: 0, maxDate: '+1m +1w'}) */
 	$.JQPlugin.createPlugin({
-
+	
 		/** The name of the plugin.
 			@memberof CalendarsPicker */
 		name: pluginName,
-
+		
 		/** Default template for generating a datepicker.
 			Insert anywhere:
 			<ul>
@@ -62,12 +62,12 @@
 			@property disabledClass {string} Class for disabled commands. */
 		defaultRenderer: {
 			picker: '<div class="calendars">' +
-				'<div class="calendars-nav">{link:prev}{link:today}{link:next}</div>{months}' +
-				'{popup:start}<div class="calendars-ctrl">{link:clear}{link:close}</div>{popup:end}' +
-				'<div class="calendars-clear-fix"></div></div>',
+			'<div class="calendars-nav">{link:prev}{link:today}{link:next}</div>{months}' +
+			'{popup:start}<div class="calendars-ctrl">{link:clear}{link:close}</div>{popup:end}' +
+			'<div class="calendars-clear-fix"></div></div>',
 			monthRow: '<div class="calendars-month-row">{months}</div>',
 			month: '<div class="calendars-month"><div class="calendars-month-header">{monthHeader}</div>' +
-				'<table><thead>{weekHeader}</thead><tbody>{weeks}</tbody></table></div>',
+			'<table><thead>{weekHeader}</thead><tbody>{weeks}</tbody></table></div>',
 			weekHeader: '<tr>{days}</tr>',
 			dayHeader: '<th>{day}</th>',
 			week: '<tr>{days}</tr>',
@@ -87,7 +87,7 @@
 			commandLinkClass: '',
 			disabledClass: 'calendars-disabled'
 		},
-
+	
 		/** Command actions that may be added to a layout by name.
 			<ul>
 			<li>prev - Show the previous month (based on <code>monthsToStep</code> option) - <em>PageUp</em></li>
@@ -117,171 +117,135 @@
 			@property date {CalendarsPickerCommandDate} The function to get the date associated with this action.
 			@property action {CalendarsPickerCommandAction} The function that implements the action. */
 		commands: {
-			prev: {
-				text: 'prevText', status: 'prevStatus', // Previous month
-				keystroke: { keyCode: 33 }, // Page up
-				enabled: function (inst) {
+			prev: {text: 'prevText', status: 'prevStatus', // Previous month
+				keystroke: {keyCode: 33}, // Page up
+				enabled: function(inst) {
 					var minDate = inst.curMinDate();
 					return (!minDate || inst.drawDate.newDate().
 						add(1 - inst.options.monthsToStep - inst.options.monthsOffset, 'm').
-						day(inst.options.calendar.minDay).add(-1, 'd').compareTo(minDate) !== -1);
-				},
-				date: function (inst) {
+						day(inst.options.calendar.minDay).add(-1, 'd').compareTo(minDate) !== -1); },
+				date: function(inst) {
 					return inst.drawDate.newDate().
 						add(-inst.options.monthsToStep - inst.options.monthsOffset, 'm').
-						day(inst.options.calendar.minDay);
-				},
-				action: function (inst) {
-					plugin.changeMonth(this, -inst.options.monthsToStep);
-				}
+						day(inst.options.calendar.minDay); },
+				action: function(inst) {
+					plugin.changeMonth(this, -inst.options.monthsToStep); }
 			},
-			prevJump: {
-				text: 'prevJumpText', status: 'prevJumpStatus', // Previous year
-				keystroke: { keyCode: 33, ctrlKey: true }, // Ctrl + Page up
-				enabled: function (inst) {
+			prevJump: {text: 'prevJumpText', status: 'prevJumpStatus', // Previous year
+				keystroke: {keyCode: 33, ctrlKey: true}, // Ctrl + Page up
+				enabled: function(inst) {
 					var minDate = inst.curMinDate();
 					return (!minDate || inst.drawDate.newDate().
 						add(1 - inst.options.monthsToJump - inst.options.monthsOffset, 'm').
-						day(inst.options.calendar.minDay).add(-1, 'd').compareTo(minDate) !== -1);
-				},
-				date: function (inst) {
+						day(inst.options.calendar.minDay).add(-1, 'd').compareTo(minDate) !== -1); },
+				date: function(inst) {
 					return inst.drawDate.newDate().
 						add(-inst.options.monthsToJump - inst.options.monthsOffset, 'm').
-						day(inst.options.calendar.minDay);
-				},
-				action: function (inst) {
-					plugin.changeMonth(this, -inst.options.monthsToJump);
-				}
+						day(inst.options.calendar.minDay); },
+				action: function(inst) {
+					plugin.changeMonth(this, -inst.options.monthsToJump); }
 			},
-			next: {
-				text: 'nextText', status: 'nextStatus', // Next month
-				keystroke: { keyCode: 34 }, // Page down
-				enabled: function (inst) {
+			next: {text: 'nextText', status: 'nextStatus', // Next month
+				keystroke: {keyCode: 34}, // Page down
+				enabled: function(inst) {
 					var maxDate = inst.get('maxDate');
 					return (!maxDate || inst.drawDate.newDate().
 						add(inst.options.monthsToStep - inst.options.monthsOffset, 'm').
-						day(inst.options.calendar.minDay).compareTo(maxDate) !== +1);
-				},
-				date: function (inst) {
+						day(inst.options.calendar.minDay).compareTo(maxDate) !== +1); },
+				date: function(inst) {
 					return inst.drawDate.newDate().
 						add(inst.options.monthsToStep - inst.options.monthsOffset, 'm').
-						day(inst.options.calendar.minDay);
-				},
-				action: function (inst) {
-					plugin.changeMonth(this, inst.options.monthsToStep);
-				}
+						day(inst.options.calendar.minDay); },
+				action: function(inst) {
+					plugin.changeMonth(this, inst.options.monthsToStep); }
 			},
-			nextJump: {
-				text: 'nextJumpText', status: 'nextJumpStatus', // Next year
-				keystroke: { keyCode: 34, ctrlKey: true }, // Ctrl + Page down
-				enabled: function (inst) {
+			nextJump: {text: 'nextJumpText', status: 'nextJumpStatus', // Next year
+				keystroke: {keyCode: 34, ctrlKey: true}, // Ctrl + Page down
+				enabled: function(inst) {
 					var maxDate = inst.get('maxDate');
 					return (!maxDate || inst.drawDate.newDate().
 						add(inst.options.monthsToJump - inst.options.monthsOffset, 'm').
-						day(inst.options.calendar.minDay).compareTo(maxDate) !== +1);
-				},
-				date: function (inst) {
+						day(inst.options.calendar.minDay).compareTo(maxDate) !== +1);	},
+				date: function(inst) {
 					return inst.drawDate.newDate().
 						add(inst.options.monthsToJump - inst.options.monthsOffset, 'm').
-						day(inst.options.calendar.minDay);
-				},
-				action: function (inst) {
-					plugin.changeMonth(this, inst.options.monthsToJump);
-				}
+						day(inst.options.calendar.minDay); },
+				action: function(inst) {
+					plugin.changeMonth(this, inst.options.monthsToJump); }
 			},
-			current: {
-				text: 'currentText', status: 'currentStatus', // Current month
-				keystroke: { keyCode: 36, ctrlKey: true }, // Ctrl + Home
-				enabled: function (inst) {
+			current: {text: 'currentText', status: 'currentStatus', // Current month
+				keystroke: {keyCode: 36, ctrlKey: true}, // Ctrl + Home
+				enabled: function(inst) {
 					var minDate = inst.curMinDate();
 					var maxDate = inst.get('maxDate');
 					var curDate = inst.selectedDates[0] || inst.options.calendar.today();
 					return (!minDate || curDate.compareTo(minDate) !== -1) &&
-						(!maxDate || curDate.compareTo(maxDate) !== +1);
-				},
-				date: function (inst) {
-					return inst.selectedDates[0] || inst.options.calendar.today();
-				},
-				action: function (inst) {
+						(!maxDate || curDate.compareTo(maxDate) !== +1); },
+				date: function(inst) {
+					return inst.selectedDates[0] || inst.options.calendar.today(); },
+				action: function(inst) {
 					var curDate = inst.selectedDates[0] || inst.options.calendar.today();
-					plugin.showMonth(this, curDate.year(), curDate.month());
-				}
+					plugin.showMonth(this, curDate.year(), curDate.month()); }
 			},
-			today: {
-				text: 'todayText', status: 'todayStatus', // Today's month
-				keystroke: { keyCode: 36, ctrlKey: true }, // Ctrl + Home
-				enabled: function (inst) {
+			today: {text: 'todayText', status: 'todayStatus', // Today's month
+				keystroke: {keyCode: 36, ctrlKey: true}, // Ctrl + Home
+				enabled: function(inst) {
 					var minDate = inst.curMinDate();
 					var maxDate = inst.get('maxDate');
 					return (!minDate || inst.options.calendar.today().compareTo(minDate) !== -1) &&
-						(!maxDate || inst.options.calendar.today().compareTo(maxDate) !== +1);
-				},
-				date: function (inst) { return inst.options.calendar.today(); },
-				action: function (inst) { plugin.showMonth(this); }
+						(!maxDate || inst.options.calendar.today().compareTo(maxDate) !== +1); },
+				date: function(inst) { return inst.options.calendar.today(); },
+				action: function(inst) { plugin.showMonth(this); }
 			},
-			clear: {
-				text: 'clearText', status: 'clearStatus', // Clear the datepicker
-				keystroke: { keyCode: 35, ctrlKey: true }, // Ctrl + End
-				enabled: function (inst) { return true; },
-				date: function (inst) { return null; },
-				action: function (inst) { plugin.clear(this); }
+			clear: {text: 'clearText', status: 'clearStatus', // Clear the datepicker
+				keystroke: {keyCode: 35, ctrlKey: true}, // Ctrl + End
+				enabled: function(inst) { return true; },
+				date: function(inst) { return null; },
+				action: function(inst) { plugin.clear(this); }
 			},
-			close: {
-				text: 'closeText', status: 'closeStatus', // Close the datepicker
-				keystroke: { keyCode: 27 }, // Escape
-				enabled: function (inst) { return true; },
-				date: function (inst) { return null; },
-				action: function (inst) { plugin.hide(this); }
+			close: {text: 'closeText', status: 'closeStatus', // Close the datepicker
+				keystroke: {keyCode: 27}, // Escape
+				enabled: function(inst) { return true; },
+				date: function(inst) { return null; },
+				action: function(inst) { plugin.hide(this); }
 			},
-			prevWeek: {
-				text: 'prevWeekText', status: 'prevWeekStatus', // Previous week
-				keystroke: { keyCode: 38, ctrlKey: true }, // Ctrl + Up
-				enabled: function (inst) {
+			prevWeek: {text: 'prevWeekText', status: 'prevWeekStatus', // Previous week
+				keystroke: {keyCode: 38, ctrlKey: true}, // Ctrl + Up
+				enabled: function(inst) {
 					var minDate = inst.curMinDate();
 					return (!minDate || inst.drawDate.newDate().
-						add(-inst.options.calendar.daysInWeek(), 'd').compareTo(minDate) !== -1);
-				},
-				date: function (inst) {
-					return inst.drawDate.newDate().
-						add(-inst.options.calendar.daysInWeek(), 'd');
-				},
-				action: function (inst) { plugin.changeDay(this, -inst.options.calendar.daysInWeek()); }
+						add(-inst.options.calendar.daysInWeek(), 'd').compareTo(minDate) !== -1); },
+				date: function(inst) { return inst.drawDate.newDate().
+					add(-inst.options.calendar.daysInWeek(), 'd'); },
+				action: function(inst) { plugin.changeDay(this, -inst.options.calendar.daysInWeek()); }
 			},
-			prevDay: {
-				text: 'prevDayText', status: 'prevDayStatus', // Previous day
-				keystroke: { keyCode: 37, ctrlKey: true }, // Ctrl + Left
-				enabled: function (inst) {
+			prevDay: {text: 'prevDayText', status: 'prevDayStatus', // Previous day
+				keystroke: {keyCode: 37, ctrlKey: true}, // Ctrl + Left
+				enabled: function(inst) {
 					var minDate = inst.curMinDate();
 					return (!minDate || inst.drawDate.newDate().add(-1, 'd').
-						compareTo(minDate) !== -1);
-				},
-				date: function (inst) { return inst.drawDate.newDate().add(-1, 'd'); },
-				action: function (inst) { plugin.changeDay(this, -1); }
+						compareTo(minDate) !== -1); },
+				date: function(inst) { return inst.drawDate.newDate().add(-1, 'd'); },
+				action: function(inst) { plugin.changeDay(this, -1); }
 			},
-			nextDay: {
-				text: 'nextDayText', status: 'nextDayStatus', // Next day
-				keystroke: { keyCode: 39, ctrlKey: true }, // Ctrl + Right
-				enabled: function (inst) {
+			nextDay: {text: 'nextDayText', status: 'nextDayStatus', // Next day
+				keystroke: {keyCode: 39, ctrlKey: true}, // Ctrl + Right
+				enabled: function(inst) {
 					var maxDate = inst.get('maxDate');
 					return (!maxDate || inst.drawDate.newDate().add(1, 'd').
-						compareTo(maxDate) !== +1);
-				},
-				date: function (inst) { return inst.drawDate.newDate().add(1, 'd'); },
-				action: function (inst) { plugin.changeDay(this, 1); }
+						compareTo(maxDate) !== +1); },
+				date: function(inst) { return inst.drawDate.newDate().add(1, 'd'); },
+				action: function(inst) { plugin.changeDay(this, 1); }
 			},
-			nextWeek: {
-				text: 'nextWeekText', status: 'nextWeekStatus', // Next week
-				keystroke: { keyCode: 40, ctrlKey: true }, // Ctrl + Down
-				enabled: function (inst) {
+			nextWeek: {text: 'nextWeekText', status: 'nextWeekStatus', // Next week
+				keystroke: {keyCode: 40, ctrlKey: true}, // Ctrl + Down
+				enabled: function(inst) {
 					var maxDate = inst.get('maxDate');
 					return (!maxDate || inst.drawDate.newDate().
-						add(inst.options.calendar.daysInWeek(), 'd').compareTo(maxDate) !== +1);
-				},
-				date: function (inst) {
-					return inst.drawDate.newDate().
-						add(inst.options.calendar.daysInWeek(), 'd');
-				},
-				action: function (inst) { plugin.changeDay(this, inst.options.calendar.daysInWeek()); }
+						add(inst.options.calendar.daysInWeek(), 'd').compareTo(maxDate) !== +1); },
+				date: function(inst) { return inst.drawDate.newDate().
+					add(inst.options.calendar.daysInWeek(), 'd'); },
+				action: function(inst) { plugin.changeDay(this, inst.options.calendar.daysInWeek()); }
 			}
 		},
 
@@ -348,7 +312,7 @@
 			@example onChangeMonthYear: function(year, month) {
 	alert('Now in ' + month + '/' + year);
  } */
-
+			
 		/** Datepicker on select callback.
 			Triggered when a date is selected.
 			@callback CalendarsPickerOnSelect
@@ -356,7 +320,7 @@
 			@example onSelect: function(dates) {
  	alert('Selected ' + dates);
  } */
-
+			
 		/** Datepicker on close callback.
 			Triggered when a popup calendar is closed.
 			@callback CalendarsPickerOnClose
@@ -364,7 +328,7 @@
 			@example onClose: function(dates) {
  	alert('Selected ' + dates);
  } */
-
+		
 		/** Default settings for the plugin.
 			@memberof CalendarsPicker
 			@property [calendar=$.calendars.instance()] {Calendar} The calendar for this datepicker.
@@ -519,13 +483,13 @@
 				isRTL: false
 			}
 		},
-
+		
 		/** Names of getter methods - those that can't be chained.
 			@memberof CalendarsPicker */
 		_getters: ['getDate', 'isDisabled', 'isSelectable', 'retrieveDate'],
 
 		_disabled: [],
-
+		
 		_popupClass: 'calendars-popup', // Marker for popup division
 		_triggerClass: 'calendars-trigger', // Marker for trigger element
 		_disableClass: 'calendars-disable', // Marker for disabled element
@@ -534,17 +498,16 @@
 		_anyYearClass: 'calendars-any-year', // Marker for year direct input
 		_curDoWClass: 'calendars-dow-', // Marker for day of week
 
-		_init: function () {
+		_init: function() {
 			this.defaultOptions.commands = this.commands;
 			this.regionalOptions[''].renderer = this.defaultRenderer;
 			this._super();
 		},
 
-		_instSettings: function (elem, options) {
-			return {
-				selectedDates: [], drawDate: null, pickingRange: false,
+		_instSettings: function(elem, options) {
+			return {selectedDates: [], drawDate: null, pickingRange: false,
 				inline: ($.inArray(elem[0].nodeName.toLowerCase(), ['div', 'span']) > -1),
-				get: function (name) { // Get a setting value, computing if necessary
+				get: function(name) { // Get a setting value, computing if necessary
 					if ($.inArray(name, ['defaultDate', 'minDate', 'maxDate']) > -1) { // Decode date settings
 						return this.options.calendar.determineDate(this.options[name], null,
 							this.selectedDates[0], this.get('dateFormat'), this.getConfig());
@@ -554,20 +517,18 @@
 					}
 					return this.options[name];
 				},
-				curMinDate: function () {
+				curMinDate: function() {
 					return (this.pickingRange ? this.selectedDates[0] : this.get('minDate'));
 				},
-				getConfig: function () {
-					return {
-						dayNamesShort: this.options.dayNamesShort, dayNames: this.options.dayNames,
+				getConfig: function() {
+					return {dayNamesShort: this.options.dayNamesShort, dayNames: this.options.dayNames,
 						monthNamesShort: this.options.monthNamesShort, monthNames: this.options.monthNames,
-						calculateWeek: this.options.calculateWeek, shortYearCutoff: this.options.shortYearCutoff
-					};
+						calculateWeek: this.options.calculateWeek, shortYearCutoff: this.options.shortYearCutoff};
 				}
 			};
 		},
 
-		_postAttach: function (elem, inst) {
+		_postAttach: function(elem, inst) {
 			if (inst.inline) {
 				inst.drawDate = plugin._checkMinMax((inst.selectedDates[0] ||
 					inst.get('defaultDate') || inst.options.calendar.today()).newDate(), inst);
@@ -587,15 +548,13 @@
 			}
 		},
 
-		_optionsChanged: function (elem, inst, options) {
+		_optionsChanged: function(elem, inst, options) {
 			if (options.calendar && options.calendar !== inst.options.calendar) {
-				var discardDate = function (name) {
+				var discardDate = function(name) {
 					return (typeof inst.options[name] === 'object' ? null : inst.options[name]);
 				};
-				options = $.extend({
-					defaultDate: discardDate('defaultDate'),
-					minDate: discardDate('minDate'), maxDate: discardDate('maxDate')
-				}, options);
+				options = $.extend({defaultDate: discardDate('defaultDate'),
+					minDate: discardDate('minDate'), maxDate: discardDate('maxDate')}, options);
 				inst.selectedDates = [];
 				inst.drawDate = null;
 			}
@@ -620,7 +579,7 @@
 			@private
 			@param elem {jQuery} The control to affect.
 			@param inst {object} The current instance settings. */
-		_attachments: function (elem, inst) {
+		_attachments: function(elem, inst) {
 			elem.off('focus.' + inst.name);
 			if (inst.options.showOnFocus) {
 				elem.on('focus.' + inst.name, this.show);
@@ -631,8 +590,8 @@
 			var trigger = inst.options.showTrigger;
 			inst.trigger = (!trigger ? $([]) :
 				$(trigger).clone().removeAttr('id').addClass(this._triggerClass)
-				[inst.options.isRTL ? 'insertBefore' : 'insertAfter'](elem).
-					click(function () {
+					[inst.options.isRTL ? 'insertBefore' : 'insertAfter'](elem).
+					click(function() {
 						if (!plugin.isDisabled(elem[0])) {
 							plugin[plugin.curInst === inst ? 'hide' : 'show'](elem[0]);
 						}
@@ -653,13 +612,13 @@
 			@private
 			@param elem {jQuery} The control to affect.
 			@param inst {object} The current instance settings. */
-		_autoSize: function (elem, inst) {
+		_autoSize: function(elem, inst) {
 			if (inst.options.autoSize && !inst.inline) {
 				var calendar = inst.options.calendar;
 				var date = calendar.newDate(2009, 10, 20); // Ensure double digits
 				var dateFormat = inst.get('dateFormat');
 				if (dateFormat.match(/[DM]/)) {
-					var findMax = function (names) {
+					var findMax = function(names) {
 						var max = 0;
 						var maxI = 0;
 						for (var i = 0; i < names.length; i++) {
@@ -679,7 +638,7 @@
 			}
 		},
 
-		_preDestroy: function (elem, inst) {
+		_preDestroy: function(elem, inst) {
 			if (inst.trigger) {
 				inst.trigger.remove();
 			}
@@ -696,9 +655,9 @@
 			@memberof CalendarsPicker
 			@param fns {function} The functions to apply.
 			@example onShow: multipleEvents(fn1, fn2, ...) */
-		multipleEvents: function (fns) {
+		multipleEvents: function(fns) {
 			var funcs = arguments;
-			return function (args) {
+			return function(args) {
 				for (var i = 0; i < funcs.length; i++) {
 					funcs[i].apply(this, arguments);
 				}
@@ -709,7 +668,7 @@
 			@memberof CalendarsPicker
 			@param elem {Element} The control to affect.
 			@example $(selector).datepick('enable') */
-		enable: function (elem) {
+		enable: function(elem) {
 			elem = $(elem);
 			if (!elem.hasClass(this._getMarker())) {
 				return;
@@ -718,22 +677,22 @@
 			if (inst.inline) {
 				elem.children('.' + this._disableClass).remove().end().
 					find('button,select').prop('disabled', false).end().
-					find('a').attr('href', '#void(0)');
+					find('a').attr('href', 'javascript:void(0)');
 			}
 			else {
 				elem.prop('disabled', false);
 				inst.trigger.filter('button.' + this._triggerClass).prop('disabled', false).end().
-					filter('img.' + this._triggerClass).css({ opacity: '1.0', cursor: '' });
+					filter('img.' + this._triggerClass).css({opacity: '1.0', cursor: ''});
 			}
 			this._disabled = $.map(this._disabled,
-				function (value) { return (value === elem[0] ? null : value); }); // Delete entry
+				function(value) { return (value === elem[0] ? null : value); }); // Delete entry
 		},
 
 		/** Disable the control.
 			@memberof CalendarsPicker
 			@param elem {Element} The control to affect.
 			@example $(selector).datepick('disable') */
-		disable: function (elem) {
+		disable: function(elem) {
 			elem = $(elem);
 			if (!elem.hasClass(this._getMarker())) {
 				return;
@@ -742,8 +701,8 @@
 			if (inst.inline) {
 				var inline = elem.children(':last');
 				var offset = inline.offset();
-				var relOffset = { left: 0, top: 0 };
-				inline.parents().each(function () {
+				var relOffset = {left: 0, top: 0};
+				inline.parents().each(function() {
 					if ($(this).css('position') === 'relative') {
 						relOffset = $(this).offset();
 						return false;
@@ -761,10 +720,10 @@
 			else {
 				elem.prop('disabled', true);
 				inst.trigger.filter('button.' + this._triggerClass).prop('disabled', true).end().
-					filter('img.' + this._triggerClass).css({ opacity: '0.5', cursor: 'default' });
+					filter('img.' + this._triggerClass).css({opacity: '0.5', cursor: 'default'});
 			}
 			this._disabled = $.map(this._disabled,
-				function (value) { return (value === elem[0] ? null : value); }); // Delete entry
+				function(value) { return (value === elem[0] ? null : value); }); // Delete entry
 			this._disabled.push(elem[0]);
 		},
 
@@ -773,7 +732,7 @@
 			@param elem {Element} The control to examine.
 			@return {boolean} <code>true</code> if disabled, <code>false</code> if enabled.
 			@example if ($(selector).datepick('isDisabled')) {...} */
-		isDisabled: function (elem) {
+		isDisabled: function(elem) {
 			return (elem && $.inArray(elem, this._disabled) > -1);
 		},
 
@@ -781,7 +740,7 @@
 			@memberof CalendarsPicker
 			@param elem {Event|Element} a focus event or the control to use.
 			@example $(selector).datepick('show') */
-		show: function (elem) {
+		show: function(elem) {
 			elem = $(elem.target || elem);
 			var inst = plugin._getInst(elem);
 			if (plugin.curInst === inst) {
@@ -803,7 +762,7 @@
 				plugin._update(elem[0], true);
 				// Adjust position before showing
 				var offset = plugin._checkOffset(inst);
-				inst.div.css({ left: offset.left, top: offset.top });
+				inst.div.css({left: offset.left, top: offset.top});
 				// And display
 				var showAnim = inst.options.showAnim;
 				var showSpeed = inst.options.showSpeed;
@@ -830,7 +789,7 @@
 			@param inst {object} The current instance settings.
 			@param text {string} The text to extract from.
 			@return {CDate[]} The extracted dates. */
-		_extractDates: function (inst, datesText) {
+		_extractDates: function(inst, datesText) {
 			if (datesText === inst.lastVal) {
 				return;
 			}
@@ -870,14 +829,14 @@
 			@private
 			@param elem {Event|Element} a focus event or the control to use.
 			@param hidden {boolean} <code>true</code> to initially hide the datepicker. */
-		_update: function (elem, hidden) {
+		_update: function(elem, hidden) {
 			elem = $(elem.target || elem);
 			var inst = plugin._getInst(elem);
 			if (!$.isEmptyObject(inst)) {
 				if (inst.inline || plugin.curInst === inst) {
 					if ($.isFunction(inst.options.onChangeMonthYear) && (!inst.prevDate ||
-						inst.prevDate.year() !== inst.drawDate.year() ||
-						inst.prevDate.month() !== inst.drawDate.month())) {
+							inst.prevDate.year() !== inst.drawDate.year() ||
+							inst.prevDate.month() !== inst.drawDate.month())) {
 						inst.options.onChangeMonthYear.apply(elem[0],
 							[inst.drawDate.year(), inst.drawDate.month()]);
 					}
@@ -891,10 +850,8 @@
 				else if (plugin.curInst === inst) {
 					if (!inst.div) {
 						inst.div = $('<div></div>').addClass(this._popupClass).
-							css({
-								display: (hidden ? 'none' : 'static'), position: 'absolute',
-								left: elem.offset().left, top: elem.offset().top + elem.outerHeight()
-							}).
+							css({display: (hidden ? 'none' : 'static'), position: 'absolute',
+								left: elem.offset().left, top: elem.offset().top + elem.outerHeight()}).
 							appendTo($(inst.options.popupContainer || 'body'));
 						if ($.fn.mousewheel) {
 							inst.div.mousewheel(this._doMouseWheel);
@@ -911,7 +868,7 @@
 			@private
 			@param elem {Element} The control to use.
 			@param keyUp {boolean} <code>true</code> if coming from <code>keyUp</code> processing (internal). */
-		_updateInput: function (elem, keyUp) {
+		_updateInput: function(elem, keyUp) {
 			var inst = this._getInst(elem);
 			if (!$.isEmptyObject(inst)) {
 				var value = '';
@@ -944,12 +901,12 @@
 			@private
 			@param elem {jQuery} The element of interest.
 			@return {number[]} The left and top borders. */
-		_getBorders: function (elem) {
-			var convert = function (value) {
-				return { thin: 1, medium: 3, thick: 5 }[value] || value;
+		_getBorders: function(elem) {
+			var convert = function(value) {
+				return {thin: 1, medium: 3, thick: 5}[value] || value;
 			};
 			return [parseFloat(convert(elem.css('border-left-width'))),
-			parseFloat(convert(elem.css('border-top-width')))];
+				parseFloat(convert(elem.css('border-top-width')))];
 		},
 
 		/** Check positioning to remain on the screen.
@@ -957,7 +914,7 @@
 			@private
 			@param inst {object} The current instance settings.
 			@return {object} The updated offset for the datepicker. */
-		_checkOffset: function (inst) {
+		_checkOffset: function(inst) {
 			var base = (inst.elem.is(':hidden') && inst.trigger ? inst.trigger : inst.elem);
 			var offset = base.offset();
 			var browserWidth = $(window).width();
@@ -966,7 +923,7 @@
 				return offset;
 			}
 			var isFixed = false;
-			$(inst.elem).parents().each(function () {
+			$(inst.elem).parents().each(function() {
 				isFixed |= $(this).css('position') === 'fixed';
 				return !isFixed;
 			});
@@ -982,25 +939,23 @@
 			inst.div.css('position', isFixed ? 'fixed' : 'absolute');
 			var alignment = inst.options.alignment;
 			if (alignment === 'topLeft') {
-				offset = { left: alignL, top: above };
+				offset = {left: alignL, top: above};
 			}
 			else if (alignment === 'topRight') {
-				offset = { left: alignR, top: above };
+				offset = {left: alignR, top: above};
 			}
 			else if (alignment === 'bottomLeft') {
-				offset = { left: alignL, top: below };
+				offset = {left: alignL, top: below};
 			}
 			else if (alignment === 'bottomRight') {
-				offset = { left: alignR, top: below };
+				offset = {left: alignR, top: below};
 			}
 			else if (alignment === 'top') {
-				offset = { left: (inst.options.isRTL || tooWide ? alignR : alignL), top: above };
+				offset = {left: (inst.options.isRTL || tooWide ? alignR : alignL), top: above};
 			}
 			else { // bottom
-				offset = {
-					left: (inst.options.isRTL || tooWide ? alignR : alignL),
-					top: (tooHigh ? above : below)
-				};
+				offset = {left: (inst.options.isRTL || tooWide ? alignR : alignL),
+					top: (tooHigh ? above : below)};
 			}
 			offset.left = Math.max((isFixed ? 0 : scrollX), offset.left);
 			offset.top = Math.max((isFixed ? 0 : scrollY), offset.top);
@@ -1011,13 +966,13 @@
 			@memberof CalendarsPicker
 			@private
 			@param event {MouseEvent} The mouse click to check. */
-		_checkExternalClick: function (event) {
+		_checkExternalClick: function(event) {
 			if (!plugin.curInst) {
 				return;
 			}
 			var elem = $(event.target);
 			if (elem.closest('.' + plugin._popupClass + ',.' + plugin._triggerClass).length === 0 &&
-				!elem.hasClass(plugin._getMarker())) {
+					!elem.hasClass(plugin._getMarker())) {
 				plugin.hide(plugin.curInst);
 			}
 		},
@@ -1027,7 +982,7 @@
 			@param elem {Element|object} The control to use or the current instance settings.
 			@param immediate {boolean} <code>true</code> to close immediately without animation (internal).
 			@example $(selector).datepick('hide') */
-		hide: function (elem, immediate) {
+		hide: function(elem, immediate) {
 			if (!elem) {
 				return;
 			}
@@ -1040,7 +995,7 @@
 				var showSpeed = inst.options.showSpeed;
 				showSpeed = (showSpeed === 'normal' && $.ui &&
 					parseInt($.ui.version.substring(2)) >= 8 ? '_default' : showSpeed);
-				var postProcess = function () {
+				var postProcess = function() {
 					if (!inst.div) {
 						return;
 					}
@@ -1071,7 +1026,7 @@
 			@private
 			@param event {KeyEvent} The keystroke.
 			@return {boolean} <code>true</code> if not handled, <code>false</code> if handled. */
-		_keyDown: function (event) {
+		_keyDown: function(event) {
 			var elem = (event.data && event.data.elem) || event.target;
 			var inst = plugin._getInst(elem);
 			var handled = false;
@@ -1089,9 +1044,9 @@
 					for (var name in commands) {
 						var command = commands[name];
 						if (command.keystroke.keyCode === event.keyCode &&
-							!!command.keystroke.ctrlKey === !!(event.ctrlKey || event.metaKey) &&
-							!!command.keystroke.altKey === event.altKey &&
-							!!command.keystroke.shiftKey === event.shiftKey) {
+								!!command.keystroke.ctrlKey === !!(event.ctrlKey || event.metaKey) &&
+								!!command.keystroke.altKey === event.altKey &&
+								!!command.keystroke.shiftKey === event.shiftKey) {
 							plugin.performAction(elem, name);
 							handled = true;
 							break;
@@ -1102,9 +1057,9 @@
 			else { // Show on 'current' keystroke
 				var command = inst.options.commands.current;
 				if (command.keystroke.keyCode === event.keyCode &&
-					!!command.keystroke.ctrlKey === !!(event.ctrlKey || event.metaKey) &&
-					!!command.keystroke.altKey === event.altKey &&
-					!!command.keystroke.shiftKey === event.shiftKey) {
+						!!command.keystroke.ctrlKey === !!(event.ctrlKey || event.metaKey) &&
+						!!command.keystroke.altKey === event.altKey &&
+						!!command.keystroke.shiftKey === event.shiftKey) {
 					plugin.show(elem);
 					handled = true;
 				}
@@ -1122,7 +1077,7 @@
 			@private
 			@param event {KeyEvent} The keystroke.
 			@return {boolean} <code>true</code> if allowed, <code>false</code> if not allowed. */
-		_keyPress: function (event) {
+		_keyPress: function(event) {
 			var inst = plugin._getInst((event.data && event.data.elem) || event.target);
 			if (!$.isEmptyObject(inst) && inst.options.constrainInput) {
 				var ch = String.fromCharCode(event.keyCode || event.charCode);
@@ -1138,7 +1093,7 @@
 			@private
 			@param inst {object} The current instance settings.
 			@return {string} The set of allowed characters, or <code>null</code> if anything allowed. */
-		_allowedChars: function (inst) {
+		_allowedChars: function(inst) {
 			var allowedChars = (inst.options.multiSelect ? inst.options.multiSeparator :
 				(inst.options.rangeSelect ? inst.options.rangeSeparator : ''));
 			var literal = false;
@@ -1185,7 +1140,7 @@
 			@private
 			@param event {KeyEvent} The keystroke.
 			@return {boolean} <code>true</code> if allowed, <code>false</code> if not allowed. */
-		_keyUp: function (event) {
+		_keyUp: function(event) {
 			var elem = (event.data && event.data.elem) || event.target;
 			var inst = plugin._getInst(elem);
 			if (!$.isEmptyObject(inst) && !inst.ctrlKey && inst.lastVal !== inst.elem.val()) {
@@ -1207,7 +1162,7 @@
 			@private
 			@param event {event} The mouse wheel event.
 			@param delta {number} The amount of change. */
-		_doMouseWheel: function (event, delta) {
+		_doMouseWheel: function(event, delta) {
 			var elem = (plugin.curInst && plugin.curInst.elem[0]) ||
 				$(event.target).closest('.' + plugin._getMarker())[0];
 			if (plugin.isDisabled(elem)) {
@@ -1225,7 +1180,7 @@
 			@memberof CalendarsPicker
 			@param elem {Element} The control to use.
 			@example $(selector).datepick('clear') */
-		clear: function (elem) {
+		clear: function(elem) {
 			var inst = this._getInst(elem);
 			if (!$.isEmptyObject(inst)) {
 				inst.selectedDates = [];
@@ -1245,7 +1200,7 @@
 			@param elem {Element} The control to examine.
 			@return {CDate[]} The selected date(s).
 			@example var dates = $(selector).datepick('getDate') */
-		getDate: function (elem) {
+		getDate: function(elem) {
 			var inst = this._getInst(elem);
 			return (!$.isEmptyObject(inst) ? inst.selectedDates : []);
 		},
@@ -1260,7 +1215,7 @@
 			@example $(selector).datepick('setDate', new Date(2014, 12-1, 25))
  $(selector).datepick('setDate', '12/25/2014', '01/01/2015')
  $(selector).datepick('setDate', [date1, date2, date3]) */
-		setDate: function (elem, dates, endDate, keyUp, setOpt) {
+		setDate: function(elem, dates, endDate, keyUp, setOpt) {
 			var inst = this._getInst(elem);
 			if (!$.isEmptyObject(inst)) {
 				if (!$.isArray(dates)) {
@@ -1278,7 +1233,7 @@
 						dates[i], null, curDate, inst.get('dateFormat'), inst.getConfig());
 					if (date) {
 						if ((!minDate || date.compareTo(minDate) !== -1) &&
-							(!maxDate || date.compareTo(maxDate) !== +1)) {
+								(!maxDate || date.compareTo(maxDate) !== +1)) {
 							var found = false;
 							for (var j = 0; j < inst.selectedDates.length; j++) {
 								if (inst.selectedDates[j].compareTo(date) === 0) {
@@ -1299,7 +1254,7 @@
 						case 1: inst.selectedDates[1] = inst.selectedDates[0]; break;
 						case 2: inst.selectedDates[1] =
 							(inst.selectedDates[0].compareTo(inst.selectedDates[1]) === +1 ?
-								inst.selectedDates[0] : inst.selectedDates[1]); break;
+							inst.selectedDates[0] : inst.selectedDates[1]); break;
 					}
 					inst.pickingRange = false;
 				}
@@ -1320,7 +1275,7 @@
 			@param date {CDate|string|number} The date to check.
 			@return {boolean} <code>true</code> if selectable, <code>false</code> if not.
 			@example var selectable = $(selector).datepick('isSelectable', date) */
-		isSelectable: function (elem, date) {
+		isSelectable: function(elem, date) {
 			var inst = this._getInst(elem);
 			if ($.isEmptyObject(inst)) {
 				return false;
@@ -1341,8 +1296,8 @@
 			@param minDate {CDate} The minimum allowed date.
 			@param maxDate {CDate} The maximum allowed date.
 			@return {boolean} <code>true</code> if selectable, <code>false</code> if not. */
-		_isSelectable: function (elem, date, onDate, minDate, maxDate) {
-			var dateInfo = (typeof onDate === 'boolean' ? { selectable: onDate } :
+		_isSelectable: function(elem, date, onDate, minDate, maxDate) {
+			var dateInfo = (typeof onDate === 'boolean' ? {selectable: onDate} :
 				(!$.isFunction(onDate) ? {} : onDate.apply(elem, [date, true])));
 			return (dateInfo.selectable !== false) &&
 				(!minDate || date.toJD() >= minDate.toJD()) && (!maxDate || date.toJD() <= maxDate.toJD());
@@ -1352,7 +1307,7 @@
 			@memberof CalendarsPicker
 			@param elem {element} The control to affect.
 			@param action {string} The name of the action. */
-		performAction: function (elem, action) {
+		performAction: function(elem, action) {
 			var inst = this._getInst(elem);
 			if (!$.isEmptyObject(inst) && !this.isDisabled(elem)) {
 				var commands = inst.options.commands;
@@ -1369,17 +1324,17 @@
 			@param [month] {number} The month to show (1-12).
 			@param [day] {number} The day to show.
 			@example $(selector).datepick('showMonth', 2014, 12, 25) */
-		showMonth: function (elem, year, month, day) {
+		showMonth: function(elem, year, month, day) {
 			var inst = this._getInst(elem);
 			if (!$.isEmptyObject(inst) && (day != null ||
-				(inst.drawDate.year() !== year || inst.drawDate.month() !== month))) {
+					(inst.drawDate.year() !== year || inst.drawDate.month() !== month))) {
 				inst.prevDate = inst.drawDate.newDate();
 				var calendar = inst.options.calendar;
 				var show = this._checkMinMax((year != null ?
 					calendar.newDate(year, month, 1) : calendar.today()), inst);
-				inst.drawDate.date(show.year(), show.month(),
+				inst.drawDate.date(show.year(), show.month(), 
 					(day != null ? day : Math.min(inst.drawDate.day(),
-						calendar.daysInMonth(show.year(), show.month()))));
+					calendar.daysInMonth(show.year(), show.month()))));
 				this._update(elem);
 			}
 		},
@@ -1389,7 +1344,7 @@
 			@param elem {Element} The control to affect.
 			@param offset {number} The number of months to change by.
 			@example $(selector).datepick('changeMonth', 2)*/
-		changeMonth: function (elem, offset) {
+		changeMonth: function(elem, offset) {
 			var inst = this._getInst(elem);
 			if (!$.isEmptyObject(inst)) {
 				var date = inst.drawDate.newDate().add(offset, 'm');
@@ -1402,7 +1357,7 @@
 			@param elem {Element} The control to affect.
 			@param offset {number} The number of days to change by.
 			@example $(selector).datepick('changeDay', 7)*/
-		changeDay: function (elem, offset) {
+		changeDay: function(elem, offset) {
 			var inst = this._getInst(elem);
 			if (!$.isEmptyObject(inst)) {
 				var date = inst.drawDate.newDate().add(offset, 'd');
@@ -1415,7 +1370,7 @@
 			@private
 			@param date {CDate} The date to check.
 			@param inst {object} The current instance settings. */
-		_checkMinMax: function (date, inst) {
+		_checkMinMax: function(date, inst) {
 			var minDate = inst.get('minDate');
 			var maxDate = inst.get('maxDate');
 			date = (minDate && date.compareTo(minDate) === -1 ? minDate.newDate() : date);
@@ -1429,7 +1384,7 @@
 			@param target {Element} The selected datepicker element.
 			@return {CDate} The corresponding date, or <code>null</code>.			
 			@example var date = $(selector).datepick('retrieveDate', $('div.datepick-popup a:contains(10)')[0]) */
-		retrieveDate: function (elem, target) {
+		retrieveDate: function(elem, target) {
 			var inst = this._getInst(elem);
 			return ($.isEmptyObject(inst) ? null : inst.options.calendar.fromJD(
 				parseFloat(target.className.replace(/^.*jd(\d+\.5).*$/, '$1'))));
@@ -1440,7 +1395,7 @@
 			@param elem {Element} The control to examine.
 			@param target {Element} The selected datepicker element.
 			@example $(selector).datepick('selectDate', $('div.datepick-popup a:contains(10)')[0]) */
-		selectDate: function (elem, target) {
+		selectDate: function(elem, target) {
 			var inst = this._getInst(elem);
 			if (!$.isEmptyObject(inst) && !this.isDisabled(elem)) {
 				var date = this.retrieveDate(elem, target);
@@ -1472,7 +1427,7 @@
 				inst.prevDate = inst.drawDate = date.newDate();
 				this._updateInput(elem);
 				if (inst.inline || inst.pickingRange || inst.selectedDates.length <
-					(inst.options.multiSelect || (inst.options.rangeSelect ? 2 : 1))) {
+						(inst.options.multiSelect || (inst.options.rangeSelect ? 2 : 1))) {
 					this._update(elem);
 				}
 				else {
@@ -1487,7 +1442,7 @@
 			@param elem {Element} The control to affect.
 			@param inst {object} The current instance settings.
 			@return {jQuery} The datepicker content */
-		_generateContent: function (elem, inst) {
+		_generateContent: function(elem, inst) {
 			var monthsToShow = inst.options.monthsToShow;
 			monthsToShow = ($.isArray(monthsToShow) ? monthsToShow : [1, monthsToShow]);
 			inst.drawDate = this._checkMinMax(
@@ -1507,7 +1462,7 @@
 			var picker = this._prepare(inst.options.renderer.picker, inst).replace(/\{months\}/, monthRows).
 				replace(/\{weekHeader\}/g, this._generateDayHeaders(inst, inst.options.calendar, inst.options.renderer));
 			// Add commands
-			var addCommand = function (type, open, close, name, classes) {
+			var addCommand = function(type, open, close, name, classes) {
 				if (picker.indexOf('{' + type + ':' + name + '}') === -1) {
 					return;
 				}
@@ -1519,18 +1474,18 @@
 					inst.options.renderer.commandClass + '-' + name + ' ' + classes +
 					(command.enabled(inst) ? '' : ' ' + inst.options.renderer.disabledClass) + '">' +
 					(date ? date.formatDate(inst.options[command.text]) :
-						inst.options[command.text]) + '</' + close + '>');
+					inst.options[command.text]) + '</' + close + '>');
 			};
 			for (var name in inst.options.commands) {
 				addCommand('button', 'button type="button"', 'button', name,
 					inst.options.renderer.commandButtonClass);
-				addCommand('link', 'a href="#void(0)"', 'a', name,
+				addCommand('link', 'a href="javascript:void(0)"', 'a', name,
 					inst.options.renderer.commandLinkClass);
 			}
 			picker = $(picker);
 			if (monthsToShow[1] > 1) {
 				var count = 0;
-				$(inst.options.renderer.monthSelector, picker).each(function () {
+				$(inst.options.renderer.monthSelector, picker).each(function() {
 					var nth = ++count % monthsToShow[1];
 					$(this).addClass(nth === 1 ? 'first' : (nth === 0 ? 'last' : ''));
 				});
@@ -1543,27 +1498,25 @@
 					removeClass(inst.options.renderer.highlightedClass);
 			}
 			picker.find(inst.options.renderer.daySelector + ' a').hover(
-				function () {
-					removeHighlight.apply(this);
-					$(this).addClass(inst.options.renderer.highlightedClass);
-				},
-				removeHighlight).
-				click(function () {
+					function() {
+						removeHighlight.apply(this);
+						$(this).addClass(inst.options.renderer.highlightedClass);
+					},
+					removeHighlight).
+				click(function() {
 					self.selectDate(elem, this);
 				}).end().
 				find('select.' + this._monthYearClass + ':not(.' + this._anyYearClass + ')').
-				change(function () {
+				change(function() {
 					var monthYear = $(this).val().split('/');
 					self.showMonth(elem, parseInt(monthYear[1], 10), parseInt(monthYear[0], 10));
 				}).end().
-				find('select.' + this._anyYearClass).click(function () {
+				find('select.' + this._anyYearClass).click(function() {
 					$(this).css('visibility', 'hidden').
-						next('input').css({
-							left: this.offsetLeft, top: this.offsetTop,
-							width: this.offsetWidth, height: this.offsetHeight
-						}).show().focus();
+						next('input').css({left: this.offsetLeft, top: this.offsetTop,
+						width: this.offsetWidth, height: this.offsetHeight}).show().focus();
 				}).end().
-				find('input.' + self._monthYearClass).change(function () {
+				find('input.' + self._monthYearClass).change(function() {
 					try {
 						var year = parseInt($(this).val(), 10);
 						year = (isNaN(year) ? inst.drawDate.year() : year);
@@ -1572,7 +1525,7 @@
 					catch (e) {
 						alert(e);
 					}
-				}).keydown(function (event) {
+				}).keydown(function(event) {
 					if (event.keyCode === 13) { // Enter
 						$(event.elem).change();
 					}
@@ -1582,16 +1535,16 @@
 					}
 				});
 			// Add keyboard handling
-			var data = { elem: inst.elem[0] };
+			var data = {elem: inst.elem[0]};
 			picker.keydown(data, this._keyDown).keypress(data, this._keyPress).keyup(data, this._keyUp);
 			// Add command behaviour
-			picker.find('.' + inst.options.renderer.commandClass).click(function () {
-				if (!$(this).hasClass(inst.options.renderer.disabledClass)) {
-					var action = this.className.replace(
-						new RegExp('^.*' + inst.options.renderer.commandClass + '-([^ ]+).*$'), '$1');
-					plugin.performAction(elem, action);
-				}
-			});
+			picker.find('.' + inst.options.renderer.commandClass).click(function() {
+					if (!$(this).hasClass(inst.options.renderer.disabledClass)) {
+						var action = this.className.replace(
+							new RegExp('^.*' + inst.options.renderer.commandClass + '-([^ ]+).*$'), '$1');
+						plugin.performAction(elem, action);
+					}
+				});
 			// Add classes
 			if (inst.options.isRTL) {
 				picker.addClass(inst.options.renderer.rtlClass);
@@ -1605,7 +1558,7 @@
 			// Resize
 			$('body').append(picker);
 			var width = 0;
-			picker.find(inst.options.renderer.monthSelector).each(function () {
+			picker.find(inst.options.renderer.monthSelector).each(function() {
 				width += $(this).outerWidth();
 			});
 			picker.width(width / monthsToShow[0]);
@@ -1627,7 +1580,7 @@
 			@param renderer {object} The rendering templates.
 			@param first {boolean} <code>true</code> if first of multiple months.
 			@return {string} The month content. */
-		_generateMonth: function (elem, inst, year, month, calendar, renderer, first) {
+		_generateMonth: function(elem, inst, year, month, calendar, renderer, first) {
 			var daysInMonth = calendar.daysInMonth(year, month);
 			var monthsToShow = inst.options.monthsToShow;
 			monthsToShow = ($.isArray(monthsToShow) ? monthsToShow : [1, monthsToShow]);
@@ -1644,7 +1597,7 @@
 			var today = calendar.today();
 			var drawDate = calendar.newDate(year, month, calendar.minDay);
 			drawDate.add(-leadDays - (fixedWeeks &&
-				(drawDate.dayOfWeek() === firstDay || drawDate.daysInMonth() < calendar.daysInWeek()) ?
+				(drawDate.dayOfWeek() === firstDay || drawDate.daysInMonth() < calendar.daysInWeek())?
 				calendar.daysInWeek() : 0), 'd');
 			var jd = drawDate.toJD();
 			// Generate weeks
@@ -1652,7 +1605,7 @@
 			for (var week = 0; week < numWeeks; week++) {
 				var weekOfYear = (!showWeeks ? '' : '<span class="jd' + jd + '">' +
 					($.isFunction(inst.options.calculateWeek) ?
-						inst.options.calculateWeek(drawDate) : drawDate.weekOfYear()) + '</span>');
+					inst.options.calculateWeek(drawDate) : drawDate.weekOfYear()) + '</span>');
 				var days = '';
 				for (var day = 0; day < calendar.daysInWeek(); day++) {
 					var selected = false;
@@ -1673,21 +1626,21 @@
 					var selectable = (selectOtherMonths || drawDate.month() === month) &&
 						this._isSelectable(elem, drawDate, dateInfo.selectable, minDate, maxDate);
 					days += this._prepare(renderer.day, inst).replace(/\{day\}/g,
-						(selectable ? '<a href="#void(0)"' : '<span') +
+						(selectable ? '<a href="javascript:void(0)"' : '<span') +
 						' class="jd' + jd + ' ' + (dateInfo.dateClass || '') +
 						(selected && (selectOtherMonths || drawDate.month() === month) ?
-							' ' + renderer.selectedClass : '') +
+						' ' + renderer.selectedClass : '') +
 						(selectable ? ' ' + renderer.defaultClass : '') +
 						(drawDate.weekDay() ? '' : ' ' + renderer.weekendClass) +
 						(drawDate.month() === month ? '' : ' ' + renderer.otherMonthClass) +
 						(drawDate.compareTo(today) === 0 && drawDate.month() === month ?
-							' ' + renderer.todayClass : '') +
+						' ' + renderer.todayClass : '') +
 						(drawDate.compareTo(inst.drawDate) === 0 && drawDate.month() === month ?
-							' ' + renderer.highlightedClass : '') + '"' +
+						' ' + renderer.highlightedClass : '') + '"' +
 						(dateInfo.title || (inst.options.dayStatus && selectable) ? ' title="' +
-							(dateInfo.title || drawDate.formatDate(inst.options.dayStatus)) + '"' : '') + '>' +
+						(dateInfo.title || drawDate.formatDate(inst.options.dayStatus)) + '"' : '') + '>' +
 						(inst.options.showOtherMonths || drawDate.month() === month ?
-							dateInfo.content || drawDate.day() : '&#160;') +
+						dateInfo.content || drawDate.day() : '&#160;') +
 						(selectable ? '</a>' : '</span>'));
 					drawDate.add(1, 'd');
 					jd++;
@@ -1714,7 +1667,7 @@
 			@param calendar {BaseCalendar} The current calendar.
 			@param renderer {object} The rendering templates.
 			@return {string} A week's worth of day headers. */
-		_generateDayHeaders: function (inst, calendar, renderer) {
+		_generateDayHeaders: function(inst, calendar, renderer) {
 			var firstDay = inst.options.firstDay;
 			firstDay = (firstDay == null ? calendar.local.firstDay : firstDay);
 			var header = '';
@@ -1738,7 +1691,7 @@
 			@param monthHeader {string} The month/year format.
 			@param calendar {BaseCalendar} The current calendar.
 			@return {string} The month selection content. */
-		_generateMonthSelection: function (inst, year, month, minDate, maxDate, monthHeader, calendar) {
+		_generateMonthSelection: function(inst, year, month, minDate, maxDate, monthHeader, calendar) {
 			if (!inst.options.changeMonth) {
 				return calendar.formatDate(monthHeader, calendar.newDate(year, month, 1));
 			}
@@ -1751,9 +1704,9 @@
 			var maxMonth = calendar.monthsInYear(year) + calendar.minMonth;
 			for (var m = calendar.minMonth; m < maxMonth; m++) {
 				if ((!minDate || calendar.newDate(year, m,
-					calendar.daysInMonth(year, m) - 1 + calendar.minDay).
-					compareTo(minDate) !== -1) &&
-					(!maxDate || calendar.newDate(year, m, calendar.minDay).
+						calendar.daysInMonth(year, m) - 1 + calendar.minDay).
+						compareTo(minDate) !== -1) &&
+						(!maxDate || calendar.newDate(year, m, calendar.minDay).
 						compareTo(maxDate) !== +1)) {
 					selector += '<option value="' + m + '/' + year + '"' +
 						(month === m ? ' selected="selected"' : '') + '>' +
@@ -1782,7 +1735,7 @@
 					'" title="' + inst.options.yearStatus + '">';
 				start = calendar.newDate(start + 1, calendar.firstMonth, calendar.minDay).add(-1, 'd');
 				end = calendar.newDate(end, calendar.firstMonth, calendar.minDay);
-				var addYear = function (y, yDisplay) {
+				var addYear = function(y, yDisplay) {
 					if (y !== 0 || calendar.hasYearZero) {
 						selector += '<option value="' +
 							Math.min(month, calendar.monthsInYear(y) - 1 + calendar.minMonth) +
@@ -1832,8 +1785,8 @@
 			@param text {string} The text to localise.
 			@param inst {object} The current instance settings.
 			@return {string} The localised text. */
-		_prepare: function (text, inst) {
-			var replaceSection = function (type, retain) {
+		_prepare: function(text, inst) {
+			var replaceSection = function(type, retain) {
 				while (true) {
 					var start = text.indexOf('{' + type + ':start}');
 					if (start === -1) {
@@ -1860,9 +1813,9 @@
 
 	var plugin = $.calendarsPicker; // Singleton instance
 
-	$(function () {
+	$(function() {
 		$(document).on('mousedown.' + pluginName, plugin._checkExternalClick).
-			on('resize.' + pluginName, function () { plugin.hide(plugin.curInst); });
+			on('resize.' + pluginName, function() { plugin.hide(plugin.curInst); });
 	});
 
 })(jQuery);

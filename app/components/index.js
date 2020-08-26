@@ -11,3 +11,5 @@ export AgencyRegister1 from './Forms/AgencyRegister1';
 export AgencyRegister2 from './Forms/AgencyRegister2';
 export AgencyRegister3 from './Forms/AgencyRegister3';
 export AgencyRegister4 from './Forms/AgencyRegister4';
+export Login from './Forms/Login';
+export ManageTravelAgencies from './ManageTravelAgencies';
