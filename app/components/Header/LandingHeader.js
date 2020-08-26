@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import AOS from 'aos';
+// import AOS from 'aos';
 import { Link } from 'react-router-dom';
 
 class LandingHeader extends Component {
@@ -119,10 +119,12 @@ class LandingHeader extends Component {
                     </div>
                   </li>
                   <li>
-                    <a href="login.html" className="btn btn-outline-dark btn-sm ">
-
+                    <Link
+                      to="/login"
+                      // href="login.html"
+                      className="btn btn-outline-dark btn-sm ">
                       تسجيل دخول
-                </a>
+                    </Link>
                   </li>
                 </ul>
               </div>

@@ -6,6 +6,13 @@ import { LandingHeader, UmrahSearch, Features, ProgramBlock, Newsletter, Footer 
 import { setNotif } from 'Actions/NotifActions';
 
 class Landing extends React.Component {
+  constructor(props) {
+    super(props);
+
+    if (localStorage.hasOwnProperty('user')) {
+      this.props.history.push('/admin/manage-travel-agencies')
+    }
+  }
   render() {
     return (
       <div className="wrapper">

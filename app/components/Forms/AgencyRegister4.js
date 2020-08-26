@@ -140,21 +140,21 @@ class AgencyRegister4 extends Component {
     const ownerData = addOwnerData.map((item, index) => {
       return (
         <tr key={index}>
-          <td>{item.ownersname}</td>
-          <td>{item.idnumber}</td>
-          <td>{item.mobilenumber}</td>
+          <td>{item.owner_name}</td>
+          <td>{item.owner_id}</td>
+          <td>{item.phone_number}</td>
         </tr>)
     })
     const Brance = contactData.get('Branch')
     const renderBrance = Brance.map((item, index) => {
       return (
         <tr key={index}>
-          <td>{item.branchName}</td>
+          <td>{item.branch_name}</td>
           <td>{item.city}</td>
           <td>{item.street}</td>
           <td>{item.buildingNo}</td>
-          <td>{item.longitude}, {item.latitude}</td>
-          <td>{item.cellNo} </td>
+          <td>{item.longtitude}, {item.latitude}</td>
+          <td>{item.phone_number} </td>
         </tr>)
     })
     return (
