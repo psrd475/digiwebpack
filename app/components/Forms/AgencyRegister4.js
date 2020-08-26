@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
+import { setNotif } from 'Actions/NotifActions';
 import { connect } from 'react-redux';
 
 // import { } from 'Actions/AgencyRegAction';
@@ -70,7 +71,7 @@ class AgencyRegister4 extends Component {
     data.append("FTAV_registration", LicenseData.get('FTAV_Available'))
     data.append("TUTTA_registration", LicenseData.get('TUTTA_Available'))
     data.append("agency_owners", JSON.stringify(OwnerList))
-    data.append("agency_braches", JSON.stringify(Branch))
+    data.append("agency_branches", JSON.stringify(Branch))
 
     if (LicenseData.get('embassy_Available')) {
       data.append("embassy_license_no", LicenseData.get('LicenceNo'))
@@ -118,9 +119,22 @@ class AgencyRegister4 extends Component {
     postFormData(`${API_URL}/agency/registration`, data)
       .then((res) => {
         if (res.status === 1) {
-          // window.location.reload();
+          this.props.setNotif({
+            message: "Success",
+            variant: 'success'
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 4000);
         } else {
-          console.log(error);
+          if (typeof res.error === 'string' || Array.isArray(res.error)) {
+            this.props.setNotif({
+              message: res.error,
+              variant: 'error'
+            });
+          }
+          else
+            console.error(res.error);
         }
       })
       .catch(err => {
@@ -746,18 +760,20 @@ class AgencyRegister4 extends Component {
 }
 
 const redux = 'AgencyRegistration';
+
 const mapStateToProps = state => ({
   agencyData: state.getIn([redux, 'agencyData']),
   LicenseData: state.getIn([redux, 'LicenseData']),
   contactData: state.getIn([redux, 'contactData'])
 });
 
+const mapDispatchToProps = dispatch => ({
+  setNotif: bindActionCreators(setNotif, dispatch)
+});
 
 const AgencyRegister4Mapped = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(AgencyRegister4);
+
 export default AgencyRegister4Mapped;
-
-
-// export default AgencyRegister4;
