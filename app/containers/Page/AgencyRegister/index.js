@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-
 import { AgencyRegister1, AgencyRegister2, AgencyRegister3, AgencyRegister4 } from 'Components';
 
 class AgencyRegister extends Component {
