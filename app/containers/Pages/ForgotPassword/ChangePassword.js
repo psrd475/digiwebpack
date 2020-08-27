@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { setNotif } from 'Actions/NotifActions';
+import { setNotif } from 'Actions';
 
 class ChangePassword extends Component {
   constructor() {

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import countrydetails from '../../api/countrydetails';
-import { setNotif } from 'Actions/NotifActions';
+import { setNotif } from 'Actions';
 // import { postData } from 'Helpers/request';
 
 

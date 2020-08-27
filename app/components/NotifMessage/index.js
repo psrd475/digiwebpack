@@ -11,7 +11,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import WarningIcon from '@material-ui/icons/Warning';
 import InfoIcon from '@material-ui/icons/Info';
-import { setNotif } from 'Actions/NotifActions';
+import { setNotif } from 'Actions';
 
 const variantIcon = {
   success: <CheckCircleIcon />,

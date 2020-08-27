@@ -20,12 +20,12 @@ export const AgencyRegistration = loadable(() =>
 
 // Page Forgot Password
 export const ForgetPassword = loadable(() =>
-  import('./Page/ForgotPassword/ForgetPassword'), {
+  import('./Pages/ForgotPassword/ForgetPassword'), {
   fallback: <Loading />,
 });
 
 // Page Change Password
 export const ChangePassword = loadable(() =>
-  import('./Page/ForgotPassword/ChangePassword'), {
+  import('./Pages/ForgotPassword/ChangePassword'), {
   fallback: <Loading />,
 });

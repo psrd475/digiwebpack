@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { LoginForm } from 'Components';
 import { makeSecureEncrypt } from 'Helpers/security';
 import { postData } from 'Helpers/request';
-import { setNotif } from 'Actions/NotifActions';
+import { setNotif } from 'Actions';
 
 class Login extends Component {
   constructor(props) {

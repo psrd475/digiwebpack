@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux-immutable';
 import notification from './modules/notification';
-import AgencyRegistration from './modules/AgencyRegistration';
+import agency from './modules/agency';
 import auth from './modules/auth';
 
 export default function createReducer() {
   const rootReducer = combineReducers({
     auth,
     notification,
-    AgencyRegistration
+    agency
   });
 
   return rootReducer;

@@ -1,7 +1,5 @@
 import { fromJS } from 'immutable';
-import {
-  SET_NOTIF
-} from 'Actions/actionConstants';
+import { SET_NOTIF } from 'Actions/actionConstants';
 
 const initialState = {
   message: '',
