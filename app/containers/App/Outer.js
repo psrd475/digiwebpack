@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import {
-  Login
+  Login, ChangePassword, ForgetPassword
 } from '../pageListAsync';
 
 class Outer extends Component {
@@ -9,6 +9,8 @@ class Outer extends Component {
     return (
       <Switch>
         <Route exact path="/login" component={Login} />
+        <Route exact path="/foget-password" component={ForgetPassword} />
+        <Route exact path="/change-password" component={ChangePassword} />
       </Switch>
     );
   }
