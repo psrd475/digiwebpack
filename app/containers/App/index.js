@@ -1,23 +1,31 @@
 import React, { Fragment } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { NotifMessage } from 'Components';
-import { Landing, AgencyRegister } from '../pageListAsync';
-import { LandingHeader, Footer, Register, Login, ManageTravelAgencies } from 'Components';
+import { NotifMessage, Footer } from 'Components';
+import Outer from './Outer';
+// import User from './User';
+import Agency from './Agency';
+// import Admin from './Admin';
+import { Landing } from '../pageListAsync';
 
 class App extends React.Component {
   render() {
     return (
       <Fragment>
         <Switch>
-          <Route exact path="/login" component={Login} />
-        </Switch>
-        <LandingHeader />
-        <Switch>
           <Route exact path="/" component={Landing} />
-          {/* <Route exact path="/login" component={Login} /> */}
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/agency-register" component={AgencyRegister} />
-          <Route exact path="/admin/manage-travel-agencies" component={ManageTravelAgencies} />
+          <Route
+            path="/agency"
+            render={() => <Agency />}
+          />
+          {/* <Route
+            path="/user"
+            render={() => <User />}
+          />
+          <Route
+            path="/admin"
+            render={() => <Admin />}
+          /> */}
+          <Route component={Outer} />
         </Switch>
         <Footer />
         <NotifMessage />

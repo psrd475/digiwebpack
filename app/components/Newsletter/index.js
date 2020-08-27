@@ -3,6 +3,7 @@ import React, { Component, Fragment } from 'react';
 class Newsletter extends Component {
   componentDidMount() {
     AOS.init();
+
     $('.dropdown-menu .form-group').click(function (e) {
       e.stopPropagation();
     });
@@ -24,20 +25,20 @@ class Newsletter extends Component {
                   <h3 className="mb-3 text-light"> اشترك في نشرتنا الاخبارية </h3>
                   <p className="text-white">
                     لتصلك آخر العروض المتميزة الى بريدك الالكتروني
-          </p>
+                  </p>
                 </div>
                 <div className="col-lg-8">
                   <div className="row">
                     <div className="col-md-5 form-group">
                       <label htmlFor=" " className="form-label">
                         الاسم
-              </label>
+                      </label>
                       <input type="text" className="form-control" />
                     </div>
                     <div className="col-md-5 form-group">
                       <label htmlFor=" " className="form-label">
                         البريد الالكتروني
-              </label>
+                      </label>
                       <input type="text" className="form-control" />
                     </div>
                     <div className="col-md-2 form-group pt-0 pt-md-4">
@@ -54,7 +55,7 @@ class Newsletter extends Component {
             </div>
           </div>
         </section>
-      </Fragment >
+      </Fragment>
     )
   }
 }

@@ -222,9 +222,9 @@ class Register extends Component {
   }
 }
 
-// SignupForm.propTypes = {
-//   showNotif: PropTypes.func.isRequired
-// };
+SignupForm.propTypes = {
+  setNotif: PropTypes.func.isRequired
+};
 
 const mapDispatchToProps = dispatch => ({
   setNotif: bindActionCreators(setNotif, dispatch)

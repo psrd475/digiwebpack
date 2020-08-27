@@ -8,8 +8,12 @@ export const Landing = loadable(() =>
   fallback: <Loading />,
 });
 
-// Page Agency Register
-export const AgencyRegister = loadable(() =>
-  import('./Page/AgencyRegister'), {
+// Pages
+export const Login = loadable(() =>
+  import('./Pages/Login'), {
+  fallback: <Loading />,
+});
+export const AgencyRegistration = loadable(() =>
+  import('./Pages/AgencyRegistration'), {
   fallback: <Loading />,
 });

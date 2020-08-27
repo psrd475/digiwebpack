@@ -1,8 +1,15 @@
-export async function postData(url, data) {
+import { makeSecureDecrypt } from './security';
+
+export async function postAuthData(url, data) {
+  const user = JSON.parse(
+    makeSecureDecrypt(localStorage.getItem('user'))
+  );
+
   const response = await fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'multipartform-data',
+      'Authorization': `Bearer ${user.token}`,
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(data)
   });
@@ -10,13 +17,31 @@ export async function postData(url, data) {
   return response.json();
 }
 
-export async function postDataForm(url, data) {
+export async function postData(url, data) {
+  if (data === null)
+    data = new Object();
+
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data)
+  });
+
+  return response.json();
+}
+
+export async function getAuthData(url) {
+  const user = JSON.parse(
+    makeSecureDecrypt(localStorage.getItem('user'))
+  );
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${user.token}`
+    }
   });
 
   return response.json();
@@ -29,11 +54,18 @@ export async function getData(url) {
 
   return response.json();
 }
-export async function postFormData(url, data) {
+
+export async function postAuthFormData(url, data) {
+  const user = JSON.parse(
+    makeSecureDecrypt(localStorage.getItem('user'))
+  );
 
   const response = await fetch(url, {
     method: 'POST',
     body: data,
+    headers: {
+      'Authorization': `Bearer ${user.token}`
+    }
   });
   return await response.json();
 }

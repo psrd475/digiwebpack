@@ -275,7 +275,7 @@ class ManageTravelAgencies extends Component {
                       <option value="Qatar">Qatar</option>
                       <option value="Republic of Montenegro">
                         Republic of Montenegro
-              </option>
+                       </option>
                       <option value="Republic of Serbia">Republic of Serbia</option>
                       <option value="Reunion">Reunion</option>
                       <option value="Romania">Romania</option>

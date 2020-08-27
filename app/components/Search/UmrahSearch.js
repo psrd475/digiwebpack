@@ -3,15 +3,15 @@ import React, { Component, Fragment } from 'react';
 class UmrahSearch extends Component {
   componentDidMount() {
     AOS.init();
+
     $('.dropdown-menu .form-group').click(function (e) {
       e.stopPropagation();
     });
-    // $('.form-date').daterangepicker();
   }
   render() {
     return (
       <Fragment>
-        < section className="home-banner pb-4" >
+        <section className="home-banner pb-4" >
           <div
             className="container py-0 py-lg-5 my-3 my-lg-5"
             data-aos="fade-right"
@@ -20,13 +20,12 @@ class UmrahSearch extends Component {
             data-aos-delay={100}
           >
             <div className="search_box p-4 shadow bg-white my-0 my-md-4">
-              <h2 className="section-title"> Here start the Umrah</h2>
+              <h2 className="section-title">Here start the Umrah</h2>
               <div className="row">
                 <div className="col-md-6 form-group">
                   <label htmlFor="" className="d-block">
-
                     Program Path
-          </label>
+                  </label>
                   <select className="form-control">
                     <option> Makkah and madina </option>
                     <option> Makkah Only </option>
@@ -34,14 +33,12 @@ class UmrahSearch extends Component {
                 </div>
                 <div className="col-md-6  form-group">
                   <label htmlFor="" className="d-block">
-
                     Program dates
                   </label>
                   <input type="text" className="form-control form-date" readOnly />
                 </div>
                 <div className="col-md-6 form-group">
                   <label htmlFor="" className="d-block">
-
                     Travel from
                   </label>
                   <select name="" id="" className="form-control">
@@ -59,7 +56,6 @@ class UmrahSearch extends Component {
                 </div>
                 <div className="col-md-6 form-group">
                   <label htmlFor="" className="d-block">
-
                     Program type
                   </label>
                   <select className="form-control">
@@ -74,15 +70,14 @@ class UmrahSearch extends Component {
                     href="Search_results.html"
                     className="btn btn-block btn-lg btn-primary mt-2"
                   >
-
                     Search
                   </a>
                 </div>
               </div>
             </div>
           </div>
-        </section >
-      </Fragment >
+        </section>
+      </Fragment>
     )
   }
 }
