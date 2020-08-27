@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from 'react';
-// import AOS from 'aos';
 import { Link } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import { setAuth } from 'Actions/AuthAction';
+
 
 class LandingHeader extends Component {
   constructor(props) {
@@ -22,8 +20,7 @@ class LandingHeader extends Component {
   }
   render() {
     const isLoggedIn = localStorage.hasOwnProperty('user');
-
-    console.log("isLoggedIn", user);
+    // console.log("isLoggedIn", user);
     return (
       <Fragment>
         < header className="header" >
@@ -162,10 +159,8 @@ const mapStateToProps = state => ({
   isLoggedIn: state.getIn([redux, 'isLoggedIn'])
 });
 
-
 const LandingHeaderMapped = connect(
   mapStateToProps,
   null
 )(LandingHeader);
 export default LandingHeaderMapped;
-// export default LandingHeader;
