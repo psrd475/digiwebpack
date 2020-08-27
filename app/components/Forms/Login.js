@@ -125,9 +125,11 @@ class Login extends Component {
                       تذكرني
             </label>
                   </div>
-                  <a href="forget_password.html" className="btn-link text-primary">
+                  <Link
+                    to="/foget-password"
+                    className="btn-link text-primary">
                     نسيت كلمة السر
-                  </a>
+                  </Link>
                 </div>
                 <div className="mt-3 d-flex justify-content-between">
                   <Link
