@@ -68,15 +68,14 @@ class AgencyRegister1 extends Component {
     })
   }
   handleOwnerSubmit = (e) => {
-    const { owner_name, owner_id, phone_number } = this.state
-
+    let { owner_name, owner_id, phone_number } = this.state
     const addowner = this.props.agencyData.get('OwnerList').push({ owner_name, owner_id, phone_number });
     let tem = this.props.agencyData;
     tem = tem.set('OwnerList', addowner);
-
     this.props.addInfo({ agencyData: tem });
-
     this.setState({ owner_name: '', owner_id: '', phone_number: '' })
+    console.log("state", this.state);
+
   }
   handleChange = (e) => {
     // if (!/^[a-zA-Z]+$/.test(travelagencyname)) {
@@ -101,8 +100,6 @@ class AgencyRegister1 extends Component {
       };
 
       reader.readAsDataURL(e.target.files[0]);
-      // let agencyDataTemp = this.props.agencyData.set('RegistryFile', e.target.files[0])
-      // this.props.addInfo({ agencyData: agencyDataTemp });
 
       let agencyDataTemp = this.props.agencyData.set('AgencyLogo', e.target.files[0])
       this.props.addInfo({ agencyData: agencyDataTemp });
@@ -123,6 +120,27 @@ class AgencyRegister1 extends Component {
       this.props.addInfo({ agencyData: agencyDataTemp });
     }
   }
+  deleteChange = (ownerId) => {
+    let owner = this.props.agencyData.get('OwnerList');
+    let tem = this.props.agencyData;
+
+    owner = owner.delete(ownerId);
+
+    tem = tem.set('OwnerList', owner);
+
+    this.props.addInfo({ agencyData: tem });
+  }
+
+  editChange = (ownerData, ownerId) => {
+    console.log("ownerData", ownerData);
+    console.log("ownerDataowner_name", ownerData.owner_name);
+    this.setState({
+      owner_name: ownerData.owner_name,
+      owner_id: ownerData.owner_id,
+      phone_number: ownerData.phone_number,
+    })
+  }
+
   render() {
 
     let agency = this.props.agencyData;
@@ -152,6 +170,7 @@ class AgencyRegister1 extends Component {
               className="table-action text-success"
               data-toggle="modal"
               data-target="#addbranch"
+              onClick={(e) => this.editChange(item, key)}
             >
               <i className="fal fa-fw fa-pencil-alt" />
             </a>
@@ -162,7 +181,7 @@ class AgencyRegister1 extends Component {
               className="table-action text-danger"
               data-toggle="modal"
               data-target="#deleteitem"
-              onClick={this.deleteChange}
+              onClick={(e) => this.deleteChange(key)}
             >
               <i className="fal fa-fw fa-trash-alt" />
             </a>
@@ -460,7 +479,7 @@ class AgencyRegister1 extends Component {
 
         <div>
           {/* Modal */}
-          <div
+          {/* <div
             className="modal fade"
             id="addbranch"
             tabIndex={-1}
@@ -489,7 +508,7 @@ class AgencyRegister1 extends Component {
                     <div className="col-md-6">
                       <div className="form-group ">
                         <label className="d-block col-form-label"> اسم المالك </label>
-                        <input type="text" className="form-control" name="owner_name" onChange={this.handleOwner} value={agencyData.get('owner_name')} />
+                        <input type="text" className="form-control" name="owner_name" onChange={this.handleOwner} value={this.state.owner_name} />
                       </div>
                     </div>
                   </div>
@@ -497,13 +516,13 @@ class AgencyRegister1 extends Component {
                     <div className="col-md-6">
                       <div className="form-group ">
                         <label className="d-block col-form-label"> رقم الهوية </label>
-                        <input type="text" className="form-control" name="owner_id" onChange={this.handleOwner} />
+                        <input type="text" className="form-control" name="owner_id" onChange={this.handleOwner} value={this.state.owner_id} />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="form-group ">
                         <label className="d-block col-form-label"> رقم الجوال </label>
-                        <input type="text" className="form-control" name="phone_number" onChange={this.handleOwner} />
+                        <input type="text" className="form-control" name="phone_number" onChange={this.handleOwner} value={this.state.phone_number} />
                       </div>
                     </div>
                   </div>
@@ -527,7 +546,7 @@ class AgencyRegister1 extends Component {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div
             className="modal fade"
             id="deleteitem"
