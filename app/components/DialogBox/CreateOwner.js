@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 
 class CreateOwner extends Component {
   render() {
+    const {
+      owner_name, owner_id, owner_phone_number, handleChange, handleOwnerSubmit, handleOwnerReset
+    } = this.props;
+
     return (
       <div
         className="modal fade"
@@ -16,7 +20,7 @@ class CreateOwner extends Component {
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
                 إضافة مالك
-                </h5>
+              </h5>
               <button
                 type="button"
                 className="close"
@@ -32,11 +36,11 @@ class CreateOwner extends Component {
                   <div className="form-group ">
                     <label className="d-block col-form-label"> اسم المالك </label>
                     <input
+                      name="owner_name"
                       type="text"
                       className="form-control"
-                      name="owner_name"
-                    // onChange={this.handleOwner}
-                    // value={agencyData.get('owner_name')}
+                      value={owner_name}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -46,10 +50,11 @@ class CreateOwner extends Component {
                   <div className="form-group ">
                     <label className="d-block col-form-label"> رقم الهوية </label>
                     <input
+                      name="owner_id"
                       type="text"
                       className="form-control"
-                      name="owner_id"
-                    // onChange={this.handleOwner}
+                      value={owner_id}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -57,10 +62,11 @@ class CreateOwner extends Component {
                   <div className="form-group ">
                     <label className="d-block col-form-label"> رقم الجوال </label>
                     <input
+                      name="owner_phone_number"
                       type="text"
                       className="form-control"
-                      name="phone_number"
-                    // onChange={this.handleOwner}
+                      value={owner_phone_number}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -71,6 +77,7 @@ class CreateOwner extends Component {
                 type="button"
                 className="btn btn-outline-primary mr-2"
                 data-dismiss="modal"
+                onClick={handleOwnerReset}
               >
                 إلغاء
               </button>
@@ -78,7 +85,7 @@ class CreateOwner extends Component {
                 type="button"
                 className="btn btn-primary demo-trigger-1"
                 data-dismiss="modal"
-              // onClick={this.handleOwnerSubmit}
+                onClick={handleOwnerSubmit}
               >
                 حفظ
               </button>

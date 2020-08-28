@@ -17,14 +17,10 @@ export const AgencyRegistration = loadable(() =>
   import('./Pages/AgencyRegistration'), {
   fallback: <Loading />,
 });
-
-// Page Forgot Password
 export const ForgetPassword = loadable(() =>
   import('./Pages/ForgetPassword'), {
   fallback: <Loading />,
 });
-
-// Page Change Password
 export const ChangePassword = loadable(() =>
   import('./Pages/ChangePassword'), {
   fallback: <Loading />,

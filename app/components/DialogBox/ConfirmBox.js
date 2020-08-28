@@ -15,7 +15,7 @@ class ConfirmBox extends Component {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-                هل انت متأكد من حذف هذا المالك ؟
+                Are you sure to delete this ?
               </h5>
               <button
                 type="button"
@@ -26,13 +26,12 @@ class ConfirmBox extends Component {
                 <span aria-hidden="true">×</span>
               </button>
             </div>
-            <div className="modal-body">
+            {/* <div className="modal-body">
               <p className="bg-light font-weight-bold p-3">
-                {/* {this.state.owner_name} */}
-                Hello World
+                confirm data here
               </p>
-            </div>
-            <div className="modal-footer">
+            </div> */}
+            <div className="modal-footer" style={{ justifyContent: 'center' }}>
               <button
                 type="button"
                 className="btn btn-outline-secondary mr-2"
@@ -44,6 +43,7 @@ class ConfirmBox extends Component {
                 type="button"
                 className="btn btn-danger "
                 data-dismiss="modal"
+                onClick={() => this.props.handleDelete(this.props.variant)}
               >
                 تأكيد الحذف
               </button>

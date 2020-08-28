@@ -1,11 +1,15 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
+import { setAgencyData } from 'Actions';
 import BasicInformation from './BasicInformation';
 import OwnerInformation from './OwnerInformation';
-import BranchInformation from './BranchInformation';
 import LicenseData from './LicenseData';
-import AgencyPreviewData from '../AgencyPreviewData';
+import BranchInformation from './BranchInformation';
 import ContactInformation from './ContactInformation';
+import AgencyPreviewData from '../AgencyPreviewData';
 import ConfirmBox from '../../DialogBox/ConfirmBox';
 import CreateOwner from '../../DialogBox/CreateOwner';
 import CreateBranch from '../../DialogBox/CreateBranch';
@@ -15,8 +19,63 @@ class AgencyRegistrationForm extends Component {
     super(props);
 
     this.state = {
-      tab: 0
+      tab: 0,
+      ownerEditMode: false,
+      ownerEditableNode: -1,
+      confirm: '',
+      deleteIndex: -1,
+      owner_id: '',
+      owner_name: '',
+      owner_phone_number: ''
     }
+  }
+
+  handleChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  handleOwnerReset = () => {
+    this.setState({
+      owner_id: '',
+      owner_name: '',
+      owner_phone_number: '',
+      ownerEditMode: false,
+      ownerEditableNode: -1
+    });
+  }
+
+  handleOwnerEdit = (index) => {
+    const owner = this.props.agencyData.getIn(['agency_owners', index]);
+    this.setState({ ...owner, ownerEditMode: true, ownerEditableNode: index });
+  }
+
+  confirmDelete = (variant, index) => {
+    this.setState({ confirm: variant, deleteIndex: index });
+  }
+
+  handleDelete = (variant) => {
+    const updatedData = this.props.agencyData.get(variant).delete(this.state.deleteIndex);
+    this.props.setAgencyData({ [variant]: updatedData });
+  }
+
+  handleOwnerSubmit = () => {
+    let agency_owners;
+
+    const owner = {
+      owner_id: this.state.owner_id,
+      owner_name: this.state.owner_name,
+      owner_phone_number: this.state.owner_phone_number
+    };
+
+    if (this.state.ownerEditMode) {
+      agency_owners = this.props.agencyData.get('agency_owners').set(this.state.ownerEditableNode, owner);
+    } else {
+      agency_owners = this.props.agencyData.get('agency_owners').concat([owner]);
+    };
+
+    this.props.setAgencyData({ agency_owners });
+
+    this.handleOwnerReset();
   }
 
   handleTab = (operation) => {
@@ -44,13 +103,25 @@ class AgencyRegistrationForm extends Component {
   }
 
   render() {
-    const { tab } = this.state;
+    const { tab, owner_name, owner_id, owner_phone_number, confirm } = this.state;
 
     return (
       <Fragment>
         {/* Modals */}
-        <ConfirmBox />
-        <CreateOwner />
+        <ConfirmBox
+          variant={confirm}
+          handleDelete={this.handleDelete}
+        />
+
+        <CreateOwner
+          owner_id={owner_id}
+          owner_name={owner_name}
+          owner_phone_number={owner_phone_number}
+          handleChange={this.handleChange}
+          handleOwnerSubmit={this.handleOwnerSubmit}
+          handleOwnerReset={this.handleOwnerReset}
+        />
+
         <CreateBranch />
 
         <div className="page-layout">
@@ -106,7 +177,10 @@ class AgencyRegistrationForm extends Component {
                 {tab === 0 &&
                   <Fragment>
                     <BasicInformation />
-                    <OwnerInformation />
+                    <OwnerInformation
+                      handleOwnerEdit={this.handleOwnerEdit}
+                      confirmDelete={this.confirmDelete}
+                    />
                   </Fragment>
                 }
 
@@ -177,4 +251,24 @@ class AgencyRegistrationForm extends Component {
   }
 }
 
-export default AgencyRegistrationForm;
+AgencyRegistrationForm.propTypes = {
+  setAgencyData: PropTypes.func.isRequired,
+  agencyData: PropTypes.object.isRequired
+};
+
+const reducer = 'agency';
+
+const mapStateToProps = state => ({
+  agencyData: state.get(reducer)
+});
+
+const mapDispatchToProps = dispatch => ({
+  setAgencyData: bindActionCreators(setAgencyData, dispatch)
+});
+
+const AgencyRegistrationFormMapped = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AgencyRegistrationForm);
+
+export default AgencyRegistrationFormMapped;
