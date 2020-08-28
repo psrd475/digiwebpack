@@ -154,10 +154,16 @@ class BasicInformation extends Component {
                     إرفاق ملف السجل التجاري
                   </label>
                   <span className="form-control form-upload">
+                    <label htmlFor="commercial_registration_file">
+                      {agencyData.get('commercial_registration_file') !== null ? agencyData.get('commercial_registration_file').name : 'Choose File'}
+                    </label>
                     <input
+                      id='commercial_registration_file'
                       name="commercial_registration_file"
                       type="file"
+                      accept=".pdf"
                       onChange={this.handleFileChange}
+                      style={{ display: 'none' }}
                     />
                   </span>
                   <span className="text-muted small"> صيغة PDF </span>
@@ -174,7 +180,7 @@ class BasicInformation extends Component {
                     id="create-date"
                     name="commercial_registration_date"
                     type="text"
-                    autocomplete="off"
+                    autoComplete="off"
                     placeholder="Create Date"
                     className="form-control form-date"
                     value={agencyData.get('commercial_registration_date')}
@@ -191,7 +197,7 @@ class BasicInformation extends Component {
                     id="end-date"
                     name="commercial_registration_expiry_date"
                     type="text"
-                    autocomplete="off"
+                    autoComplete="off"
                     placeholder="Expiry Date"
                     className="form-control form-date"
                     value={agencyData.get('commercial_registration_expiry_date')}
@@ -230,11 +236,15 @@ class BasicInformation extends Component {
                 <span className="d-block">رفع صورة </span>
                 <span className="d-block">شعار الوكالة</span>
               </div>
+              <p>{agencyData.get('agency_logo') !== null ? agencyData.get('agency_logo').name : 'Choose Logo'}</p>
               <div className="file-input-mask">
                 <input
+                  id="upload-photo"
                   name="agency_logo"
                   type="file"
+                  accept="image/*"
                   onChange={this.handleFileChange}
+                  style={{ display: 'none' }}
                 />
               </div>
             </label>

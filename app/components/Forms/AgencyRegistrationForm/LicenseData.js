@@ -74,7 +74,7 @@ class LicenseData extends Component {
                 <div className="col-md-12">
                   <div className="form-group ">
                     <label className="d-block col-form-label">
-                      هل الوكالة مرخصة من قبل السفارة ؟
+                      {item.subtitle}
                     </label>
                     <div className="mt-2">
                       <div className="custom-control custom-radio  d-inline-block ">
@@ -127,11 +127,17 @@ class LicenseData extends Component {
                       ملف الترخيص
                     </label>
                     <span className="form-control form-upload">
+                      <label htmlFor={item.registartion_file}>
+                        {agencyData.get(item.registartion_file) !== null ? agencyData.get(item.registartion_file).name : 'Choose File'}
+                      </label>
                       <input
+                        id={item.registartion_file}
                         name={item.registartion_file}
                         type="file"
+                        accept=".pdf"
                         disabled={!agencyData.get(item.name)}
                         onChange={this.handleFileChange}
+                        style={{ display: 'none' }}
                       />
                     </span>
                     <span className="text-muted small"> صيغة PDF </span>
@@ -148,7 +154,7 @@ class LicenseData extends Component {
                       id={`create_date_${item.name}`}
                       name={item.create_date}
                       type="text"
-                      autocomplete="off"
+                      autoComplete="off"
                       placeholder="Create Date"
                       className="form-control form-date"
                       readOnly={!agencyData.get(item.name)}
@@ -166,7 +172,7 @@ class LicenseData extends Component {
                       id={`end_date_${item.name}`}
                       name={item.expiry_date}
                       type="text"
-                      autocomplete="off"
+                      autoComplete="off"
                       placeholder="Expiry Date"
                       className="form-control form-date"
                       readOnly={!agencyData.get(item.name)}
