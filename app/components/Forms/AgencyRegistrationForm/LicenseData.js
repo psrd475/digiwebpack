@@ -16,7 +16,6 @@ class LicenseData extends Component {
   }
 
   handleRadioChange = (e) => {
-    console.log(e);
     this.props.setAgencyData({ [e.target.name]: e.target.value === '0' ? false : true });
   }
 
@@ -27,40 +26,39 @@ class LicenseData extends Component {
   componentDidMount = () => {
     const _that = this;
 
-    // $(function () {
-    //   $('.create-date').daterangepicker({
-    //     singleDatePicker: true,
-    //     showDropdowns: true,
-    //     autoApply: true,
-    //     minYear: 2010,
-    //     maxYear: parseInt(moment().format('YYYY'), 10),
-    //     locale: {
-    //       format: 'YYYY-MM-DD'
-    //     }
-    //   },
-    //     function (start) {
-    //       _that.props.setAgencyData({ create_date: (start.format('YYYY-MM-DD')) })
+    for (let item of data) {
+      $(`#create_date_${item.name}`).daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoApply: true,
+        maxDate: new Date(),
+        minYear: new Date().getFullYear() - 10,
+        maxYear: new Date().getFullYear(),
+        locale: {
+          format: 'YYYY-MM-DD'
+        }
+      },
+        function (start) {
+          _that.props.setAgencyData({ [item.create_date]: (start.format('YYYY-MM-DD')) })
+        }
+      );
 
-    //     }
-    //   );
-    // })
-
-    // $(function () {
-    //   $('.end-date').daterangepicker({
-    //     singleDatePicker: true,
-    //     showDropdowns: true,
-    //     autoApply: true,
-    //     minYear: 2020,
-    //     maxYear: 2030,
-    //     locale: {
-    //       format: 'YYYY-MM-DD'
-    //     }
-    //   },
-    //     function (start) {
-    //       _that.props.setAgencyData({ commercial_registration_expiry_date: start.format('YYYY-MM-DD') })
-    //     }
-    //   );
-    // });
+      $(`#end_date_${item.name}`).daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoApply: true,
+        minDate: new Date(),
+        minYear: new Date().getFullYear(),
+        maxYear: new Date().getFullYear() + 10,
+        locale: {
+          format: 'YYYY-MM-DD'
+        }
+      },
+        function (start) {
+          _that.props.setAgencyData({ [item.expiry_date]: start.format('YYYY-MM-DD') })
+        }
+      );
+    }
   }
 
   render() {
@@ -81,29 +79,27 @@ class LicenseData extends Component {
                     <div className="mt-2">
                       <div className="custom-control custom-radio  d-inline-block ">
                         <input
-                          id="hello"
+                          id={`yes_${item.name}`}
                           name={item.name}
                           type="radio"
                           className="custom-control-input"
                           value="1"
-                          // defaultChecked={agencyData.get(item.name)}
+                          defaultChecked={agencyData.get(item.name)}
                           onChange={this.handleRadioChange}
                         />
-                        <label className="custom-control-label" htmlFor="hello">
-                          نعم
-                        </label>
+                        <label className="custom-control-label" htmlFor={`yes_${item.name}`}>Yeah</label>
                       </div>
                       <div className="custom-control custom-radio  d-inline-block  mx-3">
                         <input
-                          // id={item.name}
+                          id={`no_${item.name}`}
                           name={item.name}
                           type="radio"
                           className="custom-control-input"
                           value="0"
-                          // defaultChecked={!agencyData.get(item.name)}
+                          defaultChecked={!agencyData.get(item.name)}
                           onChange={this.handleRadioChange}
                         />
-                        <label className="custom-control-label" htmlFor={item.name}>لا</label>
+                        <label className="custom-control-label" htmlFor={`no_${item.name}`}>No</label>
                       </div>
                     </div>
                   </div>
@@ -149,8 +145,11 @@ class LicenseData extends Component {
                       تاريخ انشاء الترخيص
                   </label>
                     <input
+                      id={`create_date_${item.name}`}
                       name={item.create_date}
                       type="text"
+                      autocomplete="off"
+                      placeholder="Create Date"
                       className="form-control form-date"
                       readOnly={!agencyData.get(item.name)}
                       value={agencyData.get(item.create_date)}
@@ -164,8 +163,11 @@ class LicenseData extends Component {
                       تاريخ انتهاء الترخيص
                     </label>
                     <input
+                      id={`end_date_${item.name}`}
                       name={item.expiry_date}
                       type="text"
+                      autocomplete="off"
+                      placeholder="Expiry Date"
                       className="form-control form-date"
                       readOnly={!agencyData.get(item.name)}
                       value={agencyData.get(item.expiry_date)}

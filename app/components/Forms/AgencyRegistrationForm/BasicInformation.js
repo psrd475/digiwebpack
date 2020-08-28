@@ -9,38 +9,37 @@ class BasicInformation extends Component {
   componentDidMount = () => {
     const _that = this;
 
-    $(function () {
-      $('#create-date').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        autoApply: true,
-        minYear: 2010,
-        maxYear: parseInt(moment().format('YYYY'), 10),
-        locale: {
-          format: 'YYYY-MM-DD'
-        }
-      },
-        function (start) {
-          _that.props.setAgencyData({ commercial_registration_date: start.format('YYYY-MM-DD') })
-        }
-      );
-    });
-    $(function () {
-      $('#end-date').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        autoApply: true,
-        minYear: 2020,
-        maxYear: 2030,
-        locale: {
-          format: 'YYYY-MM-DD'
-        }
-      },
-        function (start) {
-          _that.props.setAgencyData({ commercial_registration_expiry_date: start.format('YYYY-MM-DD') })
-        }
-      );
-    });
+    $('#create-date').daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: true,
+      autoApply: true,
+      maxDate: new Date(),
+      minYear: new Date().getFullYear() - 10,
+      maxYear: new Date().getFullYear(),
+      locale: {
+        format: 'YYYY-MM-DD'
+      }
+    },
+      function (start) {
+        _that.props.setAgencyData({ commercial_registration_date: start.format('YYYY-MM-DD') })
+      }
+    );
+
+    $('#end-date').daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: true,
+      autoApply: true,
+      minDate: new Date(),
+      minYear: new Date().getFullYear(),
+      maxYear: new Date().getFullYear() + 10,
+      locale: {
+        format: 'YYYY-MM-DD'
+      }
+    },
+      function (start) {
+        _that.props.setAgencyData({ commercial_registration_expiry_date: start.format('YYYY-MM-DD') })
+      }
+    );
   }
 
   handleChange = (e) => {
@@ -175,6 +174,8 @@ class BasicInformation extends Component {
                     id="create-date"
                     name="commercial_registration_date"
                     type="text"
+                    autocomplete="off"
+                    placeholder="Create Date"
                     className="form-control form-date"
                     value={agencyData.get('commercial_registration_date')}
                     onChange={this.handleDateChange}
@@ -190,6 +191,8 @@ class BasicInformation extends Component {
                     id="end-date"
                     name="commercial_registration_expiry_date"
                     type="text"
+                    autocomplete="off"
+                    placeholder="Expiry Date"
                     className="form-control form-date"
                     value={agencyData.get('commercial_registration_expiry_date')}
                     onChange={this.handleDateChange}
