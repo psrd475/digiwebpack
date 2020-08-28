@@ -22,11 +22,20 @@ class AgencyRegistrationForm extends Component {
       tab: 0,
       ownerEditMode: false,
       ownerEditableNode: -1,
+      branchEditMode: false,
+      branchEditableNode: -1,
       confirm: '',
       deleteIndex: -1,
       owner_id: '',
       owner_name: '',
-      owner_phone_number: ''
+      owner_phone_number: '',
+      branch_name: '',
+      branch_city: '',
+      branch_street: '',
+      branch_building: '',
+      branch_phone_number: '',
+      branch_longtitude: '',
+      branch_latitude: ''
     }
   }
 
@@ -44,9 +53,28 @@ class AgencyRegistrationForm extends Component {
     });
   }
 
+  handleBranchReset = () => {
+    this.setState({
+      branch_name: '',
+      branch_city: '',
+      branch_street: '',
+      branch_building: '',
+      branch_phone_number: '',
+      branch_longtitude: '',
+      branch_latitude: '',
+      branchEditMode: false,
+      branchEditableNode: -1
+    });
+  }
+
   handleOwnerEdit = (index) => {
     const owner = this.props.agencyData.getIn(['agency_owners', index]);
     this.setState({ ...owner, ownerEditMode: true, ownerEditableNode: index });
+  }
+
+  handleBranchEdit = (index) => {
+    const branch = this.props.agencyData.getIn(['agency_branches', index]);
+    this.setState({ ...branch, branchEditMode: true, branchEditableNode: index });
   }
 
   confirmDelete = (variant, index) => {
@@ -78,6 +106,30 @@ class AgencyRegistrationForm extends Component {
     this.handleOwnerReset();
   }
 
+  handleBranchSubmit = () => {
+    let agency_branches;
+
+    const branch = {
+      branch_name: this.state.branch_name,
+      branch_city: this.state.branch_city,
+      branch_street: this.state.branch_street,
+      branch_building: this.state.branch_building,
+      branch_phone_number: this.state.branch_phone_number,
+      branch_longtitude: this.state.branch_longtitude,
+      branch_latitude: this.state.branch_latitude
+    };
+
+    if (this.state.branchEditMode) {
+      agency_branches = this.props.agencyData.get('agency_branches').set(this.state.branchEditableNode, branch);
+    } else {
+      agency_branches = this.props.agencyData.get('agency_branches').concat([branch]);
+    };
+
+    this.props.setAgencyData({ agency_branches });
+
+    this.handleBranchReset();
+  }
+
   handleTab = (operation) => {
     if (operation) {
       this.setState(prevState => {
@@ -103,7 +155,10 @@ class AgencyRegistrationForm extends Component {
   }
 
   render() {
-    const { tab, owner_name, owner_id, owner_phone_number, confirm } = this.state;
+    const { tab, owner_name, owner_id, owner_phone_number, confirm,
+      branch_name, branch_city, branch_street, branch_building,
+      branch_phone_number, branch_longtitude, branch_latitude
+    } = this.state;
 
     return (
       <Fragment>
@@ -122,7 +177,18 @@ class AgencyRegistrationForm extends Component {
           handleOwnerReset={this.handleOwnerReset}
         />
 
-        <CreateBranch />
+        <CreateBranch
+          branch_name={branch_name}
+          branch_city={branch_city}
+          branch_street={branch_street}
+          branch_building={branch_building}
+          branch_phone_number={branch_phone_number}
+          branch_longtitude={branch_longtitude}
+          branch_latitude={branch_latitude}
+          handleChange={this.handleChange}
+          handleBranchSubmit={this.handleBranchSubmit}
+          handleBranchReset={this.handleBranchReset}
+        />
 
         <div className="page-layout">
           <div className="container ">
@@ -193,7 +259,10 @@ class AgencyRegistrationForm extends Component {
                 {tab === 2 &&
                   <Fragment>
                     <ContactInformation />
-                    <BranchInformation />
+                    <BranchInformation
+                      handleBranchEdit={this.handleBranchEdit}
+                      confirmDelete={this.confirmDelete}
+                    />
                   </Fragment>
                 }
 

@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 
 class CreateBranch extends Component {
   render() {
+    const {
+      branch_name, branch_city, branch_street, branch_building, branch_phone_number, branch_longtitude,
+      branch_latitude, handleChange, handleBranchSubmit, handleBranchReset
+    } = this.props;
+
     return (
       <div
         className="modal fade"
@@ -30,26 +35,29 @@ class CreateBranch extends Component {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group ">
-                    <label className="d-block col-form-label"> اسم الفرع</label>
+                    <label className="d-block col-form-label">Branch Name</label>
                     <input
+                      name="branch_name"
                       type="text"
                       className="form-control"
-                      name="branch_name"
-                    // onChange={this.handleBranch} 
+                      placeholder="Branch Name"
+                      value={branch_name}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group ">
-                    <label className="d-block col-form-label"> المدينة </label>
+                    <label className="d-block col-form-label">City</label>
                     <select
+                      name="branch_city"
                       className="form-control"
-                      name="city"
-                    // onChange={this.handleBranch}
+                      value={branch_city}
+                      onChange={handleChange}
                     >
-                      <option value=" "> Choose the Branch City </option>
+                      <option value="">Choose the Branch City </option>
                       <option value='Indore'>Indore</option>
-                      <option value='Reva'>Reva</option>
+                      <option value='Rewa'>Rewa</option>
                       <option value='Bhopal'>Bhopal</option>
                       <option value='Dewas'>Dewas</option>
                     </select>
@@ -59,25 +67,29 @@ class CreateBranch extends Component {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group ">
-                    <label className="d-block col-form-label"> الشارع </label>
+                    <label className="d-block col-form-label">Street</label>
                     <input
+                      name="branch_street"
                       type="text"
                       className="form-control"
-                      name="street"
-                    // onChange={this.handleBranch}
+                      placeholder="Street No"
+                      value={branch_street}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group ">
                     <label className="d-block col-form-label">
-                      رقم / اسم المبنى
+                      Building Number/Name
                     </label>
                     <input
+                      name="branch_building"
                       type="text"
                       className="form-control"
-                      name="buildingNo"
-                    // onChange={this.handleBranch} 
+                      placeholder="Building Number/Name"
+                      value={branch_building}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -85,33 +97,37 @@ class CreateBranch extends Component {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group ">
-                    <label className="d-block col-form-label"> الاحداثيات </label>
+                    <label className="d-block col-form-label">Coordinates</label>
                     <div className="input-group">
                       <input
+                        name="branch_longtitude"
                         type="text"
                         className="form-control"
-                        placeholder="longtitude"
-                        name="longtitude"
-                      // onChange={this.handleBranch}
+                        placeholder="Longtitude"
+                        value={branch_longtitude}
+                        onChange={handleChange}
                       />
                       <input
+                        name="branch_latitude"
                         type="text"
                         className="form-control"
-                        placeholder="latitude"
-                        name="latitude"
-                      // onChange={this.handleBranch}
+                        placeholder="Latitude"
+                        value={branch_latitude}
+                        onChange={handleChange}
                       />
                     </div>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group ">
-                    <label className="d-block col-form-label"> الجوال </label>
+                    <label className="d-block col-form-label">Phone Number</label>
                     <input
+                      name="branch_phone_number"
                       type="text"
                       className="form-control"
-                      name="phone_number"
-                    // onChange={this.handleBranch}
+                      placeholder="Phone Number"
+                      value={branch_phone_number}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -122,6 +138,7 @@ class CreateBranch extends Component {
                 type="button"
                 className="btn btn-outline-secondary mr-2"
                 data-dismiss="modal"
+                onClick={handleBranchReset}
               >
                 إلغاء
               </button>
@@ -129,7 +146,7 @@ class CreateBranch extends Component {
                 type="button"
                 className="btn btn-primary  btn-hover demo-trigger-1"
                 data-dismiss="modal"
-              // onClick={this.handleBranchSubmit}
+                onClick={handleBranchSubmit}
               >
                 حفظ
               </button>

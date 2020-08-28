@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setAgencyData } from 'Actions';
 
 class ContactInformation extends Component {
+  handleChange = (e) => {
+    this.props.setAgencyData({ [e.target.name]: e.target.value });
+  }
+
   render() {
+    const { agencyData } = this.props
     return (
       <section>
         <h3 className="text-primary"> بيانات التواصل </h3>
@@ -14,11 +23,12 @@ class ContactInformation extends Component {
                     رقم الهاتف
                   </label>
                   <input
+                    name="telephone_number"
                     type="text"
                     className="form-control form-mobile"
-                    name="TelNo"
-                  // onChange={this.handleChange}
-                  // value={contactData.get('TelNo')}
+                    placeholder="Telephone Number"
+                    value={agencyData.get('telephone_number')}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -28,11 +38,12 @@ class ContactInformation extends Component {
                     رقم الجوال
                   </label>
                   <input
+                    name="phone_number"
                     type="text"
                     className="form-control"
-                    name="MobileNo"
-                  // onChange={this.handleChange}
-                  // value={contactData.get('MobileNo')}
+                    placeholder="Phone Number"
+                    value={agencyData.get('phone_number')}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -44,11 +55,12 @@ class ContactInformation extends Component {
                     رقم الفاكس
                   </label>
                   <input
+                    name="fax_number"
                     type="text"
                     className="form-control"
-                    name="FaxNo"
-                  // onChange={this.handleChange}
-                  // value={contactData.get('FaxNo')}
+                    placeholder="Fax Number"
+                    value={agencyData.get('fax_number')}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -58,11 +70,12 @@ class ContactInformation extends Component {
                     البريد الالكتروني
                   </label>
                   <input
+                    name="email"
                     type="email"
                     className="form-control"
-                    name="Email"
-                  // onChange={this.handleChange}
-                  // value={contactData.get('Email')}
+                    placeholder="Email"
+                    value={agencyData.get('email')}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -74,4 +87,24 @@ class ContactInformation extends Component {
   }
 }
 
-export default ContactInformation;
+ContactInformation.propTypes = {
+  setAgencyData: PropTypes.func.isRequired,
+  agencyData: PropTypes.object.isRequired
+};
+
+const reducer = 'agency';
+
+const mapStateToProps = state => ({
+  agencyData: state.get(reducer)
+});
+
+const mapDispatchToProps = dispatch => ({
+  setAgencyData: bindActionCreators(setAgencyData, dispatch)
+});
+
+const ContactInformationMapped = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactInformation);
+
+export default ContactInformationMapped;

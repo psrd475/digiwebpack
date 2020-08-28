@@ -1,7 +1,46 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setAgencyData } from 'Actions';
 
 class BranchInformation extends Component {
   render() {
+    const { agencyData } = this.props;
+    const agency_branches = agencyData.get('agency_branches');
+
+    const branchList = agency_branches.map((item, index) => (
+      <tr key={index}>
+        <td>{item.branch_name}</td>
+        <td>{item.branch_city}</td>
+        <td>{item.branch_street}</td>
+        <td>{item.branch_building}</td>
+        <td>{item.branch_longtitude}, {item.branch_latitude}</td>
+        <td>{item.branch_phone_number}</td>
+        <td>
+          <a
+            href="#"
+            className="table-action text-success"
+            data-toggle="modal"
+            data-target="#addbranch"
+            onClick={() => this.props.handleBranchEdit(index)}
+          >
+            <i className="fal fa-fw fa-pencil-alt"></i>
+          </a>
+        </td>
+        <td>
+          <a href="#"
+            className="table-action text-danger"
+            data-toggle="modal"
+            data-target="#deleteitem"
+            onClick={() => this.props.confirmDelete('agency_branches', index)}
+          >
+            <i className="fal fa-fw fa-trash-alt"></i>
+          </a>
+        </td>
+      </tr>
+    ));
+
     return (
       <section>
         <div className="d-flex justify-content-between align-items-center my-4">
@@ -15,7 +54,10 @@ class BranchInformation extends Component {
             اضافة فرع
           </a>
         </div>
-        <div className="demo-1 align-items-center bg-light border  display-4 flex-column justify-content-center mb-5 p-5 round text-center text-muted">
+        <div
+          className="demo-1 align-items-center bg-light border  display-4 flex-column justify-content-center mb-5 p-5 round text-center text-muted"
+          style={{ display: agency_branches.size ? 'none' : '' }}
+        >
           <i className="fal fa-fw fa-3x text-muted fa-building mb-4" />
           <p className="text-muted m-0">
             ليس لديك فروع حاليا ...
@@ -29,23 +71,23 @@ class BranchInformation extends Component {
             </a>
           </p>
         </div>
-        <div className="demo" style={{ display: 'none' }}>
+        <div className="demo" style={{ display: agency_branches.size ? '' : 'none' }}>
           <div className="table-responsive">
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>اسم الفرع</th>
-                  <th>المدينة</th>
-                  <th>الشارع</th>
-                  <th>رقم / اسم المبنى</th>
-                  <th>الاحداثيات</th>
-                  <th>الجوال</th>
-                  <th>تعديل</th>
-                  <th>حذف</th>
+                  <th>Branch Name</th>
+                  <th>City</th>
+                  <th>The Street</th>
+                  <th>Building Number/Name</th>
+                  <th>Coordinates</th>
+                  <th>Cell Phone</th>
+                  <th>Modification</th>
+                  <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
-                {/* {branchData} */}
+                {branchList}
               </tbody>
             </table>
           </div>
@@ -65,4 +107,24 @@ class BranchInformation extends Component {
   }
 }
 
-export default BranchInformation;
+BranchInformation.propTypes = {
+  setAgencyData: PropTypes.func.isRequired,
+  agencyData: PropTypes.object.isRequired
+};
+
+const reducer = 'agency';
+
+const mapStateToProps = state => ({
+  agencyData: state.get(reducer)
+});
+
+const mapDispatchToProps = dispatch => ({
+  setAgencyData: bindActionCreators(setAgencyData, dispatch)
+});
+
+const BranchInformationMapped = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BranchInformation);
+
+export default BranchInformationMapped;
