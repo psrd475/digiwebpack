@@ -2,8 +2,8 @@ module.exports = [
   {
     title: "Licensing the Ministry of Tourism",
     name: "embassy_licensed",
-    registartion_file: "embassy_license_no",
-    file: "embassy_license_file",
+    registartion_no: "embassy_license_no",
+    registartion_file: "embassy_license_file",
     create_date: "embassy_license_date",
     expiry_date: "embassy_license_expiry_date"
   },
@@ -18,8 +18,8 @@ module.exports = [
   {
     title: "Registration at the Tunisian University of Travel and Tourism Agencies",
     name: "TUTTA_registration",
-    registartion_file: "TUTTA_membership_no",
-    file: "TUTTA_membership_file",
+    registartion_no: "TUTTA_membership_no",
+    registartion_file: "TUTTA_membership_file",
     create_date: "TUTTA_membership_date",
     expiry_date: "TUTTA_membership_expiry_date"
   }

@@ -1,8 +1,71 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setAgencyData } from 'Actions';
 import data from 'API/licenseData';
 
 class LicenseData extends Component {
+  handleChange = (e) => {
+    this.props.setAgencyData({ [e.target.name]: e.target.value });
+  }
+
+  handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0])
+      this.props.setAgencyData({ [e.target.name]: e.target.files[0] });
+  }
+
+  handleRadioChange = (e) => {
+    console.log(e);
+    this.props.setAgencyData({ [e.target.name]: e.target.value === '0' ? false : true });
+  }
+
+  handleDateChange = () => {
+    return true;
+  }
+
+  componentDidMount = () => {
+    const _that = this;
+
+    // $(function () {
+    //   $('.create-date').daterangepicker({
+    //     singleDatePicker: true,
+    //     showDropdowns: true,
+    //     autoApply: true,
+    //     minYear: 2010,
+    //     maxYear: parseInt(moment().format('YYYY'), 10),
+    //     locale: {
+    //       format: 'YYYY-MM-DD'
+    //     }
+    //   },
+    //     function (start) {
+    //       _that.props.setAgencyData({ create_date: (start.format('YYYY-MM-DD')) })
+
+    //     }
+    //   );
+    // })
+
+    // $(function () {
+    //   $('.end-date').daterangepicker({
+    //     singleDatePicker: true,
+    //     showDropdowns: true,
+    //     autoApply: true,
+    //     minYear: 2020,
+    //     maxYear: 2030,
+    //     locale: {
+    //       format: 'YYYY-MM-DD'
+    //     }
+    //   },
+    //     function (start) {
+    //       _that.props.setAgencyData({ commercial_registration_expiry_date: start.format('YYYY-MM-DD') })
+    //     }
+    //   );
+    // });
+  }
+
   render() {
+    const { agencyData } = this.props;
+
     const JSX = data.map((item, index) => {
       return (
         <section key={index}>
@@ -18,31 +81,29 @@ class LicenseData extends Component {
                     <div className="mt-2">
                       <div className="custom-control custom-radio  d-inline-block ">
                         <input
-                          id="yes1"
+                          id="hello"
+                          name={item.name}
                           type="radio"
                           className="custom-control-input"
-                          required
-                          name={item.name}
                           value="1"
-                        // onChange={this.handleChange}
-                        // defaultChecked={LicenseData.get('embassy_Available') == true ? "checked" : ''}
+                          // defaultChecked={agencyData.get(item.name)}
+                          onChange={this.handleRadioChange}
                         />
-                        <label className="custom-control-label" htmlFor="yes1">
+                        <label className="custom-control-label" htmlFor="hello">
                           نعم
-                      </label>
+                        </label>
                       </div>
                       <div className="custom-control custom-radio  d-inline-block  mx-3">
                         <input
-                          id="no1"
+                          // id={item.name}
+                          name={item.name}
                           type="radio"
                           className="custom-control-input"
-                          required
-                          name={item.name}
                           value="0"
-                        // onChange={this.handleChange}
-                        // defaultChecked={LicenseData.get('embassy_Available') == false ? "checked" : ''}
+                          // defaultChecked={!agencyData.get(item.name)}
+                          onChange={this.handleRadioChange}
                         />
-                        <label className="custom-control-label" htmlFor="no1">لا</label>
+                        <label className="custom-control-label" htmlFor={item.name}>لا</label>
                       </div>
                     </div>
                   </div>
@@ -53,13 +114,14 @@ class LicenseData extends Component {
                   <div className="form-group ">
                     <label className="d-block col-form-label">
                       رقم الترخيص
-                  </label>
-                    <input type="text"
-                      className="form-control"
+                    </label>
+                    <input
                       name={item.registartion_no}
-                    // onChange={this.handleDataChange}
-                    // readOnly={!ea}
-                    // value={LicenseData.get('LicenceNo')}
+                      type="text"
+                      className="form-control"
+                      readOnly={!agencyData.get(item.name)}
+                      value={agencyData.get(item.registartion_no)}
+                      onChange={this.handleChange}
                     />
                   </div>
                 </div>
@@ -67,19 +129,14 @@ class LicenseData extends Component {
                   <div className="form-group ">
                     <label className="d-block col-form-label">
                       ملف الترخيص
-                  </label>
+                    </label>
                     <span className="form-control form-upload">
-                      {/* {
-                      agencyLicenceFile
-                        ?
-                        <label>{agencyLicenceFile}</label>
-                        : */}
-                      <input type="file"
+                      <input
                         name={item.registartion_file}
-                      // onChange={this.handleFiles}
-                      // disabled={!ea}
+                        type="file"
+                        disabled={!agencyData.get(item.name)}
+                        onChange={this.handleFileChange}
                       />
-                      {/* } */}
                     </span>
                     <span className="text-muted small"> صيغة PDF </span>
                   </div>
@@ -91,12 +148,13 @@ class LicenseData extends Component {
                     <label className="d-block col-form-label  ">
                       تاريخ انشاء الترخيص
                   </label>
-                    <input type="date"
-                      className="form-control"
+                    <input
                       name={item.create_date}
-                    // onChange={this.handleDataChange}
-                    // readOnly={!ea}
-                    // value={LicenseData.get('LicenceCreateDate')}
+                      type="text"
+                      className="form-control form-date"
+                      readOnly={!agencyData.get(item.name)}
+                      value={agencyData.get(item.create_date)}
+                      onChange={this.handleDateChange}
                     />
                   </div>
                 </div>
@@ -104,14 +162,14 @@ class LicenseData extends Component {
                   <div className="form-group ">
                     <label className="d-block col-form-label  ">
                       تاريخ انتهاء الترخيص
-                  </label>
+                    </label>
                     <input
-                      type="date"
-                      className="form-control"
                       name={item.expiry_date}
-                    // onChange={this.handleDataChange}
-                    // readOnly={!ea}
-                    // value={LicenseData.get('LicenceExpiryDate')}
+                      type="text"
+                      className="form-control form-date"
+                      readOnly={!agencyData.get(item.name)}
+                      value={agencyData.get(item.expiry_date)}
+                      onChange={this.handleDateChange}
                     />
                   </div>
                 </div>
@@ -129,4 +187,25 @@ class LicenseData extends Component {
   }
 }
 
-export default LicenseData;
+LicenseData.propTypes = {
+  setAgencyData: PropTypes.func.isRequired,
+  agencyData: PropTypes.object.isRequired
+};
+
+const reducer = 'agency';
+
+const mapStateToProps = state => ({
+  agencyData: state.get(reducer)
+});
+
+const mapDispatchToProps = dispatch => ({
+  setAgencyData: bindActionCreators(setAgencyData, dispatch)
+});
+
+const LicenseDataMapped = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LicenseData);
+
+
+export default LicenseDataMapped;

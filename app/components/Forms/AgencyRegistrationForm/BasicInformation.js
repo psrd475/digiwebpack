@@ -10,7 +10,7 @@ class BasicInformation extends Component {
     const _that = this;
 
     $(function () {
-      $('.create-date').daterangepicker({
+      $('#create-date').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         autoApply: true,
@@ -20,13 +20,13 @@ class BasicInformation extends Component {
           format: 'YYYY-MM-DD'
         }
       },
-        function (start, end, label) {
+        function (start) {
           _that.props.setAgencyData({ commercial_registration_date: start.format('YYYY-MM-DD') })
         }
       );
     });
     $(function () {
-      $('.end-date').daterangepicker({
+      $('#end-date').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         autoApply: true,
@@ -36,7 +36,7 @@ class BasicInformation extends Component {
           format: 'YYYY-MM-DD'
         }
       },
-        function (start, end, label) {
+        function (start) {
           _that.props.setAgencyData({ commercial_registration_expiry_date: start.format('YYYY-MM-DD') })
         }
       );
@@ -172,9 +172,10 @@ class BasicInformation extends Component {
                     تاريخ انشاء السجل التجاري
                   </label>
                   <input
+                    id="create-date"
                     name="commercial_registration_date"
                     type="text"
-                    className="form-control create-date"
+                    className="form-control form-date"
                     value={agencyData.get('commercial_registration_date')}
                     onChange={this.handleDateChange}
                   />
@@ -186,9 +187,10 @@ class BasicInformation extends Component {
                     تاريخ انتهاء السجل التجاري
                   </label>
                   <input
+                    id="end-date"
                     name="commercial_registration_expiry_date"
                     type="text"
-                    className="form-control end-date"
+                    className="form-control form-date"
                     value={agencyData.get('commercial_registration_expiry_date')}
                     onChange={this.handleDateChange}
                   />
@@ -240,7 +242,6 @@ class BasicInformation extends Component {
     )
   }
 }
-
 
 BasicInformation.propTypes = {
   setAgencyData: PropTypes.func.isRequired,
