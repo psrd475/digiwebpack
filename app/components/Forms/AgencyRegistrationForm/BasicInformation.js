@@ -6,6 +6,43 @@ import countryData from 'API/country';
 import { setAgencyData } from 'Actions';
 
 class BasicInformation extends Component {
+  componentDidMount = () => {
+    const _that = this;
+
+    $(function () {
+      $('.create-date').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoApply: true,
+        minYear: 2010,
+        maxYear: parseInt(moment().format('YYYY'), 10),
+        locale: {
+          format: 'YYYY-MM-DD'
+        }
+      },
+        function (start, end, label) {
+          _that.props.setAgencyData({ commercial_registration_date: start.format('YYYY-MM-DD') })
+        }
+      );
+    });
+    $(function () {
+      $('.end-date').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoApply: true,
+        minYear: 2020,
+        maxYear: 2030,
+        locale: {
+          format: 'YYYY-MM-DD'
+        }
+      },
+        function (start, end, label) {
+          _that.props.setAgencyData({ commercial_registration_expiry_date: start.format('YYYY-MM-DD') })
+        }
+      );
+    });
+  }
+
   handleChange = (e) => {
     this.props.setAgencyData({ [e.target.name]: e.target.value });
   }
@@ -13,6 +50,10 @@ class BasicInformation extends Component {
   handleFileChange = (e) => {
     if (e.target.files && e.target.files[0])
       this.props.setAgencyData({ [e.target.name]: e.target.files[0] });
+  }
+
+  handleDateChange = () => {
+    return true;
   }
 
   render() {
@@ -132,10 +173,10 @@ class BasicInformation extends Component {
                   </label>
                   <input
                     name="commercial_registration_date"
-                    type="date"
-                    className="form-control"
+                    type="text"
+                    className="form-control create-date"
                     value={agencyData.get('commercial_registration_date')}
-                    onChange={this.handleChange}
+                    onChange={this.handleDateChange}
                   />
                 </div>
               </div>
@@ -146,10 +187,10 @@ class BasicInformation extends Component {
                   </label>
                   <input
                     name="commercial_registration_expiry_date"
-                    type="date"
-                    className="form-control"
+                    type="text"
+                    className="form-control end-date"
                     value={agencyData.get('commercial_registration_expiry_date')}
-                    onChange={this.handleChange}
+                    onChange={this.handleDateChange}
                   />
                 </div>
               </div>
