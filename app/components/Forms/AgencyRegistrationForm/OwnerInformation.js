@@ -22,12 +22,11 @@ class OwnerInformation extends Component {
           <i className="fal fa-fw fa-4x text-muted fa-users mb-4" />
           <p className="text-muted m-0">
             لا يوجد ملاك حاليا ...
-              <a
+            <a
               href="#"
               className="d-inline-block border-bottom"
               data-toggle="modal"
               data-target="#addowner"
-              onClick={this.handleOwnerModal}
             >
               اضافة مالك جديد ؟
             </a>

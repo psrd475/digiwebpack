@@ -1,7 +1,27 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import countryData from 'API/country';
+import { setAgencyData } from 'Actions';
 
 class BasicInformation extends Component {
+  handleChange = (e) => {
+    this.props.setAgencyData({ [e.target.name]: e.target.value });
+  }
+
+  handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0])
+      this.props.setAgencyData({ [e.target.name]: e.target.files[0] });
+  }
+
   render() {
+    const { agencyData } = this.props;
+
+    const countryOptions = countryData.map((item, index) => (
+      <option key={index} value={item.name}>{item.name}</option>
+    ));
+
     return (
       <section>
         <div className="row">
@@ -15,9 +35,10 @@ class BasicInformation extends Component {
                   <input
                     type="text"
                     className="form-control"
-                    name="Name"
-                  // onChange={this.handleChange}
-                  // value={this.props.agencyData.get('Name')}
+                    name="agency_name"
+                    placeholder="Agency Name"
+                    value={agencyData.get('agency_name')}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -25,14 +46,13 @@ class BasicInformation extends Component {
                 <div className="form-group ">
                   <label className="d-block col-form-label"> الدولة</label>
                   <select
-                    id="country"
-                    name="Country"
+                    name="country"
                     className="form-control"
-                  // value={this.props.agencyData.get('Country')}
-                  // onChange={this.handleChange}
+                    value={agencyData.get('country')}
+                    onChange={this.handleChange}
                   >
                     <option value="">Choose the Country</option>
-                    {/* {countryname} */}
+                    {countryOptions}
                   </select>
                 </div>
               </div>
@@ -43,14 +63,16 @@ class BasicInformation extends Component {
                   <label className="d-block col-form-label">
                     تصنيف الوكالة
                   </label>
-                  <select className="form-control" name="Classification"
-                  // onChange={this.handleChange}
-                  // value={this.props.agencyData.get('Classification')}
+                  <select
+                    name="category"
+                    className="form-control"
+                    value={agencyData.get('category')}
+                    onChange={this.handleChange}
                   >
                     <option value="">Choose the Agency Classification</option>
-                    <option value="Travel and tourism company">شركة للسياحة والسفر</option>
-                    <option value="Transportation and delivery company">شركة نقل وتوصيل</option>
-                    <option value="Company x">شركة x</option>
+                    <option value="Travel and tourism company">Travel and tourism company</option>
+                    <option value="Transportation and delivery company">Transportation and delivery company</option>
+                    <option value="Company x">Company x</option>
                   </select>
                 </div>
               </div>
@@ -60,12 +82,12 @@ class BasicInformation extends Component {
                     الموقع الالكتروني - اختياري
                   </label>
                   <input
-                    type="text"
+                    name="website"
+                    type="url"
                     className="form-control"
                     placeholder="www.example.com"
-                    name="Website"
-                  // onChange={this.handleChange}
-                  // value={this.props.agencyData.get('Website')}
+                    value={agencyData.get('website')}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -77,11 +99,12 @@ class BasicInformation extends Component {
                     رقم السجل التجاري
                   </label>
                   <input
+                    name="commercial_registration_no"
                     type="text"
+                    placeholder="Commercial Registration No"
                     className="form-control"
-                    name="RegisterNo"
-                  // onChange={this.handleChange}
-                  // value={this.props.agencyData.get('RegisterNo')}
+                    value={agencyData.get('commercial_registration_no')}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -91,16 +114,11 @@ class BasicInformation extends Component {
                     إرفاق ملف السجل التجاري
                   </label>
                   <span className="form-control form-upload">
-                    {/* {
-                      regFile ?
-                        <label>{regFile}</label>
-                        : */}
                     <input
+                      name="commercial_registration_file"
                       type="file"
-                      name="RegistryFile"
-                    // onChange={this.handlefiles}
+                      onChange={this.handleFileChange}
                     />
-                    {/* } */}
                   </span>
                   <span className="text-muted small"> صيغة PDF </span>
                 </div>
@@ -112,9 +130,12 @@ class BasicInformation extends Component {
                   <label className="d-block col-form-label  ">
                     تاريخ انشاء السجل التجاري
                   </label>
-                  <input type="date" className="form-control" name="CreateDate"
-                  // onChange={this.handleChange}
-                  // value={agency.get('CreateDate')}
+                  <input
+                    name="commercial_registration_date"
+                    type="date"
+                    className="form-control"
+                    value={agencyData.get('commercial_registration_date')}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -124,11 +145,11 @@ class BasicInformation extends Component {
                     تاريخ انتهاء السجل التجاري
                   </label>
                   <input
+                    name="commercial_registration_expiry_date"
                     type="date"
                     className="form-control"
-                    name="ExpiryDate"
-                  // onChange={this.handleChange}
-                  // value={agency.get('ExpiryDate')}
+                    value={agencyData.get('commercial_registration_expiry_date')}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -140,11 +161,12 @@ class BasicInformation extends Component {
                     نبذة عن وكالة السفر
                   </label>
                   <textarea
+                    name="agency_description"
                     className="form-control"
                     rows={4}
-                    name="About"
-                  // onChange={this.handleChange}
-                  // value={agency.get('About')}
+                    placeholder="Agency Description"
+                    value={agencyData.get('agency_description')}
+                    onChange={this.handleChange}
                   />
                 </div>
               </div>
@@ -164,10 +186,9 @@ class BasicInformation extends Component {
               </div>
               <div className="file-input-mask">
                 <input
+                  name="agency_logo"
                   type="file"
-                  id="upload-photo"
-                  name="AgencyLogo"
-                // onChange={this.handlelogo}
+                  onChange={this.handleFileChange}
                 />
               </div>
             </label>
@@ -179,4 +200,25 @@ class BasicInformation extends Component {
   }
 }
 
-export default BasicInformation;
+
+BasicInformation.propTypes = {
+  setAgencyData: PropTypes.func.isRequired,
+  agencyData: PropTypes.object.isRequired
+};
+
+const reducer = 'agency';
+
+const mapStateToProps = state => ({
+  agencyData: state.get(reducer)
+});
+
+const mapDispatchToProps = dispatch => ({
+  setAgencyData: bindActionCreators(setAgencyData, dispatch)
+});
+
+const BasicInformationMapped = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BasicInformation);
+
+export default BasicInformationMapped;
