@@ -6,6 +6,14 @@ import { setAgencyData } from 'Actions';
 import data from 'API/licenseData';
 
 class AgencyPreviewData extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      Editmode: false
+    }
+  }
+
   renderAgencyLogo = () => {
     const { agencyData } = this.props;
 
