@@ -6,6 +6,25 @@ import { setAgencyData } from 'Actions';
 import data from 'API/licenseData';
 
 class AgencyPreviewData extends Component {
+  renderAgencyLogo = () => {
+    const { agencyData } = this.props;
+
+    if (agencyData.get('agency_logo') && agencyData.get('agency_logo').type.includes('image')) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        $('#preview')
+          .attr('src', e.target.result)
+      };
+
+      reader.readAsDataURL(agencyData.get('agency_logo'));
+    };
+  }
+
+  componentDidMount() {
+    this.renderAgencyLogo();
+  }
+
   render() {
     const { agencyData } = this.props;
 
@@ -182,11 +201,7 @@ class AgencyPreviewData extends Component {
                     <label className="d-block col-form-label">
                       ارفاق ملف السجل التجاري
                     </label>
-                    {/* {regFile ?
-                      <label>{regFile}</label>
-                      :
-                      ''
-                    } */}
+                    {agencyData.get('commercial_registration_no') !== null ? agencyData.get('commercial_registration_no').name : ''}
                   </div>
                 </div>
               </div>
@@ -241,6 +256,7 @@ class AgencyPreviewData extends Component {
               <div className="bg-white border flag-info overflow-hidden py-5 round">
                 <span className="p-4 d-block">
                   <img
+                    id="preview"
                     src="/images/company-logo.jpg"
                     alt="company logo"
                   />

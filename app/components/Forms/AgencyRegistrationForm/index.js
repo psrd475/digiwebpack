@@ -35,7 +35,9 @@ class AgencyRegistrationForm extends Component {
       branch_building: '',
       branch_phone_number: '',
       branch_longtitude: '',
-      branch_latitude: ''
+      branch_latitude: '',
+      privacy_policy: 'off',
+      terms_conditions: 'off'
     }
   }
 
@@ -155,9 +157,11 @@ class AgencyRegistrationForm extends Component {
   }
 
   render() {
+    const { handleSubmit } = this.props;
     const { tab, owner_name, owner_id, owner_phone_number, confirm,
       branch_name, branch_city, branch_street, branch_building,
-      branch_phone_number, branch_longtitude, branch_latitude
+      branch_phone_number, branch_longtitude, branch_latitude,
+      privacy_policy, terms_conditions
     } = this.state;
 
     return (
@@ -272,15 +276,29 @@ class AgencyRegistrationForm extends Component {
                     <AgencyPreviewData />
                     <section className="bg-light  mx-n4 p-4 px-4 mt-5">
                       <div className="custom-control custom-checkbox mr-sm-2 mb-3">
-                        <input type="checkbox" className="custom-control-input" id="xx" />
-                        <label className="custom-control-label" htmlFor="xx">
+                        <input
+                          id="policy"
+                          name="privacy_policy"
+                          type="checkbox"
+                          className="custom-control-input"
+                          value={privacy_policy === 'on' ? 'off' : 'on'}
+                          onChange={this.handleChange}
+                        />
+                        <label className="custom-control-label" htmlFor="policy">
                           اقر بمسوؤليتي عن صحة البيانات السابقة والتي تتوافق مع البيانات
                           المسجلة حكوميا
                         </label>
                       </div>
                       <div className="custom-control custom-checkbox mr-sm-2">
-                        <input type="checkbox" className="custom-control-input" id="ss" />
-                        <label className="custom-control-label" htmlFor="ss">
+                        <input
+                          id="terms"
+                          name="terms_conditions"
+                          type="checkbox"
+                          className="custom-control-input"
+                          value={terms_conditions === 'on' ? 'off' : 'on'}
+                          onChange={this.handleChange}
+                        />
+                        <label className="custom-control-label" htmlFor="terms">
                           اقر بالموافقة على الشروط والاحكام الخاصة بتسجيل الوكالة بعد
                           قراءتها
                         </label>
@@ -304,7 +322,7 @@ class AgencyRegistrationForm extends Component {
                     }
                     <Link
                       to="#"
-                      onClick={() => tab !== 3 ? this.handleTab(1) : true}
+                      onClick={() => tab !== 3 ? this.handleTab(1) : handleSubmit()}
                       className="btn btn-primary ml-3"
                     >
                       {tab !== 3 ? "Next" : "Emphasis"}
