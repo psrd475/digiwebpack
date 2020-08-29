@@ -23,6 +23,83 @@ class AgencyPreviewData extends Component {
 
   componentDidMount() {
     this.renderAgencyLogo();
+
+    const _that = this;
+
+    $('#date').daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: true,
+      autoApply: true,
+      maxDate: new Date(),
+      minYear: new Date().getFullYear() - 10,
+      maxYear: new Date().getFullYear(),
+      locale: {
+        format: 'YYYY-MM-DD'
+      }
+    },
+      function (start) {
+        _that.props.setAgencyData({ commercial_registration_date: start.format('YYYY-MM-DD') })
+      }
+    );
+
+    $('#expiry-date').daterangepicker({
+      singleDatePicker: true,
+      showDropdowns: true,
+      autoApply: true,
+      minDate: new Date(),
+      minYear: new Date().getFullYear(),
+      maxYear: new Date().getFullYear() + 10,
+      locale: {
+        format: 'YYYY-MM-DD'
+      }
+    },
+      function (start) {
+        _that.props.setAgencyData({ commercial_registration_expiry_date: start.format('YYYY-MM-DD') })
+      }
+    );
+
+    for (let item of data) {
+      $(`#create_date_${item.name}`).daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoApply: true,
+        maxDate: new Date(),
+        minYear: new Date().getFullYear() - 10,
+        maxYear: new Date().getFullYear(),
+        locale: {
+          format: 'YYYY-MM-DD'
+        }
+      },
+        function (start) {
+          _that.props.setAgencyData({ [item.create_date]: (start.format('YYYY-MM-DD')) })
+        }
+      );
+
+      $(`#end_date_${item.name}`).daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoApply: true,
+        minDate: new Date(),
+        minYear: new Date().getFullYear(),
+        maxYear: new Date().getFullYear() + 10,
+        locale: {
+          format: 'YYYY-MM-DD'
+        }
+      },
+        function (start) {
+          _that.props.setAgencyData({ [item.expiry_date]: start.format('YYYY-MM-DD') })
+        }
+      );
+    }
+  }
+
+  handleDateChange = () => {
+    return true;
+  }
+
+  handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0])
+      this.props.setAgencyData({ [e.target.name]: e.target.files[0] });
   }
 
   render() {
@@ -39,6 +116,27 @@ class AgencyPreviewData extends Component {
         <td>{item.branch_building}</td>
         <td>{item.branch_longtitude}, {item.branch_latitude}</td>
         <td>{item.branch_phone_number}</td>
+        <td>
+          <a
+            href="#"
+            className="table-action text-success"
+            data-toggle="modal"
+            data-target="#addbranch"
+            onClick={() => this.props.handleBranchEdit(index)}
+          >
+            <i className="fal fa-fw fa-pencil-alt"></i>
+          </a>
+        </td>
+        <td>
+          <a href="#"
+            className="table-action text-danger"
+            data-toggle="modal"
+            data-target="#deleteitem"
+            onClick={() => this.props.confirmDelete('agency_branches', index)}
+          >
+            <i className="fal fa-fw fa-trash-alt"></i>
+          </a>
+        </td>
       </tr>
     ));
 
@@ -47,6 +145,27 @@ class AgencyPreviewData extends Component {
         <td>{item.owner_name}</td>
         <td>{item.owner_id}</td>
         <td>{item.owner_phone_number}</td>
+        <td>
+          <a
+            href="#"
+            className="table-action text-success"
+            data-toggle="modal"
+            data-target="#addowner"
+            onClick={() => this.props.handleOwnerEdit(index)}
+          >
+            <i className="fal fa-fw fa-pencil-alt"></i>
+          </a>
+        </td>
+        <td>
+          <a href="#"
+            className="table-action text-danger"
+            data-toggle="modal"
+            data-target="#deleteitem"
+            onClick={() => this.props.confirmDelete('agency_owners', index)}
+          >
+            <i className="fal fa-fw fa-trash-alt"></i>
+          </a>
+        </td>
       </tr>
     ));
 
@@ -77,7 +196,22 @@ class AgencyPreviewData extends Component {
                   <label className="d-block col-form-label">
                     License/Membership File
                   </label>
-                  {agencyData.get(item.registartion_file) !== null ? agencyData.get(item.registartion_file).name : ''}
+                  <span className="form-control form-upload">
+                    <label htmlFor={item.registartion_file}>
+                      {agencyData.get(item.registartion_file) !== null ? agencyData.get(item.registartion_file).name : 'Choose File'}
+                    </label>
+                    <input
+                      id={item.registartion_file}
+                      name={item.registartion_file}
+                      type="file"
+                      accept=".pdf"
+                      disabled={!agencyData.get(item.name)}
+                      onChange={this.handleFileChange}
+                      style={{ display: 'none' }}
+                    />
+                  </span>
+                  <span className="text-muted small"> صيغة PDF </span>
+                  {/* {agencyData.get(item.registartion_file) !== null ? agencyData.get(item.registartion_file).name : ''} */}
                 </div>
               </div>
             </div>
@@ -88,11 +222,15 @@ class AgencyPreviewData extends Component {
                     License/Membership Create Date
                   </label>
                   <input
+                    id={`create_date_${item.name}`}
                     name={item.create_date}
                     type="text"
-                    className="form-control-plaintext"
-                    readOnly
+                    autoComplete="off"
+                    placeholder="Create Date"
+                    className="form-control form-date"
+                    readOnly={!agencyData.get(item.name)}
                     value={agencyData.get(item.create_date)}
+                    onChange={this.handleDateChange}
                   />
                 </div>
               </div>
@@ -102,11 +240,15 @@ class AgencyPreviewData extends Component {
                     License/Membership Expiry Date
                   </label>
                   <input
+                    id={`end_date_${item.name}`}
                     name={item.expiry_date}
                     type="text"
-                    className="form-control-plaintext"
-                    readOnly
+                    autoComplete="off"
+                    placeholder="Expiry Date"
+                    className="form-control form-date"
+                    readOnly={!agencyData.get(item.name)}
                     value={agencyData.get(item.expiry_date)}
+                    onChange={this.handleDateChange}
                   />
                 </div>
               </div>
@@ -201,7 +343,21 @@ class AgencyPreviewData extends Component {
                     <label className="d-block col-form-label">
                       ارفاق ملف السجل التجاري
                     </label>
-                    {agencyData.get('commercial_registration_no') !== null ? agencyData.get('commercial_registration_no').name : ''}
+                    <span className="form-control form-upload">
+                      <label htmlFor="commercial_registration_file">
+                        {agencyData.get('commercial_registration_file') !== null ? agencyData.get('commercial_registration_file').name : 'Choose File'}
+                      </label>
+                      <input
+                        id='commercial_registration_file'
+                        name="commercial_registration_file"
+                        type="file"
+                        accept=".pdf"
+                        onChange={this.handleFileChange}
+                        style={{ display: 'none' }}
+                      />
+                    </span>
+                    <span className="text-muted small"> صيغة PDF </span>
+                    {/* {agencyData.get('commercial_registration_no') !== null ? agencyData.get('commercial_registration_no').name : ''} */}
                   </div>
                 </div>
               </div>
@@ -212,11 +368,14 @@ class AgencyPreviewData extends Component {
                       تاريخ انشاء السجل التجاري
                     </label>
                     <input
+                      id="date"
                       name="commercial_registration_date"
                       type="text"
-                      className="form-control-plaintext"
-                      readOnly
+                      autoComplete="off"
+                      placeholder="Create Date"
+                      className="form-control form-date"
                       value={agencyData.get('commercial_registration_date')}
+                      onChange={this.handleDateChange}
                     />
                   </div>
                 </div>
@@ -226,11 +385,14 @@ class AgencyPreviewData extends Component {
                       تاريخ انتهاء السجل التجاري
                     </label>
                     <input
+                      id="expiry-date"
                       name="commercial_registration_expiry_date"
                       type="text"
-                      className="form-control-plaintext"
-                      readOnly
+                      autoComplete="off"
+                      placeholder="Expiry Date"
+                      className="form-control form-date"
                       value={agencyData.get('commercial_registration_expiry_date')}
+                      onChange={this.handleDateChange}
                     />
                   </div>
                 </div>
@@ -272,9 +434,11 @@ class AgencyPreviewData extends Component {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>اسم المالك</th>
-                  <th>رقم الهوية</th>
-                  <th> رقم الجوال</th>
+                  <th>The Owner's Name</th>
+                  <th>ID Number</th>
+                  <th>Mobile number</th>
+                  <th>Modification</th>
+                  <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -359,12 +523,14 @@ class AgencyPreviewData extends Component {
             <table className="table table-striped">
               <thead>
                 <tr>
-                  <th>اسم الفرع</th>
-                  <th>المدينة</th>
-                  <th>الشارع</th>
-                  <th>رقم / اسم المبنى</th>
-                  <th>الاحداثيات</th>
-                  <th>الجوال</th>
+                  <th>Branch Name</th>
+                  <th>City</th>
+                  <th>The Street</th>
+                  <th>Building Number/Name</th>
+                  <th>Coordinates</th>
+                  <th>Cell Phone</th>
+                  <th>Modification</th>
+                  <th>Delete</th>
                 </tr>
               </thead>
               <tbody>

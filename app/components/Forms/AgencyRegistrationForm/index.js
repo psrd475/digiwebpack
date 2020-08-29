@@ -273,7 +273,11 @@ class AgencyRegistrationForm extends Component {
                 {/* Agency Preview Data & Terms & Conditions */}
                 {tab === 3 &&
                   <Fragment>
-                    <AgencyPreviewData />
+                    <AgencyPreviewData
+                      handleBranchEdit={this.handleBranchEdit}
+                      handleOwnerEdit={this.handleOwnerEdit}
+                      confirmDelete={this.confirmDelete}
+                    />
                     <section className="bg-light  mx-n4 p-4 px-4 mt-5">
                       <div className="custom-control custom-checkbox mr-sm-2 mb-3">
                         <input
