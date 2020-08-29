@@ -4,7 +4,7 @@ import { NotifMessage, Footer } from 'Components';
 import Outer from './Outer';
 // import User from './User';
 import Agency from './Agency';
-// import Admin from './Admin';
+import Admin from './Admin';
 import { Landing } from '../pageListAsync';
 
 class App extends React.Component {
@@ -20,11 +20,11 @@ class App extends React.Component {
           {/* <Route
             path="/user"
             render={() => <User />}
-          />
+          />*/}
           <Route
             path="/admin"
             render={() => <Admin />}
-          /> */}
+          />
           <Route component={Outer} />
         </Switch>
         <Footer />

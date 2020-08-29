@@ -25,3 +25,8 @@ export const ChangePassword = loadable(() =>
   import('./Pages/ChangePassword'), {
   fallback: <Loading />,
 });
+
+export const RegistrationRequestList = loadable(() =>
+  import('./Pages/RegistrationRequestList'), {
+  fallback: <Loading />,
+});
